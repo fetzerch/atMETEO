@@ -3,6 +3,7 @@ set(HEADERS
     utils.h
     demodulator.h
     bitdecoder.h
+    sensor.h
 )
 
 set(SOURCES
