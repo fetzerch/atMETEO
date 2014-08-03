@@ -5,9 +5,11 @@ set(HEADERS
     bitdecoder.h
     sensor.h
     rfdevice.h
+    hidekisensor.h
 )
 
 set(SOURCES
+    hidekisensor.cpp
 )
 
 set(OTHERS
