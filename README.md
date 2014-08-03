@@ -31,6 +31,15 @@ Please see the cmake-avr documentation for more configuration options.
 
 [cmake-avr]: https://github.com/mkleemann/cmake-avr
 
+### Unit tests
+The project ships with a number of unit tests to ensure that the platform
+independent code functions properly. The unit tests are meant to be
+executed on the build system with `make test`.
+
+Testing is enabled by default and can be disabled with the CMake option
+`BUILD_TESTING`. The tests log to standard out and generate JUnit XML output
+for further processing.
+
 ### API Documentation
 The Doxygen based API documentation can be build with `make dox`.
 If not needed, the documentation support can be disabled with the CMake

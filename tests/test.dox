@@ -1,0 +1,10 @@
+/*!
+ * \defgroup libsensors_tests Unit tests
+ * \ingroup libsensors
+ *
+ * \brief Unit tests for \ref libsensors
+ *
+ * The unit tests are intendet to be executed on the host for development,
+ * therefore the restrictions on the library do not apply and all C++ language
+ * features including STL can be used.
+ */

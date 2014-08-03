@@ -26,6 +26,9 @@ if(CMAKE_CROSSCOMPILING AND CMAKE_SYSTEM_PROCESSOR STREQUAL "avr")
 endif()
 
 # Options
+include(CMakeDependentOption)
+cmake_dependent_option(BUILD_TESTING "Build unit tests" ON
+    "NOT CMAKE_CROSSCOMPILING" OFF)
 option(BUILD_DOCUMENTATION "Build documentation" ON)
 
 # Build targets ---------------------------------------------------------------
@@ -35,6 +38,12 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -Wextra")
 
 # libsensors: Hardware independent utilities and algorithms
 add_subdirectory(lib)
+
+# libsensors: Host based unit tests
+if(BUILD_TESTING)
+    include(CTest)
+    add_subdirectory(tests)
+endif()
 
 # Documentation
 if(BUILD_DOCUMENTATION)
@@ -65,5 +74,6 @@ else()
     status_message("Compiling for local system")
 endif()
 status_message("Build type" CMAKE_BUILD_TYPE)
+status_message("Unit tests" BUILD_TESTING)
 status_message("Documentation" BUILD_DOCUMENTATION)
 message(STATUS)
