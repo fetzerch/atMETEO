@@ -19,6 +19,18 @@ mainly for testing purposes.
     $ cd <build dir>
     $ cmake <source dir>
 
+### Cross compilation & flashing
+A different configuration is needed to setup cross compilation and flashing for
+ATmega based targets. For this purpose [cmake-avr] has to be available on
+the build machine.
+
+In order to use [cmake-avr] the `CMAKE_TOOLCHAIN_FILE` variable has to be set
+as well as a few other configuration variables.
+
+Please see the cmake-avr documentation for more configuration options.
+
+[cmake-avr]: https://github.com/mkleemann/cmake-avr
+
 ### API Documentation
 The Doxygen based API documentation can be build with `make dox`.
 If not needed, the documentation support can be disabled with the CMake

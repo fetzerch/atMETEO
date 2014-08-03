@@ -1,0 +1,21 @@
+/*!
+ * \defgroup target Hardware/target specific
+ *
+ * \brief AVR dependent code.
+ *
+ * This module contains the AVR dependent code parts.
+ *
+ * \copydoc targets
+ *
+ * The Implementation is based on AVR libc
+ * (http://www.nongnu.org/avr-libc/user-manual/index.html).
+ */
+
+/*!
+ * \defgroup targets Supported targets
+ * \ingroup target
+ *
+ * \brief Supported targets.
+ *
+ * The build system is configured to support the following targets:
+ */
