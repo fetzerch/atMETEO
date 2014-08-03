@@ -1,6 +1,7 @@
 # Listed headers for IDEs even though no code is generated for the static lib
 set(HEADERS
     utils.h
+    demodulator.h
 )
 
 set(SOURCES

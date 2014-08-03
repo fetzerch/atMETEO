@@ -34,3 +34,4 @@ function(add_test_gmock _NAME)
 endfunction()
 
 add_test_gmock(test_utils test_utils.cpp)
+add_test_gmock(test_demodulator test_demodulator.cpp)
