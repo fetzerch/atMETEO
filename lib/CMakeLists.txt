@@ -1,0 +1,26 @@
+# Generate dummy.cpp so that it's possible to build the library
+file(WRITE ${CMAKE_BINARY_DIR}/dummy.cpp
+    "const int dummy = 0;")
+
+# Listed headers for IDEs even though no code is generated for the static lib
+set(HEADERS
+)
+
+set(SOURCES
+    ${CMAKE_BINARY_DIR}/dummy.cpp
+)
+
+set(OTHERS
+    libsensors.dox
+)
+
+set(LIBSENSORS_LIBRARY libsensors)
+if(CMAKE_CROSSCOMPILING AND CMAKE_SYSTEM_PROCESSOR STREQUAL "avr")
+    add_avr_library(libsensors ${HEADERS} ${SOURCES} ${OTHERS})
+    set(LIBSENSORS_LIBRARY libsensors-${AVR_MCU})
+else()
+    add_library(libsensors STATIC ${HEADERS} ${SOURCES} ${OTHERS})
+endif()
+
+set_target_properties(${LIBSENSORS_LIBRARY} PROPERTIES PREFIX "")
+set_target_properties(${LIBSENSORS_LIBRARY} PROPERTIES LINKER_LANGUAGE CXX)

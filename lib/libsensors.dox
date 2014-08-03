@@ -1,0 +1,16 @@
+/*!
+ * \defgroup libsensors Sensors library
+ *
+ * \brief Target / platform independent functionalityand algorithms such as
+ *        demodulator, decoder and utilities for usage with C++.
+ *
+ * The library is being used in the hardware dependent applications
+ * targeting micro controllers. This imposes some conditions on the code
+ * like STL or memory management not being available.
+ */
+
+/*!
+ * \namespace Sensors
+ * \ingroup libsensors
+ * \brief Namespace containing all symbols of the \ref libsensors.
+ */

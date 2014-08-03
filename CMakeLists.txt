@@ -33,6 +33,9 @@ option(BUILD_DOCUMENTATION "Build documentation" ON)
 # Default compiler options
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -Wextra")
 
+# libsensors: Hardware independent utilities and algorithms
+add_subdirectory(lib)
+
 # Documentation
 if(BUILD_DOCUMENTATION)
     find_package(Doxygen REQUIRED)
