@@ -32,3 +32,5 @@ function(add_test_gmock _NAME)
         NAME ${_NAME}
         COMMAND ${_NAME} --gtest_output=xml:${_NAME}.xml)
 endfunction()
+
+add_test_gmock(test_utils test_utils.cpp)
