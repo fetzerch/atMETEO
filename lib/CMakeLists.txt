@@ -4,6 +4,7 @@ set(HEADERS
     demodulator.h
     bitdecoder.h
     sensor.h
+    rfdevice.h
 )
 
 set(SOURCES
