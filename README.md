@@ -19,6 +19,11 @@ mainly for testing purposes.
     $ cd <build dir>
     $ cmake <source dir>
 
+### API Documentation
+The Doxygen based API documentation can be build with `make dox`.
+If not needed, the documentation support can be disabled with the CMake
+option `BUILD_DOCUMENTATION`.
+
 
 Disclaimer
 ----------
