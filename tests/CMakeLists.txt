@@ -35,3 +35,4 @@ endfunction()
 
 add_test_gmock(test_utils test_utils.cpp)
 add_test_gmock(test_demodulator test_demodulator.cpp)
+add_test_gmock(test_bitdecoder test_bitdecoder.cpp)
