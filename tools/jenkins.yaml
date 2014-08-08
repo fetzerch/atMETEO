@@ -1,0 +1,203 @@
+# ----- weather-station - Defaults --------------------------------------------
+
+- defaults:
+    name: global
+    project-type: freestyle
+    concurrent: true
+    logrotate:
+        numToKeep: 10
+    triggers:
+        - pollscm:
+    wrappers:
+        - ansicolor
+        - timestamps
+
+
+# ----- SCM -------------------------------------------------------------------
+
+- scm:
+    name: scm-git
+    scm:
+        - git:
+            skip-tag: true
+            url: ssh://git@squirrel:10022/fetzerch/weather-station.git
+            basedir: sources
+            recursive-submodules: true
+            branches:
+                - origin/master
+            browser: gitlab
+            browser-version: 7.5
+            browser-url: https://squirrel:10443/fetzerch/weather-station
+
+
+# ----- Builder ---------------------------------------------------------------
+
+- builder:
+    name: build-linux-desktop
+    builders:
+        - shell: |
+            #!/bin/bash -eu
+            export TERM=xterm
+            export GTEST_COLOR=yes
+            cmake() {{ unbuffer /usr/bin/cmake "$@"; }}
+            make() {{ /usr/bin/make -j$(nproc) VERBOSE=1 "$@"; }}
+
+            echo -e "\n----- CMake -----\n"
+            rm -r $WORKSPACE/build || true
+            mkdir $WORKSPACE/build ; cd $WORKSPACE/build
+            cmake -DCMAKE_BUILD_TYPE={build-type} \
+                  -DGMOCK_SOURCE_DIR=$HOME/buildsys/gmock-1.7.0 \
+                  -DGMOCK_BINARY_DIR=$WORKSPACE/gmock \
+                  $WORKSPACE/sources
+
+            echo -e "\n----- Compile -----\n"
+            make 2> >(tee gcc_stderr.log >&2)
+
+            echo -e "\n----- Execute unit tests with valgrind -----\n"
+            ctest -j$(nproc) -D ExperimentalMemCheck -VV || true
+
+            echo -e "\n----- Build code coverage information -----\n"
+            make gcovr_to_cobertura
+
+            echo -e "\n----- Build documentation -----\n"
+            make dox 2> >(tee doxygen_stderr.log >&2)
+
+- builder:
+    name: build-linux-desktop-scanbuild
+    builders:
+        - shell: |
+            #!/bin/bash -eu
+            export TERM=xterm
+            cmake() {{ unbuffer /usr/bin/cmake "$@"; }}
+            make() {{ /usr/bin/make -j$(nproc) VERBOSE=1 "$@"; }}
+
+            echo -e "\n----- CMake -----\n"
+            rm -rf $WORKSPACE/build
+            mkdir $WORKSPACE/build ; cd $WORKSPACE/build
+            scan-build cmake -DCMAKE_BUILD_TYPE={build-type} \
+                             -DGMOCK_SOURCE_DIR=$HOME/buildsys/gmock-1.7.0 \
+                             -DGMOCK_BINARY_DIR=$WORKSPACE/gmock \
+                             $WORKSPACE/sources
+
+            echo "\n----- Analyze -----\n"
+            rm -rf $WORKSPACE/clangScanBuildReports
+            scan-build -v -v \
+                       -o $WORKSPACE/clangScanBuildReports \
+                       make 2> >(tee scan-build_stderr.log >&2)
+
+- builder:
+    name: build-python-check
+    builders:
+        - shell: |
+            #!/bin/bash -eu
+
+            echo -e "\n----- Preparing Python virtualenv -----\n"
+            if [ ! -d venv ] ; then
+                virtualenv --python=python{python} virtualenv-{python}
+            fi
+            set +o nounset  # Bug in virtualenv 1.11.4
+            source virtualenv-{python}/bin/activate
+            set -o nounset
+            pip install pylint {dependencies}
+
+            echo -e "\n----- Preparing build directory -----\n"
+            rm -r $WORKSPACE/build-{python} || true
+            mkdir $WORKSPACE/build-{python} && cd $WORKSPACE/build-{python}
+
+            echo -e "\n----- Running Python checkers -----"
+            FILES=$(find $WORKSPACE/sources/tools -name "*.py" -print)
+            pep8 $FILES | tee pep8.log
+            pylint -f parseable $FILES | tee pylint.log
+
+
+# ----- Jobs ------------------------------------------------------------------
+
+- job:
+    name: weather-station-linux64
+    scm:
+        - scm-git
+    builders:
+        - build-linux-desktop:
+            build-type: Coverage
+    publishers:
+        - archive:
+            artifacts: build/tests/*.xml
+            fingerprint: true
+        - doxygen:
+            doxyfile: build/Doxyfile
+            folder: build
+        - junit:
+            results: build/tests/test_*.xml
+            test-stability: true
+        - cobertura:
+            report-file: build/tests/coverage.xml
+            fail-no-reports: true
+            targets:
+                - files:
+                    failing: 100
+                - line:
+                    failing: 100
+                - conditional:
+                    failing: 100
+        - valgrind:
+            pattern: build/tests/valgrind_*.xml
+            thresholds:
+                unstable:
+                    total: 0
+            fail-no-reports: true
+            fail-invalid-reports: true
+        - warnings:
+            run-always: true
+            workspace-file-scanners:
+                - file-pattern: build/gcc_stderr.log
+                  scanner: GNU C Compiler 4 (gcc)
+                - file-pattern: build/doxygen_stderr.log
+                  scanner: Doxygen
+            total-thresholds:
+                unstable:
+                    total-all: 0
+
+- job:
+    name: weather-station-scanbuild
+    scm:
+        - scm-git
+    builders:
+        - build-linux-desktop-scanbuild:
+            build-type: Debug
+    publishers:
+        - warnings:
+            run-always: true
+            workspace-file-scanners:
+                - file-pattern: build/scan-build_stderr.log
+                  scanner: Clang (LLVM based)
+            total-thresholds:
+                unstable:
+                    total-all: 0
+        - scan-build:
+            threshold: 0
+
+- job:
+    name: weather-station-tools
+    scm:
+        - scm-git
+    builders:
+        - build-python-check:
+            python: 2.7
+            dependencies: pyserial graphitesend
+        - build-python-check:
+            python: 3.4
+            dependencies: pyserial graphitesend
+    publishers:
+        - archive:
+            artifacts: build-*/*.log
+            fingerprint: true
+        - warnings:
+            run-always: true
+            workspace-file-scanners:
+                - file-pattern: build-*/pep8.log
+                  scanner: Pep8
+                - file-pattern: build-*/pylint.log
+                  scanner: PyLint
+            total-thresholds:
+                unstable:
+                    total-all: 0
