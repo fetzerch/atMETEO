@@ -40,6 +40,10 @@ Testing is enabled by default and can be disabled with the CMake option
 `BUILD_TESTING`. The tests log to standard out and generate JUnit XML output
 for further processing.
 
+Code coverage information generation can be configured with the CMake
+option `BUILD_CODECOVERAGE`. After the compilation with `make`, the generated
+code coverage data can be converted into XML using `make gcovr_to_cobertura`.
+
 ### API Documentation
 The Doxygen based API documentation can be build with `make dox`.
 If not needed, the documentation support can be disabled with the CMake

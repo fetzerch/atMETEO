@@ -36,6 +36,14 @@ option(BUILD_DOCUMENTATION "Build documentation" ON)
 # Default compiler options
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -Wextra")
 
+# Code coverage build type
+set(CMAKE_CONFIGURATION_TYPES ${CMAKE_CONFIGURATION_TYPES} Coverage)
+set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS
+    "Debug" "Release" "MinSizeRel" "RelWithDebInfo" "Coverage")
+set(_COVERAGE_FLAGS "-g -O0 --coverage")
+set(CMAKE_CXX_FLAGS_COVERAGE "${CMAKE_CXX_FLAGS_DEBUG} ${_COVERAGE_FLAGS}")
+set(CMAKE_EXE_LINKER_FLAGS_COVERAGE "${CMAKE_EXE_LINKER_FLAGS} --coverage")
+
 # libsensors: Hardware independent utilities and algorithms
 add_subdirectory(lib)
 
