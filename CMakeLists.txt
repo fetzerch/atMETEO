@@ -49,6 +49,13 @@ add_subdirectory(lib)
 
 # libsensors: Host based unit tests
 if(BUILD_TESTING)
+
+    # Configure valgrind
+    find_program(MEMORYCHECK_COMMAND NAMES valgrind)
+    set(_ARGS "--leak-check=full --track-origins=yes")
+    set(_ARGS "${_ARGS} --xml=yes --xml-file=valgrind_%p.xml")
+    set(MEMORYCHECK_COMMAND_OPTIONS ${_ARGS})
+
     include(CTest)
     add_subdirectory(tests)
 endif()
