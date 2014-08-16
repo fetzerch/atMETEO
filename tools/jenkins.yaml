@@ -115,6 +115,81 @@
             make 2> >(tee gcc_stderr.log >&2)
 
 - builder:
+    name: build-linux-arduino-flash
+    builders:
+        - shell: |
+            #!/bin/bash -eu
+            DEVICE={device}
+            IMAGE="$WORKSPACE/sensors-atmega328p.hex"
+
+            echo -e "\n----- Resetting USB port -----\n"
+            sudo /usr/local/bin/usbreset.sh "$DEVICE"
+
+            if md5sum -c "$IMAGE.md5"; then
+                echo -e "\n----- Skipping Flashing -----\n"
+            else
+                echo -e "\n----- Flashing -----\n"
+                avrdude -v -c arduino -P "$DEVICE" -p atmega328p \
+                        -U "flash:w:$IMAGE:i"
+                md5sum "$IMAGE" > "$IMAGE.md5"
+            fi
+
+- builder:
+    name: build-linux-arduino-test
+    builders:
+        - shell: |
+            #!/bin/bash -eu
+            DEVICE={device}
+
+            echo -e "\n----- Testing build -----\n"
+            rm -f "$WORKSPACE/testresults.log"
+            export PYTHONUNBUFFERED=1
+            /home/pi/weather_station.py --serial-port="$DEVICE" \
+                                        --num-read=2 --error-timeout=45 | \
+                                        tee "$WORKSPACE/testresults.log"
+
+            echo -e "\n----- Verifying test results -----\n"
+            RESULT=0
+            grep temperature "$WORKSPACE/testresults.log" || RESULT=$?
+            if [ $RESULT -ne 0 ]; then
+                echo "Test failed (temperature not found in testresults)"
+                wget -nc "${{JENKINS_URL}}jnlpJars/jenkins-cli.jar"
+                java -jar jenkins-cli.jar set-build-result unstable && exit 0
+            fi
+
+- builder:
+    name: build-linux-arduino-longtest
+    builders:
+        - shell: |
+            #!/bin/bash -eu
+            DEVICE="{device}"
+            TIMEOUT="{timeout}"
+
+            LOG="$WORKSPACE/testresults.log"
+
+            echo -e "\n----- Testing build -----\n"
+            rm -f "$LOG"
+            export PYTHONUNBUFFERED=1
+            /home/pi/weather_station.py --serial-port="$DEVICE" \
+                                        --timeout="$TIMEOUT" \
+                                        --error-timeout=45 \
+                                        | tee "$LOG"
+
+            echo -e "\n----- Verifying test results -----\n"
+            RECEIVED_MESSAGES=$(grep temperature "$LOG" | wc -l)
+            MISSED_MESSAGES=$(grep "Failed to receive" "$LOG" | wc -l)
+            echo "Received messages,Missed messages" \
+                > "$WORKSPACE/testresults.csv"
+            echo "$RECEIVED_MESSAGES,$MISSED_MESSAGES" \
+                >> "$WORKSPACE/testresults.csv"
+
+            if [ $RECEIVED_MESSAGES -eq 0 ]; then
+                echo "Test failed (temperature not found in testresults)"
+                wget -nc "${{JENKINS_URL}}jnlpJars/jenkins-cli.jar"
+                java -jar jenkins-cli.jar set-build-result unstable && exit 0
+            fi
+
+- builder:
     name: build-python-check
     builders:
         - shell: |
@@ -249,6 +324,59 @@
     publishers:
         - publish-archive-avr
         - publish-warnings-gcc
+
+- job:
+    name: weather-station-arduino-flash
+    node: arduino
+    concurrent: false
+    triggers:
+        - reverse:
+            jobs: weather-station-arduino
+            result: UNSTABLE
+    builders:
+        - copyartifact:
+            project: weather-station-arduino
+            filter: '**/*.hex'
+            flatten: true
+        - build-linux-arduino-flash:
+            device: /dev/arduino_uno_5543131303835151E052
+        - build-linux-arduino-test:
+            device: /dev/arduino_uno_5543131303835151E052
+    publishers:
+        - archive:
+            artifacts: '*.log'
+            fingerprint: true
+
+- job:
+    name: weather-station-arduino-flash-hourly
+    node: arduino
+    concurrent: false
+    logrotate:
+        numToKeep: 100
+    triggers:
+        - timed: '@hourly'
+    builders:
+        - copyartifact:
+            project: weather-station-arduino
+            filter: '**/*.hex'
+            flatten: true
+        - build-linux-arduino-flash:
+            device: /dev/arduino_uno_5543131303835151E052
+        - build-linux-arduino-longtest:
+            device: /dev/arduino_uno_5543131303835151E052
+            timeout: 600
+    publishers:
+        - archive:
+            artifacts: '*.log,*.csv'
+            fingerprint: true
+        - plot:
+            - title: weather-station
+              yaxis: Number of measured values
+              group: weather-station
+              series:
+                  - file: testresults.csv
+                    format: csv
+                    display-table: true
 
 - job:
     name: weather-station-tools
