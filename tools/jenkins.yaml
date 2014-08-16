@@ -86,6 +86,35 @@
                        make 2> >(tee scan-build_stderr.log >&2)
 
 - builder:
+    name: build-linux-target
+    builders:
+        - shell: |
+            #!/bin/bash -eu
+            export TERM=xterm
+            export GTEST_COLOR=yes
+            cmake() {{ unbuffer /usr/bin/cmake "$@"; }}
+            make() {{ /usr/bin/make -j$(nproc) VERBOSE=1 "$@"; }}
+
+            echo -e "\n----- cmake-avr -----\n"
+            CMAKE_AVR_URL=https://github.com/mkleemann/cmake-avr.git
+            if [ ! -e cmake-avr ]; then
+                git clone $CMAKE_AVR_URL $WORKSPACE/cmake-avr
+            fi
+            TOOLCHAIN_FILE=$WORKSPACE/cmake-avr/generic-gcc-avr.cmake
+
+            echo -e "\n----- CMake -----\n"
+            rm -r $WORKSPACE/build || true
+            mkdir $WORKSPACE/build ; cd $WORKSPACE/build
+            cmake -DCMAKE_TOOLCHAIN_FILE=$TOOLCHAIN_FILE \
+                  -DBUILD_DOCUMENTATION=OFF \
+                  -DTARGET_CONFIGURATION={configuration} \
+                  -DAVR_MCU={avr-mcu} \
+                  $WORKSPACE/sources
+
+            echo -e "\n----- Compile -----\n"
+            make 2> >(tee gcc_stderr.log >&2)
+
+- builder:
     name: build-python-check
     builders:
         - shell: |
@@ -108,6 +137,28 @@
             FILES=$(find $WORKSPACE/sources/tools -name "*.py" -print)
             pep8 $FILES | tee pep8.log
             pylint -f parseable $FILES | tee pylint.log
+
+
+# ----- Publisher -------------------------------------------------------------
+
+- publisher:
+    name: publish-archive-avr
+    publishers:
+        - archive:
+            artifacts: '**/*.map,**/*.hex*,**/*.elf'
+            fingerprint: true
+
+- publisher:
+    name: publish-warnings-gcc
+    publishers:
+        - warnings:
+            run-always: true
+            workspace-file-scanners:
+                - file-pattern: build/gcc_stderr.log
+                  scanner: GNU C Compiler 4 (gcc)
+            total-thresholds:
+                unstable:
+                    total-all: 0
 
 
 # ----- Jobs ------------------------------------------------------------------
@@ -146,11 +197,10 @@
                     total: 0
             fail-no-reports: true
             fail-invalid-reports: true
+        - publish-warnings-gcc
         - warnings:
             run-always: true
             workspace-file-scanners:
-                - file-pattern: build/gcc_stderr.log
-                  scanner: GNU C Compiler 4 (gcc)
                 - file-pattern: build/doxygen_stderr.log
                   scanner: Doxygen
             total-thresholds:
@@ -175,6 +225,30 @@
                     total-all: 0
         - scan-build:
             threshold: 0
+
+- job:
+    name: weather-station-arduino
+    scm:
+        - scm-git
+    builders:
+        - build-linux-target:
+            configuration: arduino
+            avr-mcu: atmega328p
+    publishers:
+        - publish-archive-avr
+        - publish-warnings-gcc
+
+- job:
+    name: weather-station-atdemo
+    scm:
+        - scm-git
+    builders:
+        - build-linux-target:
+            configuration: atdemo
+            avr-mcu: atmega32
+    publishers:
+        - publish-archive-avr
+        - publish-warnings-gcc
 
 - job:
     name: weather-station-tools
