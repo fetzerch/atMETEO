@@ -1,0 +1,14 @@
+/*!
+ * \defgroup arduino Arduino
+ * \ingroup targets
+ *
+ * \brief Arduino (and compatible) boards.
+ *
+ * Build configuration (for an Arduino Uno):
+ * \code
+ * $ cmake [options] -DTARGET_CONFIGURATION=arduino \
+ *                   -DAVR_MCU=atmega328p
+ * \endcode
+ *
+ * \sa http://www.arduino.cc
+ */

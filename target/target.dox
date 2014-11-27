@@ -19,4 +19,5 @@
  * \brief Supported targets.
  *
  * The build system is configured to support the following targets:
+ * - \ref arduino
  */

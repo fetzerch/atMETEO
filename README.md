@@ -27,6 +27,15 @@ the build machine.
 In order to use [cmake-avr] the `CMAKE_TOOLCHAIN_FILE` variable has to be set
 as well as a few other configuration variables.
 
+Exemplary usage for an Arduino Uno:
+
+    $ cd <build dir>
+    $ cmake -DCMAKE_TOOLCHAIN_FILE=<cmake-avr dir>/generic-gcc-avr.cmake \
+            -DTARGET_CONFIGURATION=arduino -DAVR_MCU=atmega328p \
+            -DAVR_PROGRAMMER=arduino -DAVR_UPLOADTOOL_PORT=/dev/ttyACM0 \
+            <source dir>
+    $ make && make upload_sensors
+
 Please see the cmake-avr documentation for more configuration options.
 
 [cmake-avr]: https://github.com/mkleemann/cmake-avr
