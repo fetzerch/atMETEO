@@ -1,0 +1,14 @@
+/*!
+ * \defgroup atdemo Atmel ATmega Demonstrator
+ * \ingroup targets
+ *
+ * \brief Atmel ATmega Demonstrator by Stefan Frenz (University of Ulm).
+ *
+ * Build configuration:
+ * \code
+ * $ cmake [options] -DTARGET_CONFIGURATION=atdemo \
+ *                   -DAVR_MCU=atmega32
+ * \endcode
+ *
+ * \sa http://www.fam-frenz.de/stefan/atdemo.html
+ */

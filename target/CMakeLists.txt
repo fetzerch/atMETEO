@@ -12,10 +12,13 @@ set(SOURCES
 set(OTHERS
     target.dox
     arduino/arduino.dox
+    atdemo/atdemo.dox
 )
 
 if(TARGET_CONFIGURATION STREQUAL "arduino")
     add_definitions(-DF_CPU=16000000UL)
+elseif(TARGET_CONFIGURATION STREQUAL "atdemo")
+    add_definitions(-DF_CPU=7372800UL)
 endif()
 
 add_subdirectory(lib)

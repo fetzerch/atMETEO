@@ -16,7 +16,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH}
 # (cmake-avr https://github.com/mkleemann/cmake-avr)
 if(CMAKE_CROSSCOMPILING AND CMAKE_SYSTEM_PROCESSOR STREQUAL "avr")
     set(TARGET_CONFIGURATION arduino CACHE STRING "Target configuration")
-    set(TARGET_CONFIGURATIONS arduino)
+    set(TARGET_CONFIGURATIONS arduino atdemo)
     list(FIND TARGET_CONFIGURATIONS ${TARGET_CONFIGURATION} _INDEX)
     if(_INDEX LESS 0)
         message(FATAL_ERROR "Target configuration '${TARGET_CONFIGURATION}'"
