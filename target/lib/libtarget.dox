@@ -1,0 +1,21 @@
+/*!
+ * \defgroup libtarget AVR C++ utilities library
+ * \ingroup target
+ *
+ * \brief AVR dependent utilities for usage with C++.
+ *
+ * The AVR utilities library (libtarget) contains some helpful tools to easily
+ * access hardware features on the micro controller, such as input and output
+ * pins, LEDs, UARTS, Timers.
+ *
+ * The code targets AVR hardware, but not a specific chip.
+ *
+ * This library uses AVR libc
+ * (http://www.nongnu.org/avr-libc/user-manual/index.html).
+ */
+
+/*!
+ * \namespace Avr
+ * \ingroup libtarget
+ * \brief Namespace containing all symbols of the \ref libtarget.
+ */

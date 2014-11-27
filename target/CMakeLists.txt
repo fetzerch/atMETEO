@@ -13,4 +13,6 @@ set(OTHERS
     target.dox
 )
 
+add_subdirectory(lib)
+
 add_avr_executable(sensors ${HEADERS} ${SOURCES} ${OTHERS})

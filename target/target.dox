@@ -3,7 +3,8 @@
  *
  * \brief AVR dependent code.
  *
- * This module contains the AVR dependent code parts.
+ * This module contains the AVR dependent code parts:
+ * - \ref libsensors
  *
  * \copydoc targets
  *
