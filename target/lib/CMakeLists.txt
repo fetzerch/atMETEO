@@ -5,6 +5,7 @@ file(WRITE ${CMAKE_BINARY_DIR}/dummy.cpp
 # Listed headers for IDEs even though no code is generated for the static lib
 set(HEADERS
     interrupt.h
+    timer.h
 )
 
 set(SOURCES
