@@ -8,6 +8,38 @@ the data can for example be feed into [graphite](http://graphite.wikidot.com)
 in order to create graphs or passed on to a home automation server.
 
 
+Hardware
+--------
+The software can be built for different ATmega based target boards,
+such as the [Arduino Uno]. The sensor access algorithms are implemented
+hardware independently (as libsensors). This leads to a small hardware
+dependent part, mainly for the pin connections, that can be
+easily ported to different targets.
+
+[Arduino Uno]: http://arduino.cc/en/pmwiki.php?n=Main/arduinoBoardUno
+
+
+Compatible sensors
+------------------
+For the beginning, the project focuses on reading temperature and humidity
+from a proprietary wireless thermo/hygrometer.
+
+### Hideki Thermo/Hygrometer
+The Hideki Thermo/Hygrometer (TS53) provides temperature and humidity over an
+wireless RF 433 MHz interface. In order to collect this sensor data, an
+RF 433 MHz receiver has to be connected to the targets Input Capture Pin (ICP).
+
+
+Output format
+-------------
+The received sensor values are transmitted over the UART interface as JSON
+object.
+
+Exemplary data:
+
+    {"temperature":-5.0,"humidity":48}
+
+
 Building
 --------
 The project uses CMake as configuration tool. Hence the very first in the build

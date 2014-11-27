@@ -1,12 +1,13 @@
-# Generate dummy.cpp so that it's possible to build the library
-file(WRITE ${CMAKE_BINARY_DIR}/dummy.cpp
-    "int main() {}")
+# Disable language features that cannot be easily fulfilled on AVR
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-threadsafe-statics")
+
+include_directories(${CMAKE_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR})
 
 set(HEADERS
 )
 
 set(SOURCES
-    ${CMAKE_BINARY_DIR}/dummy.cpp
+    main.cpp
 )
 
 set(OTHERS
@@ -24,3 +25,5 @@ endif()
 add_subdirectory(lib)
 
 add_avr_executable(sensors ${HEADERS} ${SOURCES} ${OTHERS})
+target_link_libraries(sensors-${AVR_MCU}.elf libsensors-${AVR_MCU}
+    libtarget-${AVR_MCU})
