@@ -1,15 +1,12 @@
-# Generate dummy.cpp so that it's possible to build the library
-file(WRITE ${CMAKE_BINARY_DIR}/dummy.cpp
-    "const int dummy = 0;")
-
 # Listed headers for IDEs even though no code is generated for the static lib
 set(HEADERS
     interrupt.h
     timer.h
+    uart.h
 )
 
 set(SOURCES
-    ${CMAKE_BINARY_DIR}/dummy.cpp
+    ${CMAKE_SOURCE_DIR}/target/external/uart/uart.c
 )
 
 set(OTHERS
