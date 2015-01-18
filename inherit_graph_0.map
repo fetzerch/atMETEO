@@ -1,0 +1,4 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$group__libtarget__timer.html#classAvr_1_1internal_1_1TimerInputCaptureBase" title="Internal base class for Avr::TimerInputCapture. " alt="" coords="5,5,168,47"/>
+<area shape="rect" id="node2" href="$group__libtarget__timer.html#classAvr_1_1TimerInputCapture" title="C++ wrapper for accessing the built&#45;in input capture facility for measuring the width of external pul..." alt="" coords="216,5,384,47"/>
+</map>

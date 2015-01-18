@@ -1,0 +1,5 @@
+<map id="Supported targets" name="Supported targets">
+<area shape="rect" id="node2" href="$group__atdemo.html" title="Atmel ATmega Demonstrator by Stefan Frenz (University of Ulm). " alt="" coords="391,5,583,32"/>
+<area shape="rect" id="node3" href="$group__arduino.html" title="Arduino (and compatible) boards. " alt="" coords="453,56,520,83"/>
+<area shape="rect" id="node4" href="$group__target.html" title="AVR dependent code. " alt="" coords="5,31,169,57"/>
+</map>

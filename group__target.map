@@ -1,0 +1,5 @@
+<map id="Hardware/target specific" name="Hardware/target specific">
+<area shape="rect" id="node1" href="$group__application.html" title="The main weather station application utilizing Sensors library and AVR C++ utilities library..." alt="" coords="241,5,357,32"/>
+<area shape="rect" id="node2" href="$group__targets.html" title="Supported targets. " alt="" coords="237,56,362,83"/>
+<area shape="rect" id="node3" href="$group__libtarget.html" title="AVR dependent utilities for usage with C++. " alt="" coords="217,107,381,133"/>
+</map>
