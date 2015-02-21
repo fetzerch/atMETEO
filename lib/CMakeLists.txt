@@ -6,6 +6,7 @@ set(HEADERS
     sensor.h
     rfdevice.h
     hidekisensor.h
+    tgs2600.h
 )
 
 set(SOURCES
