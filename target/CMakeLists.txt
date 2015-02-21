@@ -18,8 +18,10 @@ set(OTHERS
 
 if(TARGET_CONFIGURATION STREQUAL "arduino")
     add_definitions(-DF_CPU=16000000UL)
+    add_definitions(-DVCC=5000U)
 elseif(TARGET_CONFIGURATION STREQUAL "atdemo")
     add_definitions(-DF_CPU=7372800UL)
+    add_definitions(-DVCC=5000U)
 endif()
 
 add_subdirectory(lib)
