@@ -1,5 +1,6 @@
 # Listed headers for IDEs even though no code is generated for the static lib
 set(HEADERS
+    adc.h
     interrupt.h
     timer.h
     uart.h
