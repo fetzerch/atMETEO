@@ -39,7 +39,6 @@ class SerialReceiverThread(threading.Thread):
         self._num_read = num_read
         self._handler = []
         self._stop = threading.Event()
-        self._last_received_time = time.time()
 
     def run(self):
         """ Execute thread """
@@ -48,8 +47,8 @@ class SerialReceiverThread(threading.Thread):
                 line = self._serial.readline().rstrip('\n')
 
                 if len(line) > 0:
-                    self._call_handler(line)
-                    self._last_received_time = time.time()
+                    for handler in self._handler:
+                        handler(line)
                     if self._num_read > 0:
                         self._num_read -= 1
 
@@ -61,15 +60,6 @@ class SerialReceiverThread(threading.Thread):
     def add_handler(self, handler):
         """ Add handler that is called whenever data has been read """
         self._handler.append(handler)
-
-    def _call_handler(self, line):
-        """ Call all registered handlers """
-        for handler in self._handler:
-            handler(self._elapsed_time(), line)
-
-    def _elapsed_time(self):
-        """ Elapsed time since data has been received """
-        return time.time() - self._last_received_time
 
     def stop(self):
         """ Stop thread """
@@ -116,11 +106,11 @@ class CommandLineClient(object):
         self._serial_thread = None
 
     @classmethod
-    def _console_serial_handler(cls, elapsed_time, line):
+    def _console_serial_handler(cls, line):
         """ Console output """
-        print("%s: %3d: %s" % (datetime.datetime.now(), elapsed_time, line))
+        print("%s: %s" % (datetime.datetime.now(), line))
 
-    def _graphite_serial_handler(self, _, line):
+    def _graphite_serial_handler(self, line):
         """ Send metrics to graphite server """
         try:
             metrics = json.loads(line)
