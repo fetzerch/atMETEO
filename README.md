@@ -21,13 +21,20 @@ easily ported to different targets.
 
 Compatible sensors
 ------------------
-For the beginning, the project focuses on reading temperature and humidity
-from a proprietary wireless thermo/hygrometer.
 
 ### Hideki Thermo/Hygrometer
 The Hideki Thermo/Hygrometer (TS53) provides temperature and humidity over an
 wireless RF 433 MHz interface. In order to collect this sensor data, an
 RF 433 MHz receiver has to be connected to the targets Input Capture Pin (ICP).
+
+### Figaro TGS 2600
+The [Figaro TGS 2600] is a high sensitive high sensitivity air contaminant
+sensor. Due to its analog nature, the detected uncalibrated sensor resistance
+has to be processed according to the datasheet. For collecting data from
+this sensor, it has to be connected to the Analog to Digital Conversion Pin 0
+(ADC0) using a load resistance of 10k Ohm.
+
+[Figaro TGS 2600]: http://www.figarosensor.com/products/2600pdf.pdf
 
 
 Output format
@@ -38,6 +45,7 @@ object.
 Exemplary data:
 
     {"rf433": {"temperature":-5.0,"humidity":48}}
+    {"tgs2600": {"sensor_resistance":14000}}
 
 
 Building

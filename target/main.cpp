@@ -27,6 +27,8 @@
  * Setup:
  * - Receives \a temperature and \a humidity from a Hideki Thermo/Hygro sensor
  *   connected to the AVR's input capture pin (ICP).
+ * - Receives \a sensor_resistance from a Figaro TGS 2600 sensor connected
+ *   to the AVR's Analog to Digital Conversion pin 0 (ADC0).
  *
  * The received sensor values are transmitted over the UART interface as
  * JSON object.
@@ -51,12 +53,24 @@
  *                     "maximum": 100
  *                 }
  *             }
+ *         },
+ *         "tgs2600": {
+ *             "type": "object",
+ *             "properties": {
+ *                 "sensor_resistance": {
+ *                     "description":
+ *                         "Sensor resistance in Ohm from TGS 2600 sensor.",
+ *                     "type": "integer",
+ *                     "minimum": 0
+ *                 }
+ *             }
  *         }
  *     }
  * }
  * \endcode
  *
  * \sa Sensors::HidekiSensor
+ * \sa Sensors::Tgs2600
  */
 
 /*!
@@ -72,12 +86,16 @@
 #include <util/delay.h>
 
 #include "lib/hidekisensor.h"
+#include "lib/tgs2600.h"
 
+#include "lib/adc.h"
 #include "lib/uart.h"
 #include "lib/timer.h"
 
 static const uint16_t BAUD = 9600;
 static const uint16_t PRESCALER = 8;
+static const uint32_t TGS2600_LOADRESISTOR = 10000;
+static const uint32_t DELAY = 30000;
 
 static Sensors::HidekiDevice<
     Avr::TimerUtils<PRESCALER>::usToTicks<183>(),  // Short min
@@ -115,12 +133,23 @@ int main()
 
     sei();  // Enable interrupts
 
+    Sensors::Tgs2600<TGS2600_LOADRESISTOR> tgs2600;
+
     // Arduino boards restart when a serial connection is established (DTR).
     // Transmitting an initial string allows the client to know that the
     // microcontroller is ready.
     Avr::Uart<BAUD>::instance().sendLine("READY");
 
-    while (true);
+    while (true) {
+        auto uart = Avr::Uart<BAUD>::instance();
+        uart.sendString("{\"tgs2600\":");
+        uart.sendString("{\"sensor_resistance\":");
+        auto adc = Avr::Adc::instance().readMilliVolts(0, 5);
+        uart.sendUInt(tgs2600.sensorResistance(adc));
+        uart.sendString("}}\n");
+
+        _delay_ms(DELAY);
+    }
 
     return 0;
 }
