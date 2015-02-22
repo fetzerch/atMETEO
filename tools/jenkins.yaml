@@ -145,7 +145,7 @@
             rm -f "$WORKSPACE/testresults.log"
             export PYTHONUNBUFFERED=1
             /home/pi/weather_station.py --serial-port="$DEVICE" \
-                                        --num-read=2 --error-timeout=45 | \
+                                        --num-read=2 | \
                                         tee "$WORKSPACE/testresults.log"
 
             echo -e "\n----- Verifying test results -----\n"
@@ -172,15 +172,13 @@
             export PYTHONUNBUFFERED=1
             /home/pi/weather_station.py --serial-port="$DEVICE" \
                                         --timeout="$TIMEOUT" \
-                                        --error-timeout=45 \
                                         | tee "$LOG"
 
             echo -e "\n----- Verifying test results -----\n"
             RECEIVED_MESSAGES=$(grep temperature "$LOG" | wc -l)
-            MISSED_MESSAGES=$(grep "Failed to receive" "$LOG" | wc -l)
-            echo "Received messages,Missed messages" \
+            echo "Received messages" \
                 > "$WORKSPACE/testresults.csv"
-            echo "$RECEIVED_MESSAGES,$MISSED_MESSAGES" \
+            echo "$RECEIVED_MESSAGES" \
                 >> "$WORKSPACE/testresults.csv"
 
             if [ $RECEIVED_MESSAGES -eq 0 ]; then
