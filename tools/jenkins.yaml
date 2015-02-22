@@ -145,7 +145,7 @@
             rm -f "$WORKSPACE/testresults.log"
             export PYTHONUNBUFFERED=1
             /home/pi/weather_station.py --serial-port="$DEVICE" \
-                                        --num-read=2 | \
+                                        --num-read=3 | \
                                         tee "$WORKSPACE/testresults.log"
 
             echo -e "\n----- Verifying test results -----\n"
