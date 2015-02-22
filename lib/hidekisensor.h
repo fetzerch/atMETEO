@@ -20,11 +20,17 @@
 #pragma once
 
 /*!
- * \file
- * \ingroup libsensors_sensor
+ * \defgroup libsensors_hideki Hideki RF 433 MHz
+ * \ingroup libsensors
  *
- * \brief Sensors::HidekiSensor decodes data received from a Hideki RF 433 MHz
- *        sensor.
+ * \brief Sensors::HidekiSensor and Sensors::HidekiDevice decode data from
+ *        wireless Hideki RF 433 MHz sensors.
+ */
+
+/*!
+ * \file
+ * \ingroup libsensors_hideki
+ * \copydoc libsensors_hideki
  */
 
 #include <stdlib.h>  // AVR toolchain doesn't offer cstdlib header
@@ -40,7 +46,7 @@ namespace Sensors
 {
 
 /*!
- * \addtogroup libsensors_sensor
+ * \addtogroup libsensors_hideki
  * \{
  */
 
@@ -233,13 +239,6 @@ private:
     uint8_t m_byteIndex;
 };
 
-/*! \} */  // \addtogroup libsensors_sensor
-
-/*!
- * \addtogroup libsensors_rfdevice
- * \{
- */
-
 /*!
  * \brief Hideki sensor device implemented using a Sensors::HidekiSensor with
  *        the RF 433 MHz reception parameters.
@@ -265,6 +264,6 @@ using HidekiDevice = RfDevice<
     HidekiSensor,
     89>;
 
-/*! \} */  // \addtogroup libsensors_rfdevice
+/*! \} */  // \addtogroup libsensors_hideki
 
 }  // namespace Sensors
