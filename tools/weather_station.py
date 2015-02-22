@@ -25,7 +25,6 @@ import argparse
 import datetime
 import json
 import serial
-import sys
 import time
 import threading
 
@@ -33,14 +32,13 @@ import threading
 class SerialReceiverThread(threading.Thread):
     """ Thread that reads from serial port """
 
-    def __init__(self, port, num_read=-1, error_timeout=0):
+    def __init__(self, port, num_read=-1):
         """ Initialization """
         threading.Thread.__init__(self)
         self._serial = serial.Serial(port, 9600, timeout=3)
         self._num_read = num_read
         self._handler = []
         self._stop = threading.Event()
-        self._error_timeout = error_timeout
         self._last_received_time = time.time()
 
     def run(self):
@@ -48,10 +46,6 @@ class SerialReceiverThread(threading.Thread):
         while not self.stopped():
             try:
                 line = self._serial.readline().rstrip('\n')
-
-                # Handle read timeout as if we received a line
-                if self._has_timeout_error():
-                    line = "Error: Failed to receive data"
 
                 if len(line) > 0:
                     self._call_handler(line)
@@ -72,11 +66,6 @@ class SerialReceiverThread(threading.Thread):
         """ Call all registered handlers """
         for handler in self._handler:
             handler(self._elapsed_time(), line)
-
-    def _has_timeout_error(self):
-        """ Check if timeout error occurred """
-        return (self._error_timeout > 0 and
-                self._elapsed_time() > self._error_timeout)
 
     def _elapsed_time(self):
         """ Elapsed time since data has been received """
@@ -104,8 +93,6 @@ class CommandLineClient(object):
                             help="Serial port to connect to target")
         parser.add_argument('--reconnect-timeout', type=int, default=-1,
                             help="Reconnect serial connection")
-        parser.add_argument('--error-timeout', type=int, default=0,
-                            help="Log error after specified timeout (in s)")
         parser.add_argument('--num-read', type=int, default=-1,
                             help="Stop program after specified reads")
         parser.add_argument('--timeout', type=int, default=-1,
@@ -126,17 +113,12 @@ class CommandLineClient(object):
     def __init__(self):
         """ Initialization """
         self._args = self._parse_arguments()
-        self._error_code = 0
         self._serial_thread = None
 
     @classmethod
     def _console_serial_handler(cls, elapsed_time, line):
         """ Console output """
         print("%s: %3d: %s" % (datetime.datetime.now(), elapsed_time, line))
-
-    def _error_code_serial_handler(self, _, line):
-        """ Set program error code depending on data """
-        self._error_code = 1 if line.startswith('Error') else 0
 
     def _graphite_serial_handler(self, _, line):
         """ Send metrics to graphite server """
@@ -166,14 +148,12 @@ class CommandLineClient(object):
             # Setup serial port
             try:
                 self._serial_thread = SerialReceiverThread(
-                    port=self._args.serial_port, num_read=self._args.num_read,
-                    error_timeout=self._args.error_timeout)
+                    port=self._args.serial_port, num_read=self._args.num_read)
             except serial.serialutil.SerialException as err:
                 print("Error: %s" % err)
                 return 1
 
             self._serial_thread.add_handler(self._console_serial_handler)
-            self._serial_thread.add_handler(self._error_code_serial_handler)
             if self._args.graphite:
                 self._serial_thread.add_handler(self._graphite_serial_handler)
 
@@ -195,7 +175,7 @@ class CommandLineClient(object):
                     time.sleep(self._args.reconnect_timeout)
                     continue
 
-            return self._error_code
+            return
 
     def stop(self):
         """ Stop receiver """
@@ -206,7 +186,7 @@ class CommandLineClient(object):
 if __name__ == '__main__':
     CLI = CommandLineClient()
     try:
-        sys.exit(CLI.start())
+        CLI.start()
     except KeyboardInterrupt:
         print("Stopping")
         CLI.stop()
