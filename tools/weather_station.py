@@ -96,6 +96,10 @@ class CommandLineClient(object):
                                 default='localhost', help="Graphite server")
         parser_gra.add_argument('--graphite-name', type=str, default='weather',
                                 help="Graphite prefix and system_name")
+        parser_gra.add_argument('--graphite-group', type=str, default=None,
+                                help="Graphite group")
+        parser_gra.add_argument('--graphite-group-rf', type=str, default=None,
+                                help="Graphite group for RF 433 MHz metrics")
 
         args = parser.parse_args()
         return args
@@ -110,10 +114,36 @@ class CommandLineClient(object):
         """ Console output """
         print("%s: %s" % (datetime.datetime.now(), line))
 
+    @classmethod
+    def _graphite_preprocess_metrics(cls, metrics,
+                                     prefix=None, prefix_rf=None):
+        """ Preprocess metrics for sensing it to graphite """
+        if prefix is None:
+            prefix_rf = None
+        elif prefix_rf is None:
+            prefix_rf = prefix
+
+        def index(sequence):
+            """ Join not None items in sequence with '.' separator. """
+            return '.'.join([item for item in sequence if item is not None])
+
+        result = {}
+        try:
+            for sensor, data in metrics.items():
+                sensor_prefix = prefix_rf if sensor == 'rf433' else prefix
+                for metric, value in data.items():
+                    result[index((sensor_prefix, sensor, metric))] = value
+                result[index((sensor_prefix, sensor, 'count'))] = 1
+            return result
+        except AttributeError as err:
+            print(err)
+
     def _graphite_serial_handler(self, line):
         """ Send metrics to graphite server """
         try:
-            metrics = json.loads(line)
+            metrics = self._graphite_preprocess_metrics(
+                json.loads(line), self._args.graphite_group,
+                self._args.graphite_group_rf)
             print("Sending data to graphite: %s" % metrics)
             try:
                 import graphitesend
