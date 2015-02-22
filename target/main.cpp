@@ -36,15 +36,22 @@
  * {
  *     "type": "object",
  *     "properties": {
- *         "temperature": {
- *             "description": "Temperature (in °C) from wireless sensor.",
- *             "type": "number"
- *         },
- *         "humidity": {
- *             "description": "Humindity (in %) from wireless sensor.",
- *             "type": "integer",
- *             "minimum": 0,
- *             "maximum": 100
+ *         "rf433": {
+ *             "type": "object",
+ *             "properties": {
+ *                 "temperature": {
+ *                     "description":
+ *                         "Temperature (in °C) from wireless sensor.",
+ *                     "type": "number"
+ *                 },
+ *                 "humidity": {
+ *                     "description": "Humindity (in %) from wireless sensor.",
+ *                     "type": "integer",
+ *                     "minimum": 0,
+ *                     "maximum": 100
+ *                 }
+ *             }
+ *         }
  *     }
  * }
  * \endcode
@@ -87,11 +94,12 @@ protected:
         if (s_device.addPulseWidth(pulseWidth) ==
                 Sensors::RfDeviceStatus::Complete) {
             auto uart = Avr::Uart<BAUD>::instance();
+            uart.sendString("{\"rf433\":");
             uart.sendString("{\"temperature\":");
             uart.sendDouble(s_device.temperatureF());
             uart.sendString(",\"humidity\":");
             uart.sendUInt(s_device.humidity());
-            uart.sendString("}\n");
+            uart.sendString("}}\n");
         }
     }
 };

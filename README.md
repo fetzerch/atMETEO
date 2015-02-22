@@ -37,7 +37,7 @@ object.
 
 Exemplary data:
 
-    {"temperature":-5.0,"humidity":48}
+    {"rf433": {"temperature":-5.0,"humidity":48}}
 
 
 Building
