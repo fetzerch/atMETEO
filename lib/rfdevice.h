@@ -21,7 +21,7 @@
 
 /*!
  * \defgroup libsensors_rfdevice RF Device
- * \ingroup libsensors
+ * \ingroup libsensors_rf
  *
  * \brief Sensors::RfDevice is the base template for RF receivers connecting
  *        \ref libsensors_demodulator, \ref libsensors_bitdecoder and

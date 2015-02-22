@@ -21,7 +21,7 @@
 
 /*!
  * \defgroup libsensors_sensor Sensor
- * \ingroup libsensors
+ * \ingroup libsensors_rf
  *
  * \brief Sensors::Sensor is the base class for sensor specific data decoding.
  */

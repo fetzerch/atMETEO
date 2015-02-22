@@ -21,7 +21,7 @@
 
 /*!
  * \defgroup libsensors_bitdecoder Bit Decoder
- * \ingroup libsensors
+ * \ingroup libsensors_rf
  *
  * \brief Sensors::BitDecoder transforms continuous bit streams (for example
  *        from RF demodulation) into bytes.

@@ -1,12 +1,19 @@
 /*!
  * \defgroup libsensors Sensors library
  *
- * \brief Target / platform independent functionalityand algorithms such as
- *        demodulator, decoder and utilities for usage with C++.
+ * \brief Target / platform independent functionality and algorithms such as
+ *        sensor decoders and utilities for usage with C++.
  *
  * The library is being used in the hardware dependent applications
  * targeting micro controllers. This imposes some conditions on the code
  * like STL or memory management not being available.
+ */
+
+/*!
+ * \defgroup libsensors_rf RF Sensors
+ * \ingroup libsensors
+ * \brief Utilities for decoding sensor data from RF receivers such as
+ *        demodulator and decoder.
  */
 
 /*!

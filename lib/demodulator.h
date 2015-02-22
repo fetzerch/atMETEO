@@ -21,7 +21,7 @@
 
 /*!
  * \defgroup libsensors_demodulator Demodulator
- * \ingroup libsensors
+ * \ingroup libsensors_rf
  *
  * \brief Sensors::Demodulator transforms continuous streams with pulse widths
  *        (for example from RF receivers) into bits.
