@@ -39,18 +39,18 @@
 </g>
 <!-- Node0&#45;&gt;Node2 -->
 <g id="edge2" class="edge"><title>Node0&#45;&gt;Node2</title>
-<path fill="none" stroke="midnightblue" d="M111.947,-59.968C133.948,-65.2931 159.494,-71.4762 180.167,-76.4799"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="112.66,-56.5398 102.118,-57.589 111.014,-63.3433 112.66,-56.5398"/>
+<path fill="none" stroke="black" d="M111.947,-59.968C133.948,-65.2931 159.494,-71.4762 180.167,-76.4799"/>
+<polygon fill="black" stroke="black" points="112.66,-56.5398 102.118,-57.589 111.014,-63.3433 112.66,-56.5398"/>
 </g>
 <!-- Node0&#45;&gt;Node3 -->
 <g id="edge3" class="edge"><title>Node0&#45;&gt;Node3</title>
-<path fill="none" stroke="midnightblue" d="M133.408,-48C146.867,-48 160.627,-48 173.085,-48"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="133.2,-44.5001 123.2,-48 133.2,-51.5001 133.2,-44.5001"/>
+<path fill="none" stroke="black" d="M133.408,-48C146.867,-48 160.627,-48 173.085,-48"/>
+<polygon fill="black" stroke="black" points="133.2,-44.5001 123.2,-48 133.2,-51.5001 133.2,-44.5001"/>
 </g>
 <!-- Node0&#45;&gt;Node1 -->
 <g id="edge1" class="edge"><title>Node0&#45;&gt;Node1</title>
-<path fill="none" stroke="midnightblue" d="M111.947,-36.032C133.948,-30.7069 159.494,-24.5238 180.167,-19.5201"/>
-<polygon fill="midnightblue" stroke="midnightblue" points="111.014,-32.6567 102.118,-38.411 112.66,-39.4602 111.014,-32.6567"/>
+<path fill="none" stroke="black" d="M111.947,-36.032C133.948,-30.7069 159.494,-24.5238 180.167,-19.5201"/>
+<polygon fill="black" stroke="black" points="111.014,-32.6567 102.118,-38.411 112.66,-39.4602 111.014,-32.6567"/>
 </g>
 </g>
 </svg>

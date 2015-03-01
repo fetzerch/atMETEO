@@ -19,7 +19,7 @@
 </g>
 <!-- Node2 -->
 <g id="node2" class="node"><title>Node2</title>
-<g id="a_node2"><a xlink:href="group__libsensors__demodulator.html#singletonSensors_1_1Demodulator" target="_top" xlink:title="Transforms continuous streams with pulse widths (for example from RF receivers) into bits...">
+<g id="a_node2"><a xlink:href="group__libsensors__demodulator.html#classSensors_1_1Demodulator" target="_top" xlink:title="Transforms continuous streams with pulse widths (for example from RF receivers) into bits...">
 <polygon fill="none" stroke="black" points="173,-0.5 173,-30.5 291,-30.5 291,-0.5 173,-0.5"/>
 <text text-anchor="start" x="181" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00">Sensors::Demodulator</text>
 <text text-anchor="middle" x="232" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">&lt; TDemodulatorType &gt;</text>
