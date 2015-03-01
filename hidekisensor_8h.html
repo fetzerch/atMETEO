@@ -93,11 +93,11 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a href="#namespaces">Namespaces</a> &#124;
 <a href="#typedef-members">Typedefs</a>  </div>
   <div class="headertitle">
-<div class="title">hidekisensor.h File Reference<div class="ingroups"><a class="el" href="group__libsensors.html">Sensors library</a> &raquo; <a class="el" href="group__libsensors__sensor.html">Sensor</a></div></div>  </div>
+<div class="title">hidekisensor.h File Reference<div class="ingroups"><a class="el" href="group__libsensors.html">Sensors library</a> &raquo; <a class="el" href="group__libsensors__hideki.html">Hideki RF 433 MHz</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p><a class="el" href="group__libsensors__sensor.html#classSensors_1_1HidekiSensor" title="Decodes data received from a Hideki RF 433 MHz sensor. ">Sensors::HidekiSensor</a> decodes data received from a Hideki RF 433 MHz sensor.  
+<p><a class="el" href="group__libsensors__hideki.html#classSensors_1_1HidekiSensor" title="Decodes data received from a Hideki RF 433 MHz sensor. ">Sensors::HidekiSensor</a> and <a class="el" href="group__libsensors__hideki.html#gaf0c732607e140975f348f866a0132df7" title="Hideki sensor device implemented using a Sensors::HidekiSensor with the RF 433 MHz reception paramete...">Sensors::HidekiDevice</a> decode data from wireless Hideki RF 433 MHz sensors.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;stdlib.h&gt;</code><br />
 <code>#include &lt;string.h&gt;</code><br />
@@ -111,8 +111,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:classSensors_1_1HidekiSensor"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__libsensors__sensor.html#classSensors_1_1HidekiSensor">Sensors::HidekiSensor</a></td></tr>
-<tr class="memdesc:classSensors_1_1HidekiSensor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Decodes data received from a Hideki RF 433 MHz sensor.  <a href="group__libsensors__sensor.html#classSensors_1_1HidekiSensor">More...</a><br /></td></tr>
+<tr class="memitem:classSensors_1_1HidekiSensor"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__libsensors__hideki.html#classSensors_1_1HidekiSensor">Sensors::HidekiSensor</a></td></tr>
+<tr class="memdesc:classSensors_1_1HidekiSensor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Decodes data received from a Hideki RF 433 MHz sensor.  <a href="group__libsensors__hideki.html#classSensors_1_1HidekiSensor">More...</a><br /></td></tr>
 <tr class="separator:classSensors_1_1HidekiSensor"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
@@ -124,16 +124,16 @@ Namespaces</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
 <tr class="memitem:gaf0c732607e140975f348f866a0132df7"><td class="memTemplParams" colspan="2">template&lt;uint16_t TShortMin, uint16_t TShortMax, uint16_t TLongMin, uint16_t TLongMax&gt; </td></tr>
-<tr class="memitem:gaf0c732607e140975f348f866a0132df7"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__libsensors__rfdevice.html#gaf0c732607e140975f348f866a0132df7">Sensors::HidekiDevice</a> = RfDevice&lt; Demodulator&lt; BiphaseMark&lt; TShortMin, TShortMax, TLongMin, TLongMax &gt;&gt;, ByteDecoder&lt; EvenParity, LsbBitNumbering &gt;, HidekiSensor, 89 &gt;</td></tr>
-<tr class="memdesc:gaf0c732607e140975f348f866a0132df7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hideki sensor device implemented using a <a class="el" href="group__libsensors__sensor.html#classSensors_1_1HidekiSensor" title="Decodes data received from a Hideki RF 433 MHz sensor. ">Sensors::HidekiSensor</a> with the RF 433 MHz reception parameters.  <a href="group__libsensors__rfdevice.html#gaf0c732607e140975f348f866a0132df7">More...</a><br /></td></tr>
+<tr class="memitem:gaf0c732607e140975f348f866a0132df7"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group__libsensors__hideki.html#gaf0c732607e140975f348f866a0132df7">Sensors::HidekiDevice</a> = RfDevice&lt; Demodulator&lt; BiphaseMark&lt; TShortMin, TShortMax, TLongMin, TLongMax &gt;&gt;, ByteDecoder&lt; EvenParity, LsbBitNumbering &gt;, HidekiSensor, 89 &gt;</td></tr>
+<tr class="memdesc:gaf0c732607e140975f348f866a0132df7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hideki sensor device implemented using a <a class="el" href="group__libsensors__hideki.html#classSensors_1_1HidekiSensor" title="Decodes data received from a Hideki RF 433 MHz sensor. ">Sensors::HidekiSensor</a> with the RF 433 MHz reception parameters.  <a href="group__libsensors__hideki.html#gaf0c732607e140975f348f866a0132df7">More...</a><br /></td></tr>
 <tr class="separator:gaf0c732607e140975f348f866a0132df7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p><a class="el" href="group__libsensors__sensor.html#classSensors_1_1HidekiSensor" title="Decodes data received from a Hideki RF 433 MHz sensor. ">Sensors::HidekiSensor</a> decodes data received from a Hideki RF 433 MHz sensor. </p>
+<div class="textblock"><p><a class="el" href="group__libsensors__hideki.html#classSensors_1_1HidekiSensor" title="Decodes data received from a Hideki RF 433 MHz sensor. ">Sensors::HidekiSensor</a> and <a class="el" href="group__libsensors__hideki.html#gaf0c732607e140975f348f866a0132df7" title="Hideki sensor device implemented using a Sensors::HidekiSensor with the RF 433 MHz reception paramete...">Sensors::HidekiDevice</a> decode data from wireless Hideki RF 433 MHz sensors. </p>
 </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Mar 1 2015 17:14:41 for atMETEO by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Mar 1 2015 17:27:59 for atMETEO by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.9.1
 </small></address>

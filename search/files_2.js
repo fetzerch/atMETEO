@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['hidekisensor_2eh',['hidekisensor.h',['../hidekisensor_8h.html',1,'']]]
+  ['demodulator_2eh',['demodulator.h',['../demodulator_8h.html',1,'']]]
 ];

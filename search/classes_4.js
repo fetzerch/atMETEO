@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['lsbbitnumbering',['LsbBitNumbering',['../group__libsensors__bitdecoder.html#structSensors_1_1LsbBitNumbering',1,'Sensors']]]
+  ['hidekisensor',['HidekiSensor',['../group__libsensors__hideki.html#classSensors_1_1HidekiSensor',1,'Sensors']]]
 ];

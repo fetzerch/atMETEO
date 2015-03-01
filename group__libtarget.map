@@ -1,6 +1,7 @@
 <map id="AVR C++ utilities library" name="AVR C++ utilities library">
-<area shape="rect" id="node1" href="$group__libtarget__interrupt.html" title="Utilities for interrupt service routines. " alt="" coords="429,5,552,32"/>
-<area shape="rect" id="node2" href="$group__libtarget__uart.html" title="Wrapper for accessing built&#45;in UART communication interfaces. " alt="" coords="438,56,543,83"/>
-<area shape="rect" id="node3" href="$group__libtarget__timer.html" title="Wrapper for accessing built&#45;in timers facilities. " alt="" coords="440,107,541,133"/>
-<area shape="rect" id="node5" href="$group__target.html" title="AVR dependent code. " alt="" coords="5,56,169,83"/>
+<area shape="rect" id="node1" href="$group__libtarget__interrupt.html" title="Utilities for interrupt service routines. " alt="" coords="457,5,580,32"/>
+<area shape="rect" id="node2" href="$group__libtarget__uart.html" title="Wrapper for accessing built&#45;in UART communication interfaces. " alt="" coords="466,56,571,83"/>
+<area shape="rect" id="node3" href="$group__libtarget__timer.html" title="Wrapper for accessing built&#45;in timers facilities. " alt="" coords="468,107,569,133"/>
+<area shape="rect" id="node6" href="$group__libtarget__adc.html" title="Wrapper for accessing built&#45;in analog to digital conversion facilities. " alt="" coords="429,158,608,199"/>
+<area shape="rect" id="node5" href="$group__target.html" title="AVR dependent code. " alt="" coords="5,81,169,108"/>
 </map>

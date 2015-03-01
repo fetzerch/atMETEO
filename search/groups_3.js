@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['hardware_2ftarget_20specific',['Hardware/target specific',['../group__target.html',1,'']]]
+  ['figaro_20tgs_202600',['Figaro TGS 2600',['../group__libsensors__tgs2600.html',1,'']]]
 ];

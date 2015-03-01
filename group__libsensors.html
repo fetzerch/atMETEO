@@ -86,29 +86,26 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!--header-->
 <div class="contents">
 
-<p>Target / platform independent functionalityand algorithms such as demodulator, decoder and utilities for usage with C++.  
+<p>Target / platform independent functionality and algorithms such as sensor decoders and utilities for usage with C++.  
 <a href="#details">More...</a></p>
 <div class="dynheader">
 Collaboration diagram for Sensors library:</div>
 <div class="dyncontent">
-<center><table><tr><td><div class="center"><iframe scrolling="no" frameborder="0" src="group__libsensors.svg" width="264" height="291"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<center><table><tr><td><div class="center"><iframe scrolling="no" frameborder="0" src="group__libsensors.svg" width="307" height="240"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </td></tr></table></center>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="groups"></a>
 Modules</h2></td></tr>
-<tr class="memitem:group__libsensors__bitdecoder"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__libsensors__bitdecoder.html">Bit Decoder</a></td></tr>
-<tr class="memdesc:group__libsensors__bitdecoder"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="group__libsensors__bitdecoder.html#classSensors_1_1BitDecoder" title="Applies bit numbering and a parity method to transform continuous bit streams (for example from RF de...">Sensors::BitDecoder</a> transforms continuous bit streams (for example from RF demodulation) into bytes. <br /></td></tr>
+<tr class="memitem:group__libsensors__hideki"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__libsensors__hideki.html">Hideki RF 433 MHz</a></td></tr>
+<tr class="memdesc:group__libsensors__hideki"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="group__libsensors__hideki.html#classSensors_1_1HidekiSensor" title="Decodes data received from a Hideki RF 433 MHz sensor. ">Sensors::HidekiSensor</a> and <a class="el" href="group__libsensors__hideki.html#gaf0c732607e140975f348f866a0132df7" title="Hideki sensor device implemented using a Sensors::HidekiSensor with the RF 433 MHz reception paramete...">Sensors::HidekiDevice</a> decode data from wireless Hideki RF 433 MHz sensors. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:group__libsensors__demodulator"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__libsensors__demodulator.html">Demodulator</a></td></tr>
-<tr class="memdesc:group__libsensors__demodulator"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="group__libsensors__demodulator.html#classSensors_1_1Demodulator" title="Transforms continuous streams with pulse widths (for example from RF receivers) into bits...">Sensors::Demodulator</a> transforms continuous streams with pulse widths (for example from RF receivers) into bits. <br /></td></tr>
+<tr class="memitem:group__libsensors__rf"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__libsensors__rf.html">RF Sensors</a></td></tr>
+<tr class="memdesc:group__libsensors__rf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Utilities for decoding sensor data from RF receivers such as demodulator and decoder. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:group__libsensors__rfdevice"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__libsensors__rfdevice.html">RF Device</a></td></tr>
-<tr class="memdesc:group__libsensors__rfdevice"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="group__libsensors__rfdevice.html#classSensors_1_1RfDevice" title="Connects Demodulator, Bit Decoder and Sensor for decoding sensor data from RF receivers. ">Sensors::RfDevice</a> is the base template for RF receivers connecting <a class="el" href="group__libsensors__demodulator.html">Demodulator</a>, <a class="el" href="group__libsensors__bitdecoder.html">Bit Decoder</a> and <a class="el" href="group__libsensors__sensor.html">Sensor</a>. <br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:group__libsensors__sensor"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__libsensors__sensor.html">Sensor</a></td></tr>
-<tr class="memdesc:group__libsensors__sensor"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="group__libsensors__sensor.html#classSensors_1_1Sensor" title="Base class for sensor implementations. ">Sensors::Sensor</a> is the base class for sensor specific data decoding. <br /></td></tr>
+<tr class="memitem:group__libsensors__tgs2600"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__libsensors__tgs2600.html">Figaro TGS 2600</a></td></tr>
+<tr class="memdesc:group__libsensors__tgs2600"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="group__libsensors__tgs2600.html#classSensors_1_1Tgs2600" title="Decodes data from Figaro TGS 2600 air contaminants sensors. ">Sensors::Tgs2600</a> decodes data from Figaro TGS 2600 air contaminants sensors. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:group__libsensors__utils"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__libsensors__utils.html">Utilities</a></td></tr>
 <tr class="memdesc:group__libsensors__utils"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bit manipulation utilities. <br /></td></tr>
@@ -124,12 +121,12 @@ Namespaces</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<p>Target / platform independent functionalityand algorithms such as demodulator, decoder and utilities for usage with C++. </p>
+<p>Target / platform independent functionality and algorithms such as sensor decoders and utilities for usage with C++. </p>
 <p>The library is being used in the hardware dependent applications targeting micro controllers. This imposes some conditions on the code like STL or memory management not being available. </p>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Mar 1 2015 17:14:41 for atMETEO by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Mar 1 2015 17:27:59 for atMETEO by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.9.1
 </small></address>

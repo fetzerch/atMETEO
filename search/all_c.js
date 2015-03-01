@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['parity',['parity',['../group__libsensors__utils.html#ga074d029fd43cb3c091cb9c3bc4f1a788',1,'Sensors']]],
-  ['parityerror',['ParityError',['../group__libsensors__bitdecoder.html#gga93e221a684f98d70ee61d17bfbfebd02a63440a36bf6fd0748b3c188f3e9fda78',1,'Sensors']]]
+  ['oddparity',['OddParity',['../group__libsensors__bitdecoder.html#structSensors_1_1OddParity',1,'Sensors']]],
+  ['outofrangeerror',['OutOfRangeError',['../group__libsensors__demodulator.html#gga9d34c624f644a48b51d806e3d988afd4ad580a0a3b08f07259ec2e70a94bde7e3',1,'Sensors']]]
 ];

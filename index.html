@@ -86,12 +86,14 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <h2>Hardware </h2>
 <p>The software can be built for different ATmega based target boards, such as the <a href="http://arduino.cc/en/pmwiki.php?n=Main/arduinoBoardUno">Arduino Uno</a>. The sensor access algorithms are implemented hardware independently (as libsensors). This leads to a small hardware dependent part, mainly for the pin connections, that can be easily ported to different targets.</p>
 <h2>Compatible sensors </h2>
-<p>For the beginning, the project focuses on reading temperature and humidity from a proprietary wireless thermo/hygrometer.</p>
 <h3>Hideki Thermo/Hygrometer</h3>
 <p>The Hideki Thermo/Hygrometer (TS53) provides temperature and humidity over an wireless RF 433 MHz interface. In order to collect this sensor data, an RF 433 MHz receiver has to be connected to the targets Input Capture Pin (ICP).</p>
+<h3>Figaro TGS 2600</h3>
+<p>The <a href="http://www.figarosensor.com/products/2600pdf.pdf">Figaro TGS 2600</a> is a high sensitive high sensitivity air contaminant sensor. Due to its analog nature, the detected uncalibrated sensor resistance has to be processed according to the datasheet. For collecting data from this sensor, it has to be connected to the Analog to Digital Conversion Pin 0 (ADC0) using a load resistance of 10k Ohm.</p>
 <h2>Output format </h2>
 <p>The received sensor values are transmitted over the UART interface as JSON object.</p>
-<p>Exemplary data: </p><pre class="fragment">{"temperature":-5.0,"humidity":48}
+<p>Exemplary data: </p><pre class="fragment">{"rf433": {"temperature":-5.0,"humidity":48}}
+{"tgs2600": {"sensor_resistance":14000}}
 </pre><h2>Building </h2>
 <p>The project uses CMake as configuration tool. Hence the very first in the build chain is to execute CMake as shown below. Note that the default configuration builds the project for execution on the build machine, mainly for testing purposes. </p><pre class="fragment">$ mkdir &lt;build dir&gt;
 $ cd &lt;build dir&gt;
@@ -121,7 +123,7 @@ $ make &amp;&amp; make upload_sensors
 </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Mar 1 2015 17:14:41 for atMETEO by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Mar 1 2015 17:27:59 for atMETEO by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.9.1
 </small></address>

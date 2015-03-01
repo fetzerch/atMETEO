@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['oddparity',['OddParity',['../group__libsensors__bitdecoder.html#structSensors_1_1OddParity',1,'Sensors']]]
+  ['noparity',['NoParity',['../group__libsensors__bitdecoder.html#structSensors_1_1NoParity',1,'Sensors']]]
 ];

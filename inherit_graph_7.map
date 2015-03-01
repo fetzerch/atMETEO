@@ -1,4 +1,4 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$group__libsensors__demodulator.html#classSensors_1_1DemodulatorBase" title="Demodulator base implementation. " alt="" coords="5,5,188,47"/>
-<area shape="rect" id="node2" href="$group__libsensors__demodulator.html#classSensors_1_1Demodulator" title="Transforms continuous streams with pulse widths (for example from RF receivers) into bits..." alt="" coords="236,5,393,47"/>
+<area shape="rect" id="node1" href="$group__libsensors__bitdecoder.html" title="Sensors::BitDecoderBase\l\&lt; T, BitDecoder\&lt; T, TParity,\l TBitNumbering \&gt; \&gt;" alt="" coords="5,5,195,61"/>
+<area shape="rect" id="node2" href="$group__libsensors__bitdecoder.html#classSensors_1_1BitDecoder" title="Applies bit numbering and a parity method to transform continuous bit streams (for example from RF de..." alt="" coords="243,13,441,54"/>
 </map>

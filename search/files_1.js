@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['demodulator_2eh',['demodulator.h',['../demodulator_8h.html',1,'']]]
+  ['bitdecoder_2eh',['bitdecoder.h',['../bitdecoder_8h.html',1,'']]]
 ];

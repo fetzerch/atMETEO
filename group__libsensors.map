@@ -1,8 +1,7 @@
 <map id="Sensors library" name="Sensors library">
-<area shape="rect" id="node1" href="$group__libsensors__sensor.html" title="Sensors::Sensor is the base class for sensor specific data decoding. " alt="" coords="179,5,242,32"/>
-<area shape="rect" id="node2" href="$group__libsensors__bitdecoder.html" title="Sensors::BitDecoder transforms continuous bit streams (for example from RF demodulation) into bytes..." alt="" coords="165,56,256,83"/>
-<area shape="rect" id="node3" href="$group__libsensors__rfdevice.html" title="Sensors::RfDevice is the base template for RF receivers connecting Demodulator, Bit Decoder and Senso..." alt="" coords="168,107,253,133"/>
-<area shape="rect" id="node5" href="$group__libsensors__demodulator.html" title="Sensors::Demodulator transforms continuous streams with pulse widths (for example from RF receivers) ..." alt="" coords="163,157,259,184"/>
-<area shape="rect" id="node6" href="$group__libsensors__utils.html" title="Bit manipulation utilities. " alt="" coords="177,208,244,235"/>
-<area shape="rect" id="node7" href="$group__libsensors__tests.html" title="Unit tests for Sensors library. " alt="" coords="171,259,250,285"/>
+<area shape="rect" id="node1" href="$group__libsensors__tgs2600.html" title="Sensors::Tgs2600 decodes data from Figaro TGS 2600 air contaminants sensors. " alt="" coords="171,5,293,32"/>
+<area shape="rect" id="node2" href="$group__libsensors__rf.html" title="Utilities for decoding sensor data from RF receivers such as demodulator and decoder. " alt="" coords="186,56,278,83"/>
+<area shape="rect" id="node4" href="$group__libsensors__utils.html" title="Bit manipulation utilities. " alt="" coords="199,107,265,133"/>
+<area shape="rect" id="node5" href="$group__libsensors__tests.html" title="Unit tests for Sensors library. " alt="" coords="193,157,271,184"/>
+<area shape="rect" id="node6" href="$group__libsensors__hideki.html" title="Sensors::HidekiSensor and Sensors::HidekiDevice decode data from wireless Hideki RF 433 MHz sensors..." alt="" coords="163,208,301,235"/>
 </map>

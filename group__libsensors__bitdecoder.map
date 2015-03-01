@@ -1,3 +1,3 @@
 <map id="Bit Decoder" name="Bit Decoder">
-<area shape="rect" id="node2" href="$group__libsensors.html" title="Target / platform independent functionalityand algorithms such as demodulator, decoder and utilities ..." alt="" coords="5,5,115,32"/>
+<area shape="rect" id="node2" href="$group__libsensors__rf.html" title="Utilities for decoding sensor data from RF receivers such as demodulator and decoder. " alt="" coords="5,5,97,32"/>
 </map>

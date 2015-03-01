@@ -105,27 +105,48 @@ Files</h2></td></tr>
 <p>The main weather station application utilizing <a class="el" href="group__libsensors.html">Sensors library</a> and <a class="el" href="group__libtarget.html">AVR C++ utilities library</a>. </p>
 <p>Setup:</p><ul>
 <li>Receives <em>temperature</em> and <em>humidity</em> from a Hideki Thermo/Hygro sensor connected to the AVR's input capture pin (ICP).</li>
+<li>Receives <em>sensor_resistance</em> from a Figaro TGS 2600 sensor connected to the AVR's Analog to Digital Conversion pin 0 (ADC0).</li>
 </ul>
 <p>The received sensor values are transmitted over the UART interface as JSON object.</p>
 <p>JSON Schema: </p><div class="fragment"><div class="line">{</div>
 <div class="line">    <span class="stringliteral">&quot;type&quot;</span>: <span class="stringliteral">&quot;object&quot;</span>,</div>
 <div class="line">    <span class="stringliteral">&quot;properties&quot;</span>: {</div>
-<div class="line">        <span class="stringliteral">&quot;temperature&quot;</span>: {</div>
-<div class="line">            <span class="stringliteral">&quot;description&quot;</span>: <span class="stringliteral">&quot;Temperature (in °C) from wireless sensor.&quot;</span>,</div>
-<div class="line">            <span class="stringliteral">&quot;type&quot;</span>: <span class="stringliteral">&quot;number&quot;</span></div>
+<div class="line">        <span class="stringliteral">&quot;rf433&quot;</span>: {</div>
+<div class="line">            <span class="stringliteral">&quot;type&quot;</span>: <span class="stringliteral">&quot;object&quot;</span>,</div>
+<div class="line">            <span class="stringliteral">&quot;properties&quot;</span>: {</div>
+<div class="line">                <span class="stringliteral">&quot;temperature&quot;</span>: {</div>
+<div class="line">                    <span class="stringliteral">&quot;description&quot;</span>:</div>
+<div class="line">                        <span class="stringliteral">&quot;Temperature (in °C) from wireless sensor.&quot;</span>,</div>
+<div class="line">                    <span class="stringliteral">&quot;type&quot;</span>: <span class="stringliteral">&quot;number&quot;</span></div>
+<div class="line">                },</div>
+<div class="line">                <span class="stringliteral">&quot;humidity&quot;</span>: {</div>
+<div class="line">                    <span class="stringliteral">&quot;description&quot;</span>: <span class="stringliteral">&quot;Humindity (in %) from wireless sensor.&quot;</span>,</div>
+<div class="line">                    <span class="stringliteral">&quot;type&quot;</span>: <span class="stringliteral">&quot;integer&quot;</span>,</div>
+<div class="line">                    <span class="stringliteral">&quot;minimum&quot;</span>: 0,</div>
+<div class="line">                    <span class="stringliteral">&quot;maximum&quot;</span>: 100</div>
+<div class="line">                }</div>
+<div class="line">            }</div>
 <div class="line">        },</div>
-<div class="line">        <span class="stringliteral">&quot;humidity&quot;</span>: {</div>
-<div class="line">            <span class="stringliteral">&quot;description&quot;</span>: <span class="stringliteral">&quot;Humindity (in %) from wireless sensor.&quot;</span>,</div>
-<div class="line">            <span class="stringliteral">&quot;type&quot;</span>: <span class="stringliteral">&quot;integer&quot;</span>,</div>
-<div class="line">            <span class="stringliteral">&quot;minimum&quot;</span>: 0,</div>
-<div class="line">            <span class="stringliteral">&quot;maximum&quot;</span>: 100</div>
+<div class="line">        <span class="stringliteral">&quot;tgs2600&quot;</span>: {</div>
+<div class="line">            <span class="stringliteral">&quot;type&quot;</span>: <span class="stringliteral">&quot;object&quot;</span>,</div>
+<div class="line">            <span class="stringliteral">&quot;properties&quot;</span>: {</div>
+<div class="line">                <span class="stringliteral">&quot;sensor_resistance&quot;</span>: {</div>
+<div class="line">                    <span class="stringliteral">&quot;description&quot;</span>:</div>
+<div class="line">                        <span class="stringliteral">&quot;Sensor resistance in Ohm from TGS 2600 sensor.&quot;</span>,</div>
+<div class="line">                    <span class="stringliteral">&quot;type&quot;</span>: <span class="stringliteral">&quot;integer&quot;</span>,</div>
+<div class="line">                    <span class="stringliteral">&quot;minimum&quot;</span>: 0</div>
+<div class="line">                }</div>
+<div class="line">            }</div>
+<div class="line">        }</div>
 <div class="line">    }</div>
 <div class="line">}</div>
-</div><!-- fragment --><dl class="section see"><dt>See also</dt><dd><a class="el" href="group__libsensors__sensor.html#classSensors_1_1HidekiSensor" title="Decodes data received from a Hideki RF 433 MHz sensor. ">Sensors::HidekiSensor</a> </dd></dl>
+</div><!-- fragment --><dl class="section see"><dt>See also</dt><dd><a class="el" href="group__libsensors__hideki.html#classSensors_1_1HidekiSensor" title="Decodes data received from a Hideki RF 433 MHz sensor. ">Sensors::HidekiSensor</a> </dd>
+<dd>
+<a class="el" href="group__libsensors__tgs2600.html#classSensors_1_1Tgs2600" title="Decodes data from Figaro TGS 2600 air contaminants sensors. ">Sensors::Tgs2600</a> </dd></dl>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Mar 1 2015 17:14:41 for atMETEO by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Mar 1 2015 17:27:59 for atMETEO by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.9.1
 </small></address>
