@@ -20,14 +20,14 @@
     scm:
         - git:
             skip-tag: true
-            url: ssh://git@squirrel:10022/fetzerch/weather-station.git
+            url: ssh://git@10.0.1.12/fetzerch/weather-station.git
             basedir: sources
             recursive-submodules: true
             branches:
                 - origin/master
             browser: gitlab
             browser-version: 7.5
-            browser-url: https://squirrel:10443/fetzerch/weather-station
+            browser-url: https://10.0.1.12/fetzerch/weather-station
 
 
 # ----- Builder ---------------------------------------------------------------
