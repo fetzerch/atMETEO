@@ -101,8 +101,7 @@ public:
     {
         uint32_t sensorResistance = this->sensorResistance(vout);
 
-        if (sensorResistance == UINT32_MAX ||
-                sensorResistance >= UINT32_MAX / m_calibration)
+        if (sensorResistance == UINT32_MAX)
             return UINT32_MAX;
 
         return m_calibration * sensorResistance;
