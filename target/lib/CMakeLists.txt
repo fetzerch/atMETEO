@@ -4,6 +4,9 @@ set(HEADERS
     interrupt.h
     timer.h
     uart.h
+    pin.h
+
+    ${CMAKE_SOURCE_DIR}/target/external/avr_io_cpp.h
 )
 
 set(SOURCES
