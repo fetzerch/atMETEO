@@ -27,6 +27,12 @@ The Hideki Thermo/Hygrometer (TS53) provides temperature and humidity over an
 wireless RF 433 MHz interface. In order to collect this sensor data, an
 RF 433 MHz receiver has to be connected to the targets Input Capture Pin (ICP).
 
+### DHT22 / AM2302 Temperature and humidity module
+The DHT22 / [AM2302] is a digital temperature and humidity sensor. The sensor
+has to be connected to one of the digital I/O pins (default AD2).
+
+[AM2302]: http://akizukidenshi.com/download/ds/aosong/AM2302.pdf
+
 ### Figaro TGS 2600
 The [Figaro TGS 2600] is a high sensitive high sensitivity air contaminant
 sensor. Due to its analog nature, the detected uncalibrated sensor resistance
@@ -45,6 +51,7 @@ object.
 Exemplary data:
 
     {"rf433": {"temperature":-5.0,"humidity":48}}
+    {"dht22": {"temperature":10.0,"humidity":32.0}}
     {"tgs2600": {"sensor_resistance":14000}}
 
 
