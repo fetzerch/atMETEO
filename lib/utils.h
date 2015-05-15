@@ -154,6 +154,17 @@ inline uint8_t lowNibble(uint8_t x)
 }
 
 /*!
+ * \brief Converts two bytes to a word.
+ * \param highByte The leftmost byte of the word.
+ * \param lowByte The rightmost byte of the word.
+ * \return Word from \p highByte and \p lowByte.
+ */
+inline uint16_t word(uint8_t highByte, uint8_t lowByte)
+{
+    return highByte << 8 | lowByte;
+}
+
+/*!
  * \brief Returns the even parity for the byte \p x.
  *
  * Even parity: Number of set bits modulo 2.

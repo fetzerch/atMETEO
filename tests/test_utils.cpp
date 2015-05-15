@@ -37,6 +37,7 @@ using ::Sensors::byteReverse;
 using ::Sensors::nibbleReverse;
 using ::Sensors::lowNibble;
 using ::Sensors::highNibble;
+using ::Sensors::word;
 using ::Sensors::parity;
 using ::Sensors::min;
 using ::Sensors::max;
@@ -123,6 +124,16 @@ TEST(UtilsTest, Nibbles)
     EXPECT_EQ(0x0F, highNibble(0xF0));
     EXPECT_EQ(0,    highNibble(0x0F));
     EXPECT_EQ(0b00001100, highNibble(0b11000011));
+}
+
+/*!
+ * \brief Tests Sensors::word.
+ */
+TEST(UtilsTest, Word)
+{
+    EXPECT_EQ(0,      word(0, 0));
+    EXPECT_EQ(0xFFFF, word(0xFF, 0xFF));
+    EXPECT_EQ(0xABCD, word(0xAB, 0xCD));
 }
 
 /*!
