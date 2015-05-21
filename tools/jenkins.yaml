@@ -22,7 +22,8 @@
             skip-tag: true
             url: ssh://git@10.0.1.12/fetzerch/weather-station.git
             basedir: sources
-            recursive-submodules: true
+            submodule:
+                recursive: true
             branches:
                 - origin/master
             browser: gitlab
