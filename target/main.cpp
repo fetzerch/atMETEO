@@ -112,6 +112,7 @@
 #include "lib/uart.h"
 #include "lib/timer.h"
 #include "lib/pin.h"
+#include "lib/atomic.h"
 
 static const uint16_t BAUD = 9600;
 static const uint16_t PRESCALER = 8;
@@ -123,22 +124,17 @@ static Sensors::HidekiDevice<
     Avr::TimerUtils<PRESCALER>::usToTicks<726>(),  // Short max
     Avr::TimerUtils<PRESCALER>::usToTicks<726>(),  // Long min
     Avr::TimerUtils<PRESCALER>::usToTicks<1464>()  // Long max
-    > s_device;
+    > s_hidekiDevice;
+static Sensors::HidekiData s_hidekiData;
 
 class TimerObserver
 {
 protected:
     static void pulseWidthReceived(uint16_t pulseWidth)
     {
-        if (s_device.addPulseWidth(pulseWidth) ==
+        if (s_hidekiDevice.addPulseWidth(pulseWidth) ==
                 Sensors::RfDeviceStatus::Complete) {
-            auto uart = Avr::Uart<BAUD>::instance();
-            uart.sendString("{\"rf433\":");
-            uart.sendString("{\"temperature\":");
-            uart.sendDouble(s_device.temperatureF());
-            uart.sendString(",\"humidity\":");
-            uart.sendUInt(s_device.humidity());
-            uart.sendString("}}\n");
+            s_hidekiData.storeSensorValues(s_hidekiDevice);
         }
     }
 };
@@ -165,6 +161,25 @@ int main()
 
     while (true) {
         auto uart = Avr::Uart<BAUD>::instance();
+
+        // Copy Hideki sensor result set
+        Sensors::HidekiData hidekiData;
+        {
+            Avr::AtomicGuard<Avr::AtomicRestoreState> atomicGuard;
+            if (s_hidekiData.isValid()) {
+                hidekiData = s_hidekiData;
+                s_hidekiData.reset();
+            }
+        }
+
+        if (hidekiData.isValid()) {
+            uart.sendString("{\"rf433\":");
+            uart.sendString("{\"temperature\":");
+            uart.sendDouble(hidekiData.temperatureF());
+            uart.sendString(",\"humidity\":");
+            uart.sendUInt(hidekiData.humidity());
+            uart.sendString("}}\n");
+        }
 
         if (dht22.read()) {
             uart.sendString("{\"dht22\":");
