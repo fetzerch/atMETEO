@@ -264,6 +264,98 @@ using HidekiDevice = RfDevice<
     HidekiSensor,
     89>;
 
+/*!
+ * \brief Data class for storing values of a HidekiSensor.
+ *
+ * The HidekiSensor is typically hooked up to the RF 433 MHz receiver which
+ * continuously receives pulse widths and modifies the sensor state so that
+ * the results are only valid for a short amount of time.
+ *
+ * It is often necessary to obtain a copy the sensor values in order to further
+ * process them. This can be easily achieved with this helper class.
+ */
+class HidekiData
+{
+public:
+    /*!
+     * Constructs empty data object.
+     */
+    HidekiData()
+    {
+        reset();
+    }
+
+    /*!
+     * Stores current sensor values into data object.
+     *
+     * \param sensor HidekiSensor instance to store the values from.
+     */
+    void storeSensorValues(const HidekiSensor &sensor)
+    {
+        m_valid = sensor.isValid();
+        m_temperature = sensor.temperature();
+        m_temperatureF = sensor.temperatureF();
+        m_humidity = sensor.humidity();
+    }
+
+    /*!
+     * \brief Resets all values.
+     */
+    void reset()
+    {
+        m_temperature = 0;
+        m_temperatureF = 0.0;
+        m_humidity = 0;
+        m_valid = false;
+    }
+
+    /*!
+     * \brief Determines if the data object contains valid values.
+     *
+     * \return `true` if the values are valid, `false` if the no values are set.
+     */
+    bool isValid() const
+    {
+        return m_valid;
+    }
+
+    /*!
+     * \brief Gets the temperature value.
+     *
+     * \return The temperature value.
+     */
+    int8_t temperature() const
+    {
+        return m_temperature;
+    }
+
+    /*!
+     * \brief Gets the temperature value as float.
+     *
+     * \return The temperature value.
+     */
+    float temperatureF() const
+    {
+        return m_temperatureF;
+    }
+
+    /*!
+     * \brief Gets the humidity value.
+     *
+     * \return The humidity value.
+     */
+    uint8_t humidity() const
+    {
+        return m_humidity;
+    }
+
+private:
+    bool m_valid;
+    uint8_t m_temperature;
+    float m_temperatureF;
+    uint8_t m_humidity;
+};
+
 /*! \} */  // \addtogroup libsensors_hideki
 
 }  // namespace Sensors
