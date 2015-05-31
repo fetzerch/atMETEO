@@ -6,6 +6,7 @@ set(HEADERS
     uart.h
     pin.h
     dht22.h
+    atomic.h
 
     ${CMAKE_SOURCE_DIR}/target/external/avr_io_cpp.h
 )
