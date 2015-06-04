@@ -84,7 +84,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_8a893347e0977ba78e7efcd8fd93e569.html">lib</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_97aefd0d527b934f1d99a682da8fe6a9.html">lib</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -187,34 +187,93 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;    <a class="code" href="group__libsensors__bitdecoder.html#classSensors_1_1BitDecoder">ByteDecoder&lt;EvenParity, LsbBitNumbering&gt;</a>,</div>
 <div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;    <a class="code" href="group__libsensors__hideki.html#classSensors_1_1HidekiSensor">HidekiSensor</a>,</div>
 <div class="line"><a name="l00265"></a><span class="lineno"><a class="line" href="group__libsensors__hideki.html#gaf0c732607e140975f348f866a0132df7">  265</a></span>&#160;    89&gt;;</div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;  <span class="comment">// \addtogroup libsensors_hideki</span></div>
-<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;</div>
-<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;}  <span class="comment">// namespace Sensors</span></div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;</div>
+<div class="line"><a name="l00277"></a><span class="lineno"><a class="line" href="group__libsensors__hideki.html">  277</a></span>&#160;<span class="keyword">class </span><a class="code" href="group__libsensors__hideki.html#classSensors_1_1HidekiData">HidekiData</a></div>
+<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;{</div>
+<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00283"></a><span class="lineno"><a class="line" href="group__libsensors__hideki.html#ac6a22d02de0aa4dc65d86d11b36a907b">  283</a></span>&#160;    <a class="code" href="group__libsensors__hideki.html#ac6a22d02de0aa4dc65d86d11b36a907b">HidekiData</a>()</div>
+<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;    {</div>
+<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;        <a class="code" href="group__libsensors__hideki.html#a910475af8e7fc7a7b6d06becf4f05c1f">reset</a>();</div>
+<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;    }</div>
+<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;</div>
+<div class="line"><a name="l00293"></a><span class="lineno"><a class="line" href="group__libsensors__hideki.html#a25ca1a85ff98ef8e73e2d7c473101537">  293</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="group__libsensors__hideki.html#a25ca1a85ff98ef8e73e2d7c473101537">storeSensorValues</a>(<span class="keyword">const</span> HidekiSensor &amp;sensor)</div>
+<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;    {</div>
+<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;        m_valid = sensor.<a class="code" href="group__libsensors__hideki.html#ab971c72bf205e6370ed0f9367c09d681">isValid</a>();</div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;        m_temperature = sensor.<a class="code" href="group__libsensors__hideki.html#a09d9d0f5e9c82c9c84192497d70afe6c">temperature</a>();</div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;        m_temperatureF = sensor.<a class="code" href="group__libsensors__hideki.html#af269f1849d7e6f069246451120a6a826">temperatureF</a>();</div>
+<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;        m_humidity = sensor.<a class="code" href="group__libsensors__hideki.html#a738d7341b17b7a2d071af1ba06ee5702">humidity</a>();</div>
+<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;    }</div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;</div>
+<div class="line"><a name="l00304"></a><span class="lineno"><a class="line" href="group__libsensors__hideki.html#a910475af8e7fc7a7b6d06becf4f05c1f">  304</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="group__libsensors__hideki.html#a910475af8e7fc7a7b6d06becf4f05c1f">reset</a>()</div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;    {</div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;        m_temperature = 0;</div>
+<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;        m_temperatureF = 0.0;</div>
+<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;        m_humidity = 0;</div>
+<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;        m_valid = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;    }</div>
+<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;</div>
+<div class="line"><a name="l00317"></a><span class="lineno"><a class="line" href="group__libsensors__hideki.html#a9b034e241c41f20b58dbc0266b6d9c14">  317</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="group__libsensors__hideki.html#a9b034e241c41f20b58dbc0266b6d9c14">isValid</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;<span class="keyword">    </span>{</div>
+<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;        <span class="keywordflow">return</span> m_valid;</div>
+<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;    }</div>
+<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;</div>
+<div class="line"><a name="l00327"></a><span class="lineno"><a class="line" href="group__libsensors__hideki.html#ae2d5f794aca1292b6ecc949bbf4086b2">  327</a></span>&#160;    int8_t <a class="code" href="group__libsensors__hideki.html#ae2d5f794aca1292b6ecc949bbf4086b2">temperature</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;<span class="keyword">    </span>{</div>
+<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;        <span class="keywordflow">return</span> m_temperature;</div>
+<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;    }</div>
+<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;</div>
+<div class="line"><a name="l00337"></a><span class="lineno"><a class="line" href="group__libsensors__hideki.html#ac9371fd0ff34e7b97b3804ddb71c88be">  337</a></span>&#160;    <span class="keywordtype">float</span> <a class="code" href="group__libsensors__hideki.html#ac9371fd0ff34e7b97b3804ddb71c88be">temperatureF</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;<span class="keyword">    </span>{</div>
+<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;        <span class="keywordflow">return</span> m_temperatureF;</div>
+<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;    }</div>
+<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;</div>
+<div class="line"><a name="l00347"></a><span class="lineno"><a class="line" href="group__libsensors__hideki.html#adda01062df2062dafe67bcf288b160ca">  347</a></span>&#160;    uint8_t <a class="code" href="group__libsensors__hideki.html#adda01062df2062dafe67bcf288b160ca">humidity</a>()<span class="keyword"> const</span></div>
+<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;<span class="keyword">    </span>{</div>
+<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;        <span class="keywordflow">return</span> m_humidity;</div>
+<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;    }</div>
+<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;</div>
+<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;    <span class="keywordtype">bool</span> m_valid;</div>
+<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;    uint8_t m_temperature;</div>
+<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;    <span class="keywordtype">float</span> m_temperatureF;</div>
+<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;    uint8_t m_humidity;</div>
+<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;};</div>
+<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;  <span class="comment">// \addtogroup libsensors_hideki</span></div>
+<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;</div>
+<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;}  <span class="comment">// namespace Sensors</span></div>
 <div class="ttc" id="group__libsensors__hideki_html_aee05def899e1ad0f8b866638d23a38a5"><div class="ttname"><a href="group__libsensors__hideki.html#aee05def899e1ad0f8b866638d23a38a5">Sensors::HidekiSensor::isPossiblyValid</a></div><div class="ttdeci">bool isPossiblyValid() const </div><div class="ttdoc">Determines if the current data is possibly valid (but not complete). </div><div class="ttdef"><b>Definition:</b> hidekisensor.cpp:85</div></div>
 <div class="ttc" id="group__libsensors__hideki_html_a738d7341b17b7a2d071af1ba06ee5702"><div class="ttname"><a href="group__libsensors__hideki.html#a738d7341b17b7a2d071af1ba06ee5702">Sensors::HidekiSensor::humidity</a></div><div class="ttdeci">uint8_t humidity() const </div><div class="ttdoc">Gets the humidity value of the current message. </div><div class="ttdef"><b>Definition:</b> hidekisensor.cpp:187</div></div>
 <div class="ttc" id="group__libsensors__hideki_html_a7652b33ccb37efab7bc16c6ecdc93fbb"><div class="ttname"><a href="group__libsensors__hideki.html#a7652b33ccb37efab7bc16c6ecdc93fbb">Sensors::HidekiSensor::sensorId</a></div><div class="ttdeci">uint8_t sensorId() const </div><div class="ttdoc">Returns the sensor id of the current message. </div><div class="ttdef"><b>Definition:</b> hidekisensor.cpp:105</div></div>
 <div class="ttc" id="group__libsensors__hideki_html_a26c487faa8e29ecebab10d2c3a57ac81"><div class="ttname"><a href="group__libsensors__hideki.html#a26c487faa8e29ecebab10d2c3a57ac81">Sensors::HidekiSensor::HidekiSensor</a></div><div class="ttdeci">HidekiSensor()</div><div class="ttdoc">Initializes the Hideki sensor decoder. </div><div class="ttdef"><b>Definition:</b> hidekisensor.cpp:25</div></div>
 <div class="ttc" id="group__libsensors__demodulator_html_classSensors_1_1Demodulator"><div class="ttname"><a href="group__libsensors__demodulator.html#classSensors_1_1Demodulator">Sensors::Demodulator</a></div><div class="ttdoc">Transforms continuous streams with pulse widths (for example from RF receivers) into bits...</div><div class="ttdef"><b>Definition:</b> demodulator.h:180</div></div>
 <div class="ttc" id="group__libsensors__bitdecoder_html_classSensors_1_1BitDecoder"><div class="ttname"><a href="group__libsensors__bitdecoder.html#classSensors_1_1BitDecoder">Sensors::BitDecoder</a></div><div class="ttdoc">Applies bit numbering and a parity method to transform continuous bit streams (for example from RF de...</div><div class="ttdef"><b>Definition:</b> bitdecoder.h:227</div></div>
+<div class="ttc" id="group__libsensors__hideki_html_a9b034e241c41f20b58dbc0266b6d9c14"><div class="ttname"><a href="group__libsensors__hideki.html#a9b034e241c41f20b58dbc0266b6d9c14">Sensors::HidekiData::isValid</a></div><div class="ttdeci">bool isValid() const </div><div class="ttdoc">Determines if the data object contains valid values. </div><div class="ttdef"><b>Definition:</b> hidekisensor.h:317</div></div>
 <div class="ttc" id="bitdecoder_8h_html"><div class="ttname"><a href="bitdecoder_8h.html">bitdecoder.h</a></div><div class="ttdoc">Sensors::BitDecoder transforms continuous bit streams (for example from RF demodulation) into bytes...</div></div>
 <div class="ttc" id="group__libsensors__hideki_html_a40be28f88202710c1a8daf01eaba0d8d"><div class="ttname"><a href="group__libsensors__hideki.html#a40be28f88202710c1a8daf01eaba0d8d">Sensors::HidekiSensor::isThermoHygro</a></div><div class="ttdeci">bool isThermoHygro() const </div><div class="ttdoc">Determines if the current message contains a Thermo/Hygro data set. </div><div class="ttdef"><b>Definition:</b> hidekisensor.cpp:164</div></div>
 <div class="ttc" id="lib_2utils_8h_html"><div class="ttname"><a href="lib_2utils_8h.html">utils.h</a></div><div class="ttdoc">Bit manipulation utilities. </div></div>
 <div class="ttc" id="group__libsensors__hideki_html_af269f1849d7e6f069246451120a6a826"><div class="ttname"><a href="group__libsensors__hideki.html#af269f1849d7e6f069246451120a6a826">Sensors::HidekiSensor::temperatureF</a></div><div class="ttdeci">float temperatureF() const </div><div class="ttdoc">Gets the temperature value of the current message as float. </div><div class="ttdef"><b>Definition:</b> hidekisensor.cpp:178</div></div>
 <div class="ttc" id="group__libsensors__hideki_html_a3f0900b7c25e2f8f6a0f6a83d28480a6"><div class="ttname"><a href="group__libsensors__hideki.html#a3f0900b7c25e2f8f6a0f6a83d28480a6">Sensors::HidekiSensor::message</a></div><div class="ttdeci">uint8_t message() const </div><div class="ttdoc">Returns the number of the current message. </div><div class="ttdef"><b>Definition:</b> hidekisensor.cpp:110</div></div>
 <div class="ttc" id="namespaceSensors_html"><div class="ttname"><a href="namespaceSensors.html">Sensors</a></div><div class="ttdoc">Namespace containing all symbols of the Sensors library. </div><div class="ttdef"><b>Definition:</b> bitdecoder.h:40</div></div>
+<div class="ttc" id="group__libsensors__hideki_html_ae2d5f794aca1292b6ecc949bbf4086b2"><div class="ttname"><a href="group__libsensors__hideki.html#ae2d5f794aca1292b6ecc949bbf4086b2">Sensors::HidekiData::temperature</a></div><div class="ttdeci">int8_t temperature() const </div><div class="ttdoc">Gets the temperature value. </div><div class="ttdef"><b>Definition:</b> hidekisensor.h:327</div></div>
 <div class="ttc" id="sensor_8h_html"><div class="ttname"><a href="sensor_8h.html">sensor.h</a></div><div class="ttdoc">Sensors::Sensor is the base class for sensor specific data decoding. </div></div>
 <div class="ttc" id="group__libsensors__hideki_html_ab971c72bf205e6370ed0f9367c09d681"><div class="ttname"><a href="group__libsensors__hideki.html#ab971c72bf205e6370ed0f9367c09d681">Sensors::HidekiSensor::isValid</a></div><div class="ttdeci">bool isValid() const </div><div class="ttdoc">Determines if the current decoder state is valid. </div><div class="ttdef"><b>Definition:</b> hidekisensor.cpp:77</div></div>
+<div class="ttc" id="group__libsensors__hideki_html_a910475af8e7fc7a7b6d06becf4f05c1f"><div class="ttname"><a href="group__libsensors__hideki.html#a910475af8e7fc7a7b6d06becf4f05c1f">Sensors::HidekiData::reset</a></div><div class="ttdeci">void reset()</div><div class="ttdoc">Resets all values. </div><div class="ttdef"><b>Definition:</b> hidekisensor.h:304</div></div>
 <div class="ttc" id="group__libsensors__hideki_html_a09d9d0f5e9c82c9c84192497d70afe6c"><div class="ttname"><a href="group__libsensors__hideki.html#a09d9d0f5e9c82c9c84192497d70afe6c">Sensors::HidekiSensor::temperature</a></div><div class="ttdeci">int8_t temperature() const </div><div class="ttdoc">Gets the temperature value of the current message. </div><div class="ttdef"><b>Definition:</b> hidekisensor.cpp:169</div></div>
 <div class="ttc" id="group__libsensors__sensor_html_classSensors_1_1Sensor"><div class="ttname"><a href="group__libsensors__sensor.html#classSensors_1_1Sensor">Sensors::Sensor</a></div><div class="ttdoc">Base class for sensor implementations. </div><div class="ttdef"><b>Definition:</b> sensor.h:117</div></div>
 <div class="ttc" id="group__libsensors__rfdevice_html_classSensors_1_1RfDevice"><div class="ttname"><a href="group__libsensors__rfdevice.html#classSensors_1_1RfDevice">Sensors::RfDevice</a></div><div class="ttdoc">Connects Demodulator, Bit Decoder and Sensor for decoding sensor data from RF receivers. </div><div class="ttdef"><b>Definition:</b> rfdevice.h:111</div></div>
+<div class="ttc" id="group__libsensors__hideki_html_ac6a22d02de0aa4dc65d86d11b36a907b"><div class="ttname"><a href="group__libsensors__hideki.html#ac6a22d02de0aa4dc65d86d11b36a907b">Sensors::HidekiData::HidekiData</a></div><div class="ttdeci">HidekiData()</div><div class="ttdef"><b>Definition:</b> hidekisensor.h:283</div></div>
 <div class="ttc" id="group__libsensors__hideki_html_classSensors_1_1HidekiSensor"><div class="ttname"><a href="group__libsensors__hideki.html#classSensors_1_1HidekiSensor">Sensors::HidekiSensor</a></div><div class="ttdoc">Decodes data received from a Hideki RF 433 MHz sensor. </div><div class="ttdef"><b>Definition:</b> hidekisensor.h:62</div></div>
+<div class="ttc" id="group__libsensors__hideki_html_ac9371fd0ff34e7b97b3804ddb71c88be"><div class="ttname"><a href="group__libsensors__hideki.html#ac9371fd0ff34e7b97b3804ddb71c88be">Sensors::HidekiData::temperatureF</a></div><div class="ttdeci">float temperatureF() const </div><div class="ttdoc">Gets the temperature value as float. </div><div class="ttdef"><b>Definition:</b> hidekisensor.h:337</div></div>
+<div class="ttc" id="group__libsensors__hideki_html_a25ca1a85ff98ef8e73e2d7c473101537"><div class="ttname"><a href="group__libsensors__hideki.html#a25ca1a85ff98ef8e73e2d7c473101537">Sensors::HidekiData::storeSensorValues</a></div><div class="ttdeci">void storeSensorValues(const HidekiSensor &amp;sensor)</div><div class="ttdef"><b>Definition:</b> hidekisensor.h:293</div></div>
 <div class="ttc" id="demodulator_8h_html"><div class="ttname"><a href="demodulator_8h.html">demodulator.h</a></div><div class="ttdoc">Sensors::Demodulator transforms continuous streams with pulse widths (for example from RF receivers) ...</div></div>
+<div class="ttc" id="group__libsensors__hideki_html_classSensors_1_1HidekiData"><div class="ttname"><a href="group__libsensors__hideki.html#classSensors_1_1HidekiData">Sensors::HidekiData</a></div><div class="ttdoc">Data class for storing values of a HidekiSensor. </div><div class="ttdef"><b>Definition:</b> hidekisensor.h:277</div></div>
+<div class="ttc" id="group__libsensors__hideki_html_adda01062df2062dafe67bcf288b160ca"><div class="ttname"><a href="group__libsensors__hideki.html#adda01062df2062dafe67bcf288b160ca">Sensors::HidekiData::humidity</a></div><div class="ttdeci">uint8_t humidity() const </div><div class="ttdoc">Gets the humidity value. </div><div class="ttdef"><b>Definition:</b> hidekisensor.h:347</div></div>
 <div class="ttc" id="group__libsensors__sensor_html_ga0b5b9591c1d6882987931c0b97d466b2"><div class="ttname"><a href="group__libsensors__sensor.html#ga0b5b9591c1d6882987931c0b97d466b2">Sensors::SensorStatus</a></div><div class="ttdeci">SensorStatus</div><div class="ttdoc">Sensor status returned from Sensor::setData() and Sensor::addByte(). </div><div class="ttdef"><b>Definition:</b> sensor.h:48</div></div>
 <div class="ttc" id="rfdevice_8h_html"><div class="ttname"><a href="rfdevice_8h.html">rfdevice.h</a></div><div class="ttdoc">Sensors::RfDevice is the base template for RF receivers connecting Demodulator, Bit Decoder and Senso...</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Mar 1 2015 17:27:59 for atMETEO by &#160;<a href="http://www.doxygen.org/index.html">
+Generated for atMETEO by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.9.1
 </small></address>

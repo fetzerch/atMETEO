@@ -17,9 +17,13 @@ var searchData=
   ['sensorresistancerelative',['sensorResistanceRelative',['../group__libsensors__tgs2600.html#a5c5116d7da145a6be17bafe9cc47685e',1,'Sensors::Tgs2600']]],
   ['sensors',['Sensors',['../namespaceSensors.html',1,'']]],
   ['sensorstatus',['SensorStatus',['../group__libsensors__sensor.html#ga0b5b9591c1d6882987931c0b97d466b2',1,'Sensors']]],
+  ['set',['set',['../group__libtarget__pin.html#acbb57d6bd0c7b61e2a29a238c22a6ab2',1,'Avr::OutputConfiguration::set()'],['../group__libtarget__pin.html#ae43be55c1c9f29aca2b9904b4d0990df',1,'Avr::OutputConfigurationInverted::set()']]],
   ['setdata',['setData',['../group__libsensors__sensor.html#a935f8261cb38b3d51421f96e4b78bc4b',1,'Sensors::Sensor']]],
+  ['setinput',['setInput',['../group__libtarget__pin.html#a84b5cb2b6e8548148f1978eb9e38a72e',1,'Avr::InputOutputPin']]],
+  ['setoutput',['setOutput',['../group__libtarget__pin.html#a239b14435e1c23e7409837ed516c42b7',1,'Avr::InputOutputPin']]],
   ['setreferencehumidity',['setReferenceHumidity',['../group__libsensors__tgs2600.html#a1e0944d3336a96497b594616b2abb501',1,'Sensors::Tgs2600']]],
   ['setreferenceresistance',['setReferenceResistance',['../group__libsensors__tgs2600.html#ada2d09e1855a2d3180dc8c5cb542f2a0',1,'Sensors::Tgs2600']]],
   ['setreferencetemperature',['setReferenceTemperature',['../group__libsensors__tgs2600.html#a4f1f720f7be4d34f49428add106927ad',1,'Sensors::Tgs2600']]],
+  ['storesensorvalues',['storeSensorValues',['../group__libsensors__hideki.html#a25ca1a85ff98ef8e73e2d7c473101537',1,'Sensors::HidekiData']]],
   ['supported_20targets',['Supported targets',['../group__targets.html',1,'']]]
 ];

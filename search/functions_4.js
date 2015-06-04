@@ -1,6 +1,4 @@
 var searchData=
 [
-  ['hidekisensor',['HidekiSensor',['../group__libsensors__hideki.html#a26c487faa8e29ecebab10d2c3a57ac81',1,'Sensors::HidekiSensor']]],
-  ['highnibble',['highNibble',['../group__libsensors__utils.html#ga04b5698d872490fb433d1125da2f6bca',1,'Sensors']]],
-  ['humidity',['humidity',['../group__libsensors__hideki.html#a738d7341b17b7a2d071af1ba06ee5702',1,'Sensors::HidekiSensor']]]
+  ['getdata',['getData',['../group__libsensors__bitdecoder.html#ac78ad51e5401a4a1a165686989a7bfd1',1,'Sensors::BitDecoderBase::getData()'],['../group__libsensors__demodulator.html#aa5210fbcb10770c6404d3dfa270c4ce5',1,'Sensors::DemodulatorBase::getData()']]]
 ];

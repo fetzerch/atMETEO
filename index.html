@@ -88,11 +88,14 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <h2>Compatible sensors </h2>
 <h3>Hideki Thermo/Hygrometer</h3>
 <p>The Hideki Thermo/Hygrometer (TS53) provides temperature and humidity over an wireless RF 433 MHz interface. In order to collect this sensor data, an RF 433 MHz receiver has to be connected to the targets Input Capture Pin (ICP).</p>
+<h3>DHT22 / AM2302 Temperature and humidity module</h3>
+<p>The DHT22 / <a href="http://akizukidenshi.com/download/ds/aosong/AM2302.pdf">AM2302</a> is a digital temperature and humidity sensor. The sensor has to be connected to one of the digital I/O pins (default AD2).</p>
 <h3>Figaro TGS 2600</h3>
 <p>The <a href="http://www.figarosensor.com/products/2600pdf.pdf">Figaro TGS 2600</a> is a high sensitive high sensitivity air contaminant sensor. Due to its analog nature, the detected uncalibrated sensor resistance has to be processed according to the datasheet. For collecting data from this sensor, it has to be connected to the Analog to Digital Conversion Pin 0 (ADC0) using a load resistance of 10k Ohm.</p>
 <h2>Output format </h2>
 <p>The received sensor values are transmitted over the UART interface as JSON object.</p>
 <p>Exemplary data: </p><pre class="fragment">{"rf433": {"temperature":-5.0,"humidity":48}}
+{"dht22": {"temperature":10.0,"humidity":32.0}}
 {"tgs2600": {"sensor_resistance":14000}}
 </pre><h2>Building </h2>
 <p>The project uses CMake as configuration tool. Hence the very first in the build chain is to execute CMake as shown below. Note that the default configuration builds the project for execution on the build machine, mainly for testing purposes. </p><pre class="fragment">$ mkdir &lt;build dir&gt;
@@ -123,7 +126,7 @@ $ make &amp;&amp; make upload_sensors
 </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Mar 1 2015 17:27:59 for atMETEO by &#160;<a href="http://www.doxygen.org/index.html">
+Generated for atMETEO by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.9.1
 </small></address>

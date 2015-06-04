@@ -137,6 +137,7 @@ class Avr::Uart&lt; baud &gt;</h3>
 <dl class="section note"><dt>Note</dt><dd><a class="el" href="group__libtarget__uart.html#classAvr_1_1Uart" title="A C++ wrapper for accessing the built-in UART communication interfaces. ">Avr::Uart</a> is currently limited to data transmission. </dd>
 <dd>
 The implementation is based on avr-uart (<a href="https://github.com/andygock/avr-uart">https://github.com/andygock/avr-uart</a>). </dd></dl>
+<dl class="section warning"><dt>Warning</dt><dd>Sending data has to be used with care in program parts where interrupts are disabled. The data is added to a send buffer and transmitted only when interrupts are enabled. This leads to deadlock when the send buffer becomes full. </dd></dl>
 </div><table class="memberdecls">
 <tr><td colspan="2"><h3>Public Member Functions</h3></td></tr>
 <tr class="memitem:a6f41a6b19e630ea7d15578e078e5d640"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__libtarget__uart.html#a6f41a6b19e630ea7d15578e078e5d640">sendChar</a> (unsigned char c)</td></tr>
@@ -415,7 +416,7 @@ template&lt;uint16_t baud&gt; </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Mar 1 2015 17:27:59 for atMETEO by &#160;<a href="http://www.doxygen.org/index.html">
+Generated for atMETEO by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.9.1
 </small></address>

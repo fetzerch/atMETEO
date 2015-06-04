@@ -108,6 +108,9 @@ Classes</h2></td></tr>
 <tr class="memitem:classSensors_1_1HidekiSensor"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__libsensors__hideki.html#classSensors_1_1HidekiSensor">Sensors::HidekiSensor</a></td></tr>
 <tr class="memdesc:classSensors_1_1HidekiSensor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Decodes data received from a Hideki RF 433 MHz sensor.  <a href="group__libsensors__hideki.html#classSensors_1_1HidekiSensor">More...</a><br /></td></tr>
 <tr class="separator:classSensors_1_1HidekiSensor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:classSensors_1_1HidekiData"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__libsensors__hideki.html#classSensors_1_1HidekiData">Sensors::HidekiData</a></td></tr>
+<tr class="memdesc:classSensors_1_1HidekiData"><td class="mdescLeft">&#160;</td><td class="mdescRight">Data class for storing values of a <a class="el" href="group__libsensors__hideki.html#classSensors_1_1HidekiSensor" title="Decodes data received from a Hideki RF 433 MHz sensor. ">HidekiSensor</a>.  <a href="group__libsensors__hideki.html#classSensors_1_1HidekiData">More...</a><br /></td></tr>
+<tr class="separator:classSensors_1_1HidekiData"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
@@ -342,6 +345,229 @@ Typedefs</h2></td></tr>
 
 </div>
 </div>
+<a name="classSensors_1_1HidekiData" id="classSensors_1_1HidekiData"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">class Sensors::HidekiData</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="textblock"><p>Data class for storing values of a <a class="el" href="group__libsensors__hideki.html#classSensors_1_1HidekiSensor" title="Decodes data received from a Hideki RF 433 MHz sensor. ">HidekiSensor</a>. </p>
+<p>The <a class="el" href="group__libsensors__hideki.html#classSensors_1_1HidekiSensor" title="Decodes data received from a Hideki RF 433 MHz sensor. ">HidekiSensor</a> is typically hooked up to the RF 433 MHz receiver which continuously receives pulse widths and modifies the sensor state so that the results are only valid for a short amount of time.</p>
+<p>It is often necessary to obtain a copy the sensor values in order to further process them. This can be easily achieved with this helper class. </p>
+</div><table class="memberdecls">
+<tr><td colspan="2"><h3>Public Member Functions</h3></td></tr>
+<tr class="memitem:ac6a22d02de0aa4dc65d86d11b36a907b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__libsensors__hideki.html#ac6a22d02de0aa4dc65d86d11b36a907b">HidekiData</a> ()</td></tr>
+<tr class="separator:ac6a22d02de0aa4dc65d86d11b36a907b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a25ca1a85ff98ef8e73e2d7c473101537"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__libsensors__hideki.html#a25ca1a85ff98ef8e73e2d7c473101537">storeSensorValues</a> (const <a class="el" href="group__libsensors__hideki.html#classSensors_1_1HidekiSensor">HidekiSensor</a> &amp;sensor)</td></tr>
+<tr class="separator:a25ca1a85ff98ef8e73e2d7c473101537"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a910475af8e7fc7a7b6d06becf4f05c1f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__libsensors__hideki.html#a910475af8e7fc7a7b6d06becf4f05c1f">reset</a> ()</td></tr>
+<tr class="memdesc:a910475af8e7fc7a7b6d06becf4f05c1f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resets all values.  <a href="#a910475af8e7fc7a7b6d06becf4f05c1f">More...</a><br /></td></tr>
+<tr class="separator:a910475af8e7fc7a7b6d06becf4f05c1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9b034e241c41f20b58dbc0266b6d9c14"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__libsensors__hideki.html#a9b034e241c41f20b58dbc0266b6d9c14">isValid</a> () const </td></tr>
+<tr class="memdesc:a9b034e241c41f20b58dbc0266b6d9c14"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines if the data object contains valid values.  <a href="#a9b034e241c41f20b58dbc0266b6d9c14">More...</a><br /></td></tr>
+<tr class="separator:a9b034e241c41f20b58dbc0266b6d9c14"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae2d5f794aca1292b6ecc949bbf4086b2"><td class="memItemLeft" align="right" valign="top">int8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__libsensors__hideki.html#ae2d5f794aca1292b6ecc949bbf4086b2">temperature</a> () const </td></tr>
+<tr class="memdesc:ae2d5f794aca1292b6ecc949bbf4086b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the temperature value.  <a href="#ae2d5f794aca1292b6ecc949bbf4086b2">More...</a><br /></td></tr>
+<tr class="separator:ae2d5f794aca1292b6ecc949bbf4086b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac9371fd0ff34e7b97b3804ddb71c88be"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__libsensors__hideki.html#ac9371fd0ff34e7b97b3804ddb71c88be">temperatureF</a> () const </td></tr>
+<tr class="memdesc:ac9371fd0ff34e7b97b3804ddb71c88be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the temperature value as float.  <a href="#ac9371fd0ff34e7b97b3804ddb71c88be">More...</a><br /></td></tr>
+<tr class="separator:ac9371fd0ff34e7b97b3804ddb71c88be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adda01062df2062dafe67bcf288b160ca"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__libsensors__hideki.html#adda01062df2062dafe67bcf288b160ca">humidity</a> () const </td></tr>
+<tr class="memdesc:adda01062df2062dafe67bcf288b160ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the humidity value.  <a href="#adda01062df2062dafe67bcf288b160ca">More...</a><br /></td></tr>
+<tr class="separator:adda01062df2062dafe67bcf288b160ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<h4 class="groupheader">Constructor &amp; Destructor Documentation</h4>
+<a class="anchor" id="ac6a22d02de0aa4dc65d86d11b36a907b"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Sensors::HidekiData::HidekiData </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Constructs empty data object. </p>
+
+</div>
+</div>
+<h4 class="groupheader">Member Function Documentation</h4>
+<a class="anchor" id="a25ca1a85ff98ef8e73e2d7c473101537"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Sensors::HidekiData::storeSensorValues </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="group__libsensors__hideki.html#classSensors_1_1HidekiSensor">HidekiSensor</a> &amp;&#160;</td>
+          <td class="paramname"><em>sensor</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Stores current sensor values into data object.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">sensor</td><td><a class="el" href="group__libsensors__hideki.html#classSensors_1_1HidekiSensor" title="Decodes data received from a Hideki RF 433 MHz sensor. ">HidekiSensor</a> instance to store the values from. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a910475af8e7fc7a7b6d06becf4f05c1f"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Sensors::HidekiData::reset </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Resets all values. </p>
+
+</div>
+</div>
+<a class="anchor" id="a9b034e241c41f20b58dbc0266b6d9c14"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Sensors::HidekiData::isValid </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Determines if the data object contains valid values. </p>
+<dl class="section return"><dt>Returns</dt><dd><code>true</code> if the values are valid, <code>false</code> if the no values are set. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="ae2d5f794aca1292b6ecc949bbf4086b2"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int8_t Sensors::HidekiData::temperature </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Gets the temperature value. </p>
+<dl class="section return"><dt>Returns</dt><dd>The temperature value. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="ac9371fd0ff34e7b97b3804ddb71c88be"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Sensors::HidekiData::temperatureF </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Gets the temperature value as float. </p>
+<dl class="section return"><dt>Returns</dt><dd>The temperature value. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="adda01062df2062dafe67bcf288b160ca"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t Sensors::HidekiData::humidity </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Gets the humidity value. </p>
+<dl class="section return"><dt>Returns</dt><dd>The humidity value. </dd></dl>
+
+</div>
+</div>
+
+</div>
+</div>
 <h2 class="groupheader">Typedef Documentation</h2>
 <a class="anchor" id="gaf0c732607e140975f348f866a0132df7"></a>
 <div class="memitem">
@@ -373,7 +599,7 @@ template&lt;uint16_t TShortMin, uint16_t TShortMax, uint16_t TLongMin, uint16_t 
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Mar 1 2015 17:27:59 for atMETEO by &#160;<a href="http://www.doxygen.org/index.html">
+Generated for atMETEO by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.9.1
 </small></address>

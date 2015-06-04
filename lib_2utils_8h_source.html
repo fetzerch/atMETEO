@@ -84,7 +84,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_8a893347e0977ba78e7efcd8fd93e569.html">lib</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_97aefd0d527b934f1d99a682da8fe6a9.html">lib</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -173,42 +173,48 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;    <span class="keywordflow">return</span> x &amp; 0x0F;</div>
 <div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;}</div>
 <div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;</div>
-<div class="line"><a name="l00164"></a><span class="lineno"><a class="line" href="group__libsensors__utils.html#ga074d029fd43cb3c091cb9c3bc4f1a788">  164</a></span>&#160;<span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code" href="group__libsensors__utils.html#ga074d029fd43cb3c091cb9c3bc4f1a788">parity</a>(<span class="keywordtype">int</span> x)</div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;{</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;    <span class="keywordflow">return</span> __builtin_parity(x);</div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;}</div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;</div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00177"></a><span class="lineno"><a class="line" href="group__libsensors__utils.html#gadefbcba0af70ca4134e207a3108fcf80">  177</a></span>&#160;<span class="keyword">inline</span> T <a class="code" href="group__libsensors__utils.html#gadefbcba0af70ca4134e207a3108fcf80">min</a>(T a, T b)</div>
-<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;{</div>
-<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;    <span class="keywordflow">return</span> a &lt; b ? a : b;</div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;}</div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;</div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00190"></a><span class="lineno"><a class="line" href="group__libsensors__utils.html#gad7d8277e83780d90fb3d340fafb5fa49">  190</a></span>&#160;<span class="keyword">inline</span> T <a class="code" href="group__libsensors__utils.html#gad7d8277e83780d90fb3d340fafb5fa49">max</a>(T a, T b)</div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;{</div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;    <span class="keywordflow">return</span> a &gt; b ? a : b;</div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;}</div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;  <span class="comment">// \addtogroup libsensors_utils</span></div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;</div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;}  <span class="comment">// namespace Sensors</span></div>
+<div class="line"><a name="l00162"></a><span class="lineno"><a class="line" href="group__libsensors__utils.html#gafce48d89cf9ef5ee68ea9f76af077280">  162</a></span>&#160;<span class="keyword">inline</span> uint16_t <a class="code" href="group__libsensors__utils.html#gafce48d89cf9ef5ee68ea9f76af077280">word</a>(uint8_t highByte, uint8_t lowByte)</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;{</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;    <span class="keywordflow">return</span> highByte &lt;&lt; 8 | lowByte;</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;}</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;</div>
+<div class="line"><a name="l00175"></a><span class="lineno"><a class="line" href="group__libsensors__utils.html#ga074d029fd43cb3c091cb9c3bc4f1a788">  175</a></span>&#160;<span class="keyword">inline</span> <span class="keywordtype">bool</span> <a class="code" href="group__libsensors__utils.html#ga074d029fd43cb3c091cb9c3bc4f1a788">parity</a>(<span class="keywordtype">int</span> x)</div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;{</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;    <span class="keywordflow">return</span> __builtin_parity(x);</div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;}</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;</div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00188"></a><span class="lineno"><a class="line" href="group__libsensors__utils.html#gadefbcba0af70ca4134e207a3108fcf80">  188</a></span>&#160;<span class="keyword">inline</span> T <a class="code" href="group__libsensors__utils.html#gadefbcba0af70ca4134e207a3108fcf80">min</a>(T a, T b)</div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;{</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;    <span class="keywordflow">return</span> a &lt; b ? a : b;</div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;}</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00201"></a><span class="lineno"><a class="line" href="group__libsensors__utils.html#gad7d8277e83780d90fb3d340fafb5fa49">  201</a></span>&#160;<span class="keyword">inline</span> T <a class="code" href="group__libsensors__utils.html#gad7d8277e83780d90fb3d340fafb5fa49">max</a>(T a, T b)</div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;{</div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;    <span class="keywordflow">return</span> a &gt; b ? a : b;</div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;}</div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;  <span class="comment">// \addtogroup libsensors_utils</span></div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;</div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;}  <span class="comment">// namespace Sensors</span></div>
 <div class="ttc" id="group__libsensors__utils_html_ga474bbbe676d2d6a69e67e0434a8fbca4"><div class="ttname"><a href="group__libsensors__utils.html#ga474bbbe676d2d6a69e67e0434a8fbca4">Sensors::bitWrite</a></div><div class="ttdeci">void bitWrite(T &amp;value, uint8_t bit, bool bitValue)</div><div class="ttdoc">Writes the bit in the given value. </div><div class="ttdef"><b>Definition:</b> utils.h:106</div></div>
 <div class="ttc" id="group__libsensors__utils_html_ga9746410cbd1d54384d8ac96b60603c17"><div class="ttname"><a href="group__libsensors__utils.html#ga9746410cbd1d54384d8ac96b60603c17">Sensors::bitFlip</a></div><div class="ttdeci">void bitFlip(T &amp;value, uint8_t bit)</div><div class="ttdoc">Flips the bit in the given value. </div><div class="ttdef"><b>Definition:</b> utils.h:79</div></div>
-<div class="ttc" id="group__libsensors__utils_html_ga074d029fd43cb3c091cb9c3bc4f1a788"><div class="ttname"><a href="group__libsensors__utils.html#ga074d029fd43cb3c091cb9c3bc4f1a788">Sensors::parity</a></div><div class="ttdeci">bool parity(int x)</div><div class="ttdoc">Returns the even parity for the byte x. </div><div class="ttdef"><b>Definition:</b> utils.h:164</div></div>
+<div class="ttc" id="group__libsensors__utils_html_ga074d029fd43cb3c091cb9c3bc4f1a788"><div class="ttname"><a href="group__libsensors__utils.html#ga074d029fd43cb3c091cb9c3bc4f1a788">Sensors::parity</a></div><div class="ttdeci">bool parity(int x)</div><div class="ttdoc">Returns the even parity for the byte x. </div><div class="ttdef"><b>Definition:</b> utils.h:175</div></div>
 <div class="ttc" id="group__libsensors__utils_html_ga6e8b44e3e2b783e8aca346a853da7308"><div class="ttname"><a href="group__libsensors__utils.html#ga6e8b44e3e2b783e8aca346a853da7308">Sensors::lowNibble</a></div><div class="ttdeci">uint8_t lowNibble(uint8_t x)</div><div class="ttdoc">Returns the byte&#39;s x low nibble. </div><div class="ttdef"><b>Definition:</b> utils.h:151</div></div>
 <div class="ttc" id="namespaceSensors_html"><div class="ttname"><a href="namespaceSensors.html">Sensors</a></div><div class="ttdoc">Namespace containing all symbols of the Sensors library. </div><div class="ttdef"><b>Definition:</b> bitdecoder.h:40</div></div>
 <div class="ttc" id="group__libsensors__utils_html_ga3867665db38a9bf409f2e4e7d1cbadab"><div class="ttname"><a href="group__libsensors__utils.html#ga3867665db38a9bf409f2e4e7d1cbadab">Sensors::byteReverse</a></div><div class="ttdeci">uint8_t byteReverse(uint8_t x)</div><div class="ttdoc">Returns the byte x in reversed bit order. </div><div class="ttdef"><b>Definition:</b> utils.h:116</div></div>
-<div class="ttc" id="group__libsensors__utils_html_gadefbcba0af70ca4134e207a3108fcf80"><div class="ttname"><a href="group__libsensors__utils.html#gadefbcba0af70ca4134e207a3108fcf80">Sensors::min</a></div><div class="ttdeci">T min(T a, T b)</div><div class="ttdoc">Returns the minimum of the two values a and b. </div><div class="ttdef"><b>Definition:</b> utils.h:177</div></div>
-<div class="ttc" id="group__libsensors__utils_html_gad7d8277e83780d90fb3d340fafb5fa49"><div class="ttname"><a href="group__libsensors__utils.html#gad7d8277e83780d90fb3d340fafb5fa49">Sensors::max</a></div><div class="ttdeci">T max(T a, T b)</div><div class="ttdoc">Returns the maximum of the two values a and b. </div><div class="ttdef"><b>Definition:</b> utils.h:190</div></div>
+<div class="ttc" id="group__libsensors__utils_html_gadefbcba0af70ca4134e207a3108fcf80"><div class="ttname"><a href="group__libsensors__utils.html#gadefbcba0af70ca4134e207a3108fcf80">Sensors::min</a></div><div class="ttdeci">T min(T a, T b)</div><div class="ttdoc">Returns the minimum of the two values a and b. </div><div class="ttdef"><b>Definition:</b> utils.h:188</div></div>
+<div class="ttc" id="group__libsensors__utils_html_gad7d8277e83780d90fb3d340fafb5fa49"><div class="ttname"><a href="group__libsensors__utils.html#gad7d8277e83780d90fb3d340fafb5fa49">Sensors::max</a></div><div class="ttdeci">T max(T a, T b)</div><div class="ttdoc">Returns the maximum of the two values a and b. </div><div class="ttdef"><b>Definition:</b> utils.h:201</div></div>
 <div class="ttc" id="group__libsensors__utils_html_ga403df8840763a33227f9df9297900bf8"><div class="ttname"><a href="group__libsensors__utils.html#ga403df8840763a33227f9df9297900bf8">Sensors::nibbleReverse</a></div><div class="ttdeci">uint8_t nibbleReverse(uint8_t x)</div><div class="ttdoc">Returns the byte x in reversed bit order (nibble wise). </div><div class="ttdef"><b>Definition:</b> utils.h:129</div></div>
 <div class="ttc" id="group__libsensors__utils_html_gac224533f9beac1a36780f9901fa281a1"><div class="ttname"><a href="group__libsensors__utils.html#gac224533f9beac1a36780f9901fa281a1">Sensors::bitRead</a></div><div class="ttdeci">bool bitRead(T &amp;value, uint8_t bit)</div><div class="ttdoc">Returns the bit in the given value. </div><div class="ttdef"><b>Definition:</b> utils.h:92</div></div>
 <div class="ttc" id="group__libsensors__utils_html_gaac3bb22decf7470c0fc0a408ff6b1ccf"><div class="ttname"><a href="group__libsensors__utils.html#gaac3bb22decf7470c0fc0a408ff6b1ccf">Sensors::bitSet</a></div><div class="ttdeci">void bitSet(T &amp;value, uint8_t bit)</div><div class="ttdoc">Sets the bit in the given value to 1. </div><div class="ttdef"><b>Definition:</b> utils.h:54</div></div>
 <div class="ttc" id="group__libsensors__utils_html_ga04b5698d872490fb433d1125da2f6bca"><div class="ttname"><a href="group__libsensors__utils.html#ga04b5698d872490fb433d1125da2f6bca">Sensors::highNibble</a></div><div class="ttdeci">uint8_t highNibble(uint8_t x)</div><div class="ttdoc">Returns the byte&#39;s x high nibble. </div><div class="ttdef"><b>Definition:</b> utils.h:141</div></div>
+<div class="ttc" id="group__libsensors__utils_html_gafce48d89cf9ef5ee68ea9f76af077280"><div class="ttname"><a href="group__libsensors__utils.html#gafce48d89cf9ef5ee68ea9f76af077280">Sensors::word</a></div><div class="ttdeci">uint16_t word(uint8_t highByte, uint8_t lowByte)</div><div class="ttdoc">Converts two bytes to a word. </div><div class="ttdef"><b>Definition:</b> utils.h:162</div></div>
 <div class="ttc" id="group__libsensors__utils_html_gab33e89afb51ec93b4e6bea8a7d9f087b"><div class="ttname"><a href="group__libsensors__utils.html#gab33e89afb51ec93b4e6bea8a7d9f087b">Sensors::bitClear</a></div><div class="ttdeci">void bitClear(T &amp;value, uint8_t bit)</div><div class="ttdoc">Sets the bit in the given value to 0. </div><div class="ttdef"><b>Definition:</b> utils.h:67</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Mar 1 2015 17:27:59 for atMETEO by &#160;<a href="http://www.doxygen.org/index.html">
+Generated for atMETEO by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.9.1
 </small></address>
