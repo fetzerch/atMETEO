@@ -66,6 +66,10 @@ namespace Avr
  * \note Avr::Uart is currently limited to data transmission.
  * \note The implementation is based on avr-uart
  *       (https://github.com/andygock/avr-uart).
+ * \warning Sending data has to be used with care in program parts where
+ *          interrupts are disabled. The data is added to a send buffer and
+ *          transmitted only when interrupts are enabled. This leads to
+ *          deadlock when the send buffer becomes full.
  */
 template <uint16_t baud>
 class Uart
