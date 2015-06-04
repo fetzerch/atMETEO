@@ -63,7 +63,7 @@ endif()
 # Documentation
 if(BUILD_DOCUMENTATION)
     find_package(Doxygen REQUIRED)
-    configure_file(${CMAKE_SOURCE_DIR}/Doxyfile.in
+    configure_file(${CMAKE_SOURCE_DIR}/doc/Doxyfile.in
         ${CMAKE_BINARY_DIR}/Doxyfile @ONLY)
     add_custom_target(dox ${DOXYGEN_EXECUTABLE} ${CMAKE_BINARY_DIR}/Doxyfile
         WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
