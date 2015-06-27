@@ -7,16 +7,23 @@ set(HEADERS
     pin.h
     dht22.h
     atomic.h
+    i2c.h
 
     ${CMAKE_SOURCE_DIR}/target/external/avr_io_cpp.h
+    ${CMAKE_SOURCE_DIR}/target/external/i2cmaster/i2cmaster.h
 )
 
 set(SOURCES
     ${CMAKE_SOURCE_DIR}/target/external/uart/uart.c
+    ${CMAKE_SOURCE_DIR}/target/external/i2cmaster/twimaster.c
 )
 
 set(OTHERS
     libtarget.dox
+)
+
+include_directories(
+    ${CMAKE_SOURCE_DIR}/target/external/i2cmaster
 )
 
 set(LIBTARGET_LIBRARY libtarget)
