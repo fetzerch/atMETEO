@@ -125,11 +125,12 @@ public:
      *        \p value.
      *
      * \param value The unsigned integer value to be sent.
+     * \param radix The radix for the number conversion.
      */
-    void sendUInt(uint32_t value)
+    void sendUInt(uint32_t value, uint8_t radix = 10)
     {
         char buffer[sizeof(uint32_t) * 8 + 1];
-        ultoa(value, buffer, 10);
+        ultoa(value, buffer, radix);
         sendString(buffer);
     }
 
@@ -141,14 +142,15 @@ public:
      *
      * \param description A null-terminated string describing the \p value.
      * \param value The unsigned integer value to be sent.
+     * \param radix The radix for the number conversion.
      *
      * \sa sendUInt
      */
-    void sendValue(const char *description, uint32_t value)
+    void sendValue(const char *description, uint32_t value, uint8_t radix = 10)
     {
         sendString(description);
         sendString(": ");
-        sendUInt(value);
+        sendUInt(value, radix);
         sendChar('\n');
     }
 
