@@ -157,15 +157,15 @@ public:
     /*!
      * \brief Transmits the string representation of the double \p value.
      *
-     * The transmission format is `[sign]ddd.dd`.
+     * The transmission format is `[sign]dddd.dd`.
      *
      * \param value The double value to be sent.
      */
     void sendDouble(double value)
     {
-        if (value > 999 || value < -999) value = -1;
-        char buffer[7];
-        dtostrf(value, 4, 2, buffer);
+        if (value > 9999 || value < -9999) value = -1;
+        char buffer[8];
+        dtostrf(value, 5, 2, buffer);
         sendString(buffer);
     }
 
