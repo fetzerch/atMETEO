@@ -9,6 +9,7 @@ set(HEADERS
     atomic.h
     i2c.h
     bmp180.h
+    mlx90614.h
 
     ${CMAKE_SOURCE_DIR}/target/external/avr_io_cpp.h
     ${CMAKE_SOURCE_DIR}/target/external/i2cmaster/i2cmaster.h
