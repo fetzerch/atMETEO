@@ -27,7 +27,7 @@
  * Setup:
  * - Receives \a temperature and \a humidity from a Hideki Thermo/Hygro sensor
  *   connected to the AVR's input capture pin (ICP).
- * - Recieves \a temperature and \a humidity from a DHT22 sensor connected to
+ * - Receives \a temperature and \a humidity from a DHT22 sensor connected to
  *   the AVR's digital I/O pin PD2.
  * - Receives \a sensor_resistance from a Figaro TGS 2600 sensor connected
  *   to the AVR's Analog to Digital Conversion pin 0 (ADC0).
@@ -49,7 +49,7 @@
  *                     "type": "number"
  *                 },
  *                 "humidity": {
- *                     "description": "Humindity (in %) from wireless sensor.",
+ *                     "description": "Humidity (in %) from wireless sensor.",
  *                     "type": "integer",
  *                     "minimum": 0,
  *                     "maximum": 100
@@ -65,7 +65,7 @@
  *                     "type": "number"
  *                 },
  *                 "humidity": {
- *                     "description": "Humindity (in %) from DHT22 sensor.",
+ *                     "description": "Humidity (in %) from DHT22 sensor.",
  *                     "type": "number",
  *                     "minimum": 0,
  *                     "maximum": 100
