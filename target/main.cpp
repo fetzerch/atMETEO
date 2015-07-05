@@ -29,6 +29,8 @@
  *   connected to the AVR's input capture pin (ICP).
  * - Receives \a temperature and \a humidity from a DHT22 sensor connected to
  *   the AVR's digital I/O pin PD2.
+ * - Receives \a temperature and \a pressure from a Bosch BMP180 sensor
+ *   connected to the AVR's I2C (TWI) interface.
  * - Receives \a sensor_resistance from a Figaro TGS 2600 sensor connected
  *   to the AVR's Analog to Digital Conversion pin 0 (ADC0).
  *
@@ -72,6 +74,21 @@
  *                 }
  *             }
  *         },
+ *         "bmp180": {
+ *             "type": "object",
+ *             "properties": {
+ *                 "temperature": {
+ *                     "description":
+ *                         "Temperature (in °C) from BMP180 sensor.",
+ *                     "type": "number"
+ *                 },
+ *                 "pressure": {
+ *                     "description":
+ *                         "Barometric pressure (in hPa) from BMP180 sensor.",
+ *                     "type": "number"
+ *                 },
+ *             }
+ *         },
  *         "tgs2600": {
  *             "type": "object",
  *             "properties": {
@@ -106,6 +123,7 @@
 
 #include "lib/hidekisensor.h"
 #include "lib/dht22.h"
+#include "lib/bmp180.h"
 #include "lib/tgs2600.h"
 
 #include "lib/adc.h"
@@ -117,6 +135,7 @@
 static const uint16_t BAUD = 9600;
 static const uint16_t PRESCALER = 8;
 static const uint32_t TGS2600_LOADRESISTOR = 10000;
+static const uint32_t ALTITUDE = 470;
 static const uint32_t DELAY = 30000;
 
 static Sensors::HidekiDevice<
@@ -151,6 +170,7 @@ int main()
     sei();  // Enable interrupts
 
     Avr::Dht22<Avr::InputOutputPin<Avr::DigitalIoD, PD2>> dht22;
+    Avr::Bmp180 bmp180(Avr::Bmp180::Mode::UltraHighResolution);
 
     Sensors::Tgs2600<TGS2600_LOADRESISTOR> tgs2600;
 
@@ -187,6 +207,15 @@ int main()
             uart.sendDouble(dht22.temperature());
             uart.sendString(",\"humidity\":");
             uart.sendDouble(dht22.humidity());
+            uart.sendString("}}\n");
+        }
+
+        if (bmp180.read()) {
+            uart.sendString("{\"bmp180\":");
+            uart.sendString("{\"temperature\":");
+            uart.sendDouble(bmp180.temperature());
+            uart.sendString(",\"pressure\":");
+            uart.sendDouble(bmp180.pressureAtSeaLevel(ALTITUDE));
             uart.sendString("}}\n");
         }
 
