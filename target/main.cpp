@@ -31,6 +31,8 @@
  *   the AVR's digital I/O pin PD2.
  * - Receives \a temperature and \a pressure from a Bosch BMP180 sensor
  *   connected to the AVR's I2C (TWI) interface.
+ * - Receives \a ambient_temperature and \a object_temperature from a Melexis
+ *   MLX90614 sensor connected to the AVR's I2C (TWI) interface.
  * - Receives \a sensor_resistance from a Figaro TGS 2600 sensor connected
  *   to the AVR's Analog to Digital Conversion pin 0 (ADC0).
  *
@@ -89,6 +91,21 @@
  *                 },
  *             }
  *         },
+ *         "mlx90614": {
+ *             "type": "object",
+ *             "properties": {
+ *                 "ambient_temperature": {
+ *                     "description":
+ *                         "Ambient temperature (in °C) from MLX90614 sensor.",
+ *                     "type": "number"
+ *                 },
+ *                 "object_temperature": {
+ *                     "description":
+ *                         "Object temperature (in °C) from MLX90614 sensor.",
+ *                     "type": "number",
+ *                 }
+ *             }
+ *         },
  *         "tgs2600": {
  *             "type": "object",
  *             "properties": {
@@ -124,6 +141,7 @@
 #include "lib/hidekisensor.h"
 #include "lib/dht22.h"
 #include "lib/bmp180.h"
+#include "lib/mlx90614.h"
 #include "lib/tgs2600.h"
 
 #include "lib/adc.h"
@@ -171,6 +189,7 @@ int main()
 
     Avr::Dht22<Avr::InputOutputPin<Avr::DigitalIoD, PD2>> dht22;
     Avr::Bmp180 bmp180(Avr::Bmp180::Mode::UltraHighResolution);
+    Avr::Mlx90614 mlx90614;
 
     Sensors::Tgs2600<TGS2600_LOADRESISTOR> tgs2600;
 
@@ -216,6 +235,15 @@ int main()
             uart.sendDouble(bmp180.temperature());
             uart.sendString(",\"pressure\":");
             uart.sendDouble(bmp180.pressureAtSeaLevel(ALTITUDE));
+            uart.sendString("}}\n");
+        }
+
+        if (mlx90614.read()) {
+            uart.sendString("{\"mlx90614\":");
+            uart.sendString("{\"ambient_temperature\":");
+            uart.sendDouble(mlx90614.ambientTemperature());
+            uart.sendString(",\"object_temperature\":");
+            uart.sendDouble(mlx90614.objectTemperature());
             uart.sendString("}}\n");
         }
 

@@ -39,6 +39,12 @@ and barometric pressure. The sensor has to be conencted to the I2C bus.
 
 [Bosch BMP180]: http://ae-bst.resource.bosch.com/media/products/dokumente/bmp180/BST-BMP180-DS000-12~1.pdf
 
+### Melexis MLX90614 Infrared thermometer
+The [Melexis MLX90614] is an infrared thermometer providing ambient and object
+temperatures. The sensor has to be connected to the I2C bus.
+
+[Melexis MLX90614]: http://www.melexis.com/Asset/IR-sensor-thermometer-MLX90614-Datasheet-DownloadLink-5152.aspx
+
 ### Figaro TGS 2600
 The [Figaro TGS 2600] is a high sensitive high sensitivity air contaminant
 sensor. Due to its analog nature, the detected uncalibrated sensor resistance
@@ -59,6 +65,7 @@ Exemplary data:
     {"rf433": {"temperature":-5.0,"humidity":48}}
     {"dht22": {"temperature":10.0,"humidity":32.0}}
     {"bmp180": {"temperature": 17.3,"pressure": 1008.2}}
+    {"mlx90614": {"ambient_temperature":22.3,"object_temperature":34.6}}
     {"tgs2600": {"sensor_resistance":14000}}
 
 
