@@ -60,12 +60,6 @@
 
 #include "lib/utils.h"
 
-using Sensors::bitSet;
-using Sensors::bitClear;
-using Sensors::bitFlip;
-using Sensors::bitRead;
-using Sensors::bitWrite;
-
 namespace Avr
 {
 
@@ -129,23 +123,26 @@ struct OutputConfiguration : public TDigitalIo
     /*!
      * \brief Turns output pin on.
      */
-    void on() { bitSet(this->m_PORT, pinNumber); }
+    void on() { Sensors::bitSet(this->m_PORT, pinNumber); }
 
     /*!
      * \brief Turns output pin off.
      */
-    void off() { bitClear(this->m_PORT, pinNumber); }
+    void off() { Sensors::bitClear(this->m_PORT, pinNumber); }
 
     /*!
      * \brief Sets output pin to given state.
      * \param enable Value to write into output pin.
      */
-    void set(bool enable) { bitWrite(this->m_PORT, pinNumber, enable); }
+    void set(bool enable)
+    {
+        Sensors::bitWrite(this->m_PORT, pinNumber, enable);
+    }
 
     /*!
      * \brief Flips output pin.
      */
-    void flip() { bitFlip(this->m_PORT, pinNumber); }
+    void flip() { Sensors::bitFlip(this->m_PORT, pinNumber); }
 };
 
 /*!
@@ -160,23 +157,26 @@ struct OutputConfigurationInverted : public TDigitalIo
     /*!
      * \brief Turns output pin on.
      */
-    void on() { bitClear(this->m_PORT, pinNumber); }
+    void on() { Sensors::bitClear(this->m_PORT, pinNumber); }
 
     /*!
      * \brief Turns output pin off.
      */
-    void off() { bitSet(this->m_PORT, pinNumber); }
+    void off() { Sensors::bitSet(this->m_PORT, pinNumber); }
 
     /*!
      * \brief Sets output pin to given state.
      * \param enable Value to write into output pin.
      */
-    void set(bool enable) { bitWrite(this->m_PORT, pinNumber, !enable); }
+    void set(bool enable)
+    {
+        Sensors::bitWrite(this->m_PORT, pinNumber, !enable);
+    }
 
     /*!
      * \brief Flips output pin.
      */
-    void flip() { bitFlip(this->m_PORT, pinNumber); }
+    void flip() { Sensors::bitFlip(this->m_PORT, pinNumber); }
 };
 
 /*!
@@ -199,7 +199,7 @@ struct InputConfiguration : public TDigitalIo
      * \brief Determines if the input pin is set.
      * \return `true` if the input pin is set, `false` otherwise.
      */
-    bool isSet() const { return bitRead(this->m_PIN, pinNumber); }
+    bool isSet() const { return Sensors::bitRead(this->m_PIN, pinNumber); }
 };
 
 /*!
@@ -218,7 +218,7 @@ struct OutputPin :
     public OutputConfiguration<TDigitalIo, pinNumber>,
     public InputConfigurationDisabled<TDigitalIo, pinNumber>
 {
-    OutputPin() { bitSet(this->m_DDR, pinNumber); }
+    OutputPin() { Sensors::bitSet(this->m_DDR, pinNumber); }
 };
 
 /*!
@@ -229,7 +229,7 @@ struct OutputPinInverted :
     public OutputConfigurationInverted<TDigitalIo, pinNumber>,
     public InputConfigurationDisabled<TDigitalIo, pinNumber>
 {
-    OutputPinInverted() { bitSet(this->m_DDR, pinNumber); }
+    OutputPinInverted() { Sensors::bitSet(this->m_DDR, pinNumber); }
 };
 
 /*!
@@ -240,7 +240,7 @@ struct InputPin :
     public OutputConfigurationDisabled<TDigitalIo, pinNumber>,
     public InputConfiguration<TDigitalIo, pinNumber>
 {
-    InputPin() { bitClear(this->m_DDR, pinNumber); }
+    InputPin() { Sensors::bitClear(this->m_DDR, pinNumber); }
 };
 
 /*!
@@ -256,15 +256,19 @@ struct InputOutputPin :
     /*!
      * \brief Use pin as output pin.
      */
-    void setOutput() {
-        bitSet(OutputConfiguration<TDigitalIo, pinNumber>::m_DDR, pinNumber);
+    void setOutput()
+    {
+        Sensors::bitSet(
+                OutputConfiguration<TDigitalIo, pinNumber>::m_DDR, pinNumber);
     }
 
     /*!
      * \brief Use pin as input pin.
      */
-    void setInput() {
-        bitClear(InputConfiguration<TDigitalIo, pinNumber>::m_DDR, pinNumber);
+    void setInput()
+    {
+        Sensors::bitClear(
+                InputConfiguration<TDigitalIo, pinNumber>::m_DDR, pinNumber);
     }
 };
 
