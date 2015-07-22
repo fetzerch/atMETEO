@@ -132,7 +132,7 @@ public:
     void endTransmission(bool stop = true)
     {
         for (uint8_t index = 0; index < m_bufferIndex; ++index) {
-            if (!i2c_write(m_buffer[index]))
+            if (i2c_write(m_buffer[index]) != 0)
                 return;
         }
 
