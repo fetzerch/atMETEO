@@ -149,12 +149,12 @@ The implementation is based on avr-uart (<a href="https://github.com/andygock/av
 <tr class="memitem:ad253594462bb3337424e255def56c5b8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__libtarget__uart.html#ad253594462bb3337424e255def56c5b8">sendLine</a> (const char *str)</td></tr>
 <tr class="memdesc:ad253594462bb3337424e255def56c5b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transmits the null-terminated string <code>str</code> followed by a new line character.  <a href="#ad253594462bb3337424e255def56c5b8">More...</a><br /></td></tr>
 <tr class="separator:ad253594462bb3337424e255def56c5b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6405ddc6608d3df464e7bad95fd24a75"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__libtarget__uart.html#a6405ddc6608d3df464e7bad95fd24a75">sendUInt</a> (uint32_t value)</td></tr>
-<tr class="memdesc:a6405ddc6608d3df464e7bad95fd24a75"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transmits the string representation of the unsigned integer <code>value</code>.  <a href="#a6405ddc6608d3df464e7bad95fd24a75">More...</a><br /></td></tr>
-<tr class="separator:a6405ddc6608d3df464e7bad95fd24a75"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae30a110c4216855968cba86d38c27570"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__libtarget__uart.html#ae30a110c4216855968cba86d38c27570">sendValue</a> (const char *description, uint32_t value)</td></tr>
-<tr class="memdesc:ae30a110c4216855968cba86d38c27570"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transmits the string representation of the unsigned integer <code>value</code> and its <code>description</code>.  <a href="#ae30a110c4216855968cba86d38c27570">More...</a><br /></td></tr>
-<tr class="separator:ae30a110c4216855968cba86d38c27570"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0ce1f3c576d8323a12001011ae4fea0c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__libtarget__uart.html#a0ce1f3c576d8323a12001011ae4fea0c">sendUInt</a> (uint32_t value, uint8_t radix=10)</td></tr>
+<tr class="memdesc:a0ce1f3c576d8323a12001011ae4fea0c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transmits the string representation of the unsigned integer <code>value</code>.  <a href="#a0ce1f3c576d8323a12001011ae4fea0c">More...</a><br /></td></tr>
+<tr class="separator:a0ce1f3c576d8323a12001011ae4fea0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a865ad361df6165178bf76ad41350cb4a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__libtarget__uart.html#a865ad361df6165178bf76ad41350cb4a">sendValue</a> (const char *description, uint32_t value, uint8_t radix=10)</td></tr>
+<tr class="memdesc:a865ad361df6165178bf76ad41350cb4a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transmits the string representation of the unsigned integer <code>value</code> and its <code>description</code>.  <a href="#a865ad361df6165178bf76ad41350cb4a">More...</a><br /></td></tr>
+<tr class="separator:a865ad361df6165178bf76ad41350cb4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac85d7fcfea13051f955bb7b8b9e4a851"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__libtarget__uart.html#ac85d7fcfea13051f955bb7b8b9e4a851">sendDouble</a> (double value)</td></tr>
 <tr class="memdesc:ac85d7fcfea13051f955bb7b8b9e4a851"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transmits the string representation of the double <code>value</code>.  <a href="#ac85d7fcfea13051f955bb7b8b9e4a851">More...</a><br /></td></tr>
 <tr class="separator:ac85d7fcfea13051f955bb7b8b9e4a851"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -294,7 +294,7 @@ template&lt;uint16_t baud&gt; </div>
 
 </div>
 </div>
-<a class="anchor" id="a6405ddc6608d3df464e7bad95fd24a75"></a>
+<a class="anchor" id="a0ce1f3c576d8323a12001011ae4fea0c"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
@@ -307,8 +307,18 @@ template&lt;uint16_t baud&gt; </div>
           <td class="memname">void <a class="el" href="group__libtarget__uart.html#classAvr_1_1Uart">Avr::Uart</a>&lt; baud &gt;::sendUInt </td>
           <td>(</td>
           <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>value</em></td><td>)</td>
+          <td class="paramname"><em>value</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>radix</em> = <code>10</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -322,13 +332,14 @@ template&lt;uint16_t baud&gt; </div>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">value</td><td>The unsigned integer value to be sent. </td></tr>
+    <tr><td class="paramname">radix</td><td>The radix for the number conversion. </td></tr>
   </table>
   </dd>
 </dl>
 
 </div>
 </div>
-<a class="anchor" id="ae30a110c4216855968cba86d38c27570"></a>
+<a class="anchor" id="a865ad361df6165178bf76ad41350cb4a"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
@@ -347,7 +358,13 @@ template&lt;uint16_t baud&gt; </div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>value</em>&#160;</td>
+          <td class="paramname"><em>value</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>radix</em> = <code>10</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -367,11 +384,12 @@ template&lt;uint16_t baud&gt; </div>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">description</td><td>A null-terminated string describing the <code>value</code>. </td></tr>
-    <tr><td class="paramname">value</td><td>The unsigned integer value to be sent.</td></tr>
+    <tr><td class="paramname">value</td><td>The unsigned integer value to be sent. </td></tr>
+    <tr><td class="paramname">radix</td><td>The radix for the number conversion.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__libtarget__uart.html#a6405ddc6608d3df464e7bad95fd24a75" title="Transmits the string representation of the unsigned integer value. ">sendUInt</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__libtarget__uart.html#a0ce1f3c576d8323a12001011ae4fea0c" title="Transmits the string representation of the unsigned integer value. ">sendUInt</a> </dd></dl>
 
 </div>
 </div>
@@ -400,7 +418,7 @@ template&lt;uint16_t baud&gt; </div>
 </div><div class="memdoc">
 
 <p>Transmits the string representation of the double <code>value</code>. </p>
-<p>The transmission format is <code>[sign]ddd.dd</code>.</p>
+<p>The transmission format is <code>[sign]dddd.dd</code>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">value</td><td>The double value to be sent. </td></tr>

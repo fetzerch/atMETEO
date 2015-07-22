@@ -4,5 +4,6 @@ var searchData=
   ['bitdecoder',['BitDecoder',['../group__libsensors__bitdecoder.html#classSensors_1_1BitDecoder',1,'Sensors']]],
   ['bitdecoderbase',['BitDecoderBase',['../group__libsensors__bitdecoder.html#classSensors_1_1BitDecoderBase',1,'Sensors']]],
   ['bitdecoderbase_3c_20t_2c_20bitdecoder_3c_20t_2c_20noparity_2c_20tbitnumbering_20_3e_20_3e',['BitDecoderBase&lt; T, BitDecoder&lt; T, NoParity, TBitNumbering &gt; &gt;',['../group__libsensors__bitdecoder.html',1,'Sensors']]],
-  ['bitdecoderbase_3c_20t_2c_20bitdecoder_3c_20t_2c_20tparity_2c_20tbitnumbering_20_3e_20_3e',['BitDecoderBase&lt; T, BitDecoder&lt; T, TParity, TBitNumbering &gt; &gt;',['../group__libsensors__bitdecoder.html',1,'Sensors']]]
+  ['bitdecoderbase_3c_20t_2c_20bitdecoder_3c_20t_2c_20tparity_2c_20tbitnumbering_20_3e_20_3e',['BitDecoderBase&lt; T, BitDecoder&lt; T, TParity, TBitNumbering &gt; &gt;',['../group__libsensors__bitdecoder.html',1,'Sensors']]],
+  ['bmp180',['Bmp180',['../group__libtarget__bmp180.html#classAvr_1_1Bmp180',1,'Avr']]]
 ];

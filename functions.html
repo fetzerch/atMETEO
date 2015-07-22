@@ -74,22 +74,27 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul class="tablist">
       <li class="current"><a href="functions.html"><span>All</span></a></li>
       <li><a href="functions_func.html"><span>Functions</span></a></li>
+      <li><a href="functions_enum.html"><span>Enumerations</span></a></li>
     </ul>
   </div>
   <div id="navrow4" class="tabs3">
     <ul class="tablist">
       <li><a href="#index_a"><span>a</span></a></li>
+      <li><a href="#index_b"><span>b</span></a></li>
       <li><a href="#index_c"><span>c</span></a></li>
+      <li><a href="#index_e"><span>e</span></a></li>
       <li><a href="#index_f"><span>f</span></a></li>
       <li><a href="#index_g"><span>g</span></a></li>
       <li><a href="#index_h"><span>h</span></a></li>
       <li><a href="#index_i"><span>i</span></a></li>
       <li><a href="#index_m"><span>m</span></a></li>
       <li><a href="#index_o"><span>o</span></a></li>
+      <li><a href="#index_p"><span>p</span></a></li>
       <li><a href="#index_r"><span>r</span></a></li>
       <li><a href="#index_s"><span>s</span></a></li>
       <li><a href="#index_t"><span>t</span></a></li>
-      <li class="current"><a href="#index_u"><span>u</span></a></li>
+      <li><a href="#index_u"><span>u</span></a></li>
+      <li class="current"><a href="#index_w"><span>w</span></a></li>
     </ul>
   </div>
 </div><!-- top -->
@@ -121,6 +126,19 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 : <a class="el" href="group__libsensors__demodulator.html#a557cca9c3e63c955084ef44aa6d13616">Sensors::DemodulatorBase&lt; Demodulator &gt;</a>
 , <a class="el" href="group__libsensors__rfdevice.html#a6f2ee71af83136dbbf9101571c1c32f1">Sensors::RfDevice&lt; TDemodulator, TBitDecoder, TSensor, TBitLength &gt;</a>
 </li>
+<li>ambientTemperature()
+: <a class="el" href="group__libtarget__mlx90614.html#a3f3e8b3dc5764ca76737026fdb3d75b5">Avr::Mlx90614</a>
+</li>
+</ul>
+
+
+<h3><a class="anchor" id="index_b"></a>- b -</h3><ul>
+<li>beginTransmission()
+: <a class="el" href="group__libtarget__i2c.html#a6684979d023d7c87134851a29725ed26">Avr::I2c</a>
+</li>
+<li>Bmp180()
+: <a class="el" href="group__libtarget__bmp180.html#aefd7231518c4d8af22165400558dc6d2">Avr::Bmp180</a>
+</li>
 </ul>
 
 
@@ -130,6 +148,13 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </li>
 <li>clockSelect()
 : <a class="el" href="group__libtarget__timer.html#a435308baafb128205ee633eace1605bb">Avr::TimerUtils&lt; prescaler &gt;</a>
+</li>
+</ul>
+
+
+<h3><a class="anchor" id="index_e"></a>- e -</h3><ul>
+<li>endTransmission()
+: <a class="el" href="group__libtarget__i2c.html#af564def1636d258b1dfb64900112bad9">Avr::I2c</a>
 </li>
 </ul>
 
@@ -168,6 +193,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <h3><a class="anchor" id="index_i"></a>- i -</h3><ul>
 <li>instance()
 : <a class="el" href="group__libtarget__adc.html#a26cc190c6be0e8f53d9f439cd9ed26cd">Avr::Adc</a>
+, <a class="el" href="group__libtarget__i2c.html#a97f4ed9bd73bb7492a83b6e0c1643b8a">Avr::I2c</a>
 , <a class="el" href="group__libtarget__timer.html#af5ba8ea7350f9e7fabacf0c680ab8f4b">Avr::TimerInputCapture&lt; prescaler, TObserver &gt;</a>
 , <a class="el" href="group__libtarget__uart.html#afc0981c0abe4c2842daa225901e13557">Avr::Uart&lt; baud &gt;</a>
 </li>
@@ -181,7 +207,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 : <a class="el" href="group__libsensors__hideki.html#a40be28f88202710c1a8daf01eaba0d8d">Sensors::HidekiSensor</a>
 </li>
 <li>isValid()
-: <a class="el" href="group__libtarget__dht22.html#ae4826432bc0e99887588b8aec9b5d294">Avr::Dht22&lt; TPin &gt;</a>
+: <a class="el" href="group__libtarget__bmp180.html#ab2a56588bd982dece46715fd9fc1f59e">Avr::Bmp180</a>
+, <a class="el" href="group__libtarget__dht22.html#ae4826432bc0e99887588b8aec9b5d294">Avr::Dht22&lt; TPin &gt;</a>
+, <a class="el" href="group__libtarget__mlx90614.html#aec86522be7aa08f66f8de9d75e835eca">Avr::Mlx90614</a>
 , <a class="el" href="group__libsensors__hideki.html#a9b034e241c41f20b58dbc0266b6d9c14">Sensors::HidekiData</a>
 , <a class="el" href="group__libsensors__hideki.html#ab971c72bf205e6370ed0f9367c09d681">Sensors::HidekiSensor</a>
 </li>
@@ -192,10 +220,16 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>message()
 : <a class="el" href="group__libsensors__hideki.html#a3f0900b7c25e2f8f6a0f6a83d28480a6">Sensors::HidekiSensor</a>
 </li>
+<li>Mode
+: <a class="el" href="group__libtarget__bmp180.html#ga063e2466b24219a364231e235fe01990">Avr::Bmp180</a>
+</li>
 </ul>
 
 
 <h3><a class="anchor" id="index_o"></a>- o -</h3><ul>
+<li>objectTemperature()
+: <a class="el" href="group__libtarget__mlx90614.html#a1173d29d9fdf393d6775ae8b98776534">Avr::Mlx90614</a>
+</li>
 <li>off()
 : <a class="el" href="group__libtarget__pin.html#a8674909dafc6afea7b3d695d83ab4eb0">Avr::OutputConfiguration&lt; TDigitalIo, pinNumber &gt;</a>
 , <a class="el" href="group__libtarget__pin.html#ad6883f0d161d522ce7b3b07736402fe3">Avr::OutputConfigurationInverted&lt; TDigitalIo, pinNumber &gt;</a>
@@ -207,16 +241,32 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </ul>
 
 
+<h3><a class="anchor" id="index_p"></a>- p -</h3><ul>
+<li>pressure()
+: <a class="el" href="group__libtarget__bmp180.html#a381dc5e397e5240f5f20071044418957">Avr::Bmp180</a>
+</li>
+<li>pressureAtSeaLevel()
+: <a class="el" href="group__libtarget__bmp180.html#a407585feaca26d9e067ae55a76216c9b">Avr::Bmp180</a>
+</li>
+</ul>
+
+
 <h3><a class="anchor" id="index_r"></a>- r -</h3><ul>
 <li>read()
 : <a class="el" href="group__libtarget__adc.html#a42a629b2e9d1e9e68367a6de7339d756">Avr::Adc</a>
+, <a class="el" href="group__libtarget__bmp180.html#a3c140546b71e473631bdcae60c3572f1">Avr::Bmp180</a>
 , <a class="el" href="group__libtarget__dht22.html#a5e57f25fa48866882c51e3d72bf9a9b5">Avr::Dht22&lt; TPin &gt;</a>
+, <a class="el" href="group__libtarget__i2c.html#af3263c4c05095fca6330f5c1884cc366">Avr::I2c</a>
+, <a class="el" href="group__libtarget__mlx90614.html#abbff085eaf238472fc0e33423dcddf57">Avr::Mlx90614</a>
 </li>
 <li>readMilliVolts()
 : <a class="el" href="group__libtarget__adc.html#a021e95249b964b7e56f1b0c01bcf234d">Avr::Adc</a>
 </li>
 <li>readVolts()
 : <a class="el" href="group__libtarget__adc.html#ae6f49822bb348afb871667cdb9167ef8">Avr::Adc</a>
+</li>
+<li>requestFrom()
+: <a class="el" href="group__libtarget__i2c.html#ab68d9a781c2225c6c7b019af24b3651a">Avr::I2c</a>
 </li>
 <li>reset()
 : <a class="el" href="group__libsensors__bitdecoder.html#a2c7ed29a9ba2cf05283d815887e4fafe">Sensors::BitDecoderBase&lt; T, BitDecoder &gt;</a>
@@ -242,10 +292,10 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 : <a class="el" href="group__libtarget__uart.html#a33c62127a468d2a4ea7dda45a43c01f5">Avr::Uart&lt; baud &gt;</a>
 </li>
 <li>sendUInt()
-: <a class="el" href="group__libtarget__uart.html#a6405ddc6608d3df464e7bad95fd24a75">Avr::Uart&lt; baud &gt;</a>
+: <a class="el" href="group__libtarget__uart.html#a0ce1f3c576d8323a12001011ae4fea0c">Avr::Uart&lt; baud &gt;</a>
 </li>
 <li>sendValue()
-: <a class="el" href="group__libtarget__uart.html#ae30a110c4216855968cba86d38c27570">Avr::Uart&lt; baud &gt;</a>
+: <a class="el" href="group__libtarget__uart.html#a865ad361df6165178bf76ad41350cb4a">Avr::Uart&lt; baud &gt;</a>
 </li>
 <li>sensorId()
 : <a class="el" href="group__libsensors__hideki.html#a7652b33ccb37efab7bc16c6ecdc93fbb">Sensors::HidekiSensor</a>
@@ -289,7 +339,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 <h3><a class="anchor" id="index_t"></a>- t -</h3><ul>
 <li>temperature()
-: <a class="el" href="group__libtarget__dht22.html#a0e99d748b2f8f89138f48761eaf28aaf">Avr::Dht22&lt; TPin &gt;</a>
+: <a class="el" href="group__libtarget__bmp180.html#a391b3859a6a790bbca5b2cca818295ce">Avr::Bmp180</a>
+, <a class="el" href="group__libtarget__dht22.html#a0e99d748b2f8f89138f48761eaf28aaf">Avr::Dht22&lt; TPin &gt;</a>
 , <a class="el" href="group__libsensors__hideki.html#ae2d5f794aca1292b6ecc949bbf4086b2">Sensors::HidekiData</a>
 , <a class="el" href="group__libsensors__hideki.html#a09d9d0f5e9c82c9c84192497d70afe6c">Sensors::HidekiSensor</a>
 </li>
@@ -306,6 +357,13 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <h3><a class="anchor" id="index_u"></a>- u -</h3><ul>
 <li>usToTicks()
 : <a class="el" href="group__libtarget__timer.html#ae81036d4142aad78ad2cfe3b4891c3d9">Avr::TimerUtils&lt; prescaler &gt;</a>
+</li>
+</ul>
+
+
+<h3><a class="anchor" id="index_w"></a>- w -</h3><ul>
+<li>write()
+: <a class="el" href="group__libtarget__i2c.html#a22fad5b7554fd15081200287cfaa9d93">Avr::I2c</a>
 </li>
 </ul>
 </div><!-- contents -->

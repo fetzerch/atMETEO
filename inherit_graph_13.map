@@ -1,3 +1,11 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$group__libsensors__demodulator.html#structSensors_1_1BiphaseMark" title="Configuration parameter for Demodulator that enables Biphase Mark demodulation. " alt="" coords="5,5,176,61"/>
+<area shape="rect" id="node1" href="$group__libtarget__pin.html#structAvr_1_1InputConfiguration" title="Input configuration parameter for pin (normal mode). " alt="" coords="22,85,195,126"/>
+<area shape="rect" id="node2" href="$group__libtarget__pin.html#structAvr_1_1InputOutputPin" title="Input / Output pin (initially configured as output pin). " alt="" coords="260,150,433,191"/>
+<area shape="rect" id="node3" href="$group__libtarget__pin.html#structAvr_1_1InputPin" title="Input pin. " alt="" coords="261,49,432,90"/>
+<area shape="rect" id="node4" href="$group__libtarget__pin.html#structAvr_1_1InputConfigurationDisabled" title="Input configuration parameter for pin (disabled). " alt="" coords="5,215,212,257"/>
+<area shape="rect" id="node5" href="$group__libtarget__pin.html#structAvr_1_1OutputPin" title="Output pin (normal mode). " alt="" coords="264,215,429,257"/>
+<area shape="rect" id="node6" href="$group__libtarget__pin.html#structAvr_1_1OutputPinInverted" title="Inverted output pin (active low configuration). " alt="" coords="260,285,433,326"/>
+<area shape="rect" id="node7" href="$group__libtarget__pin.html#structAvr_1_1OutputConfiguration" title="Output configuration parameter for pin (normal mode). " alt="" coords="22,150,195,191"/>
+<area shape="rect" id="node8" href="$group__libtarget__pin.html#structAvr_1_1OutputConfigurationDisabled" title="Output configuration parameter for pin (disabled). " alt="" coords="25,5,192,61"/>
+<area shape="rect" id="node9" href="$group__libtarget__pin.html#structAvr_1_1OutputConfigurationInverted" title="Output configuration parameter for pin (for inverted output pins / active low configuration). " alt="" coords="25,280,192,336"/>
 </map>

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['sensorstatus',['SensorStatus',['../group__libsensors__sensor.html#ga0b5b9591c1d6882987931c0b97d466b2',1,'Sensors']]]
+  ['rfdevicestatus',['RfDeviceStatus',['../group__libsensors__rfdevice.html#ga25db4f16c274db60b2fc919599a109ee',1,'Sensors']]]
 ];

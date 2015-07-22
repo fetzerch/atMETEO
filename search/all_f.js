@@ -6,8 +6,8 @@ var searchData=
   ['senddouble',['sendDouble',['../group__libtarget__uart.html#ac85d7fcfea13051f955bb7b8b9e4a851',1,'Avr::Uart']]],
   ['sendline',['sendLine',['../group__libtarget__uart.html#ad253594462bb3337424e255def56c5b8',1,'Avr::Uart']]],
   ['sendstring',['sendString',['../group__libtarget__uart.html#a33c62127a468d2a4ea7dda45a43c01f5',1,'Avr::Uart']]],
-  ['senduint',['sendUInt',['../group__libtarget__uart.html#a6405ddc6608d3df464e7bad95fd24a75',1,'Avr::Uart']]],
-  ['sendvalue',['sendValue',['../group__libtarget__uart.html#ae30a110c4216855968cba86d38c27570',1,'Avr::Uart']]],
+  ['senduint',['sendUInt',['../group__libtarget__uart.html#a0ce1f3c576d8323a12001011ae4fea0c',1,'Avr::Uart']]],
+  ['sendvalue',['sendValue',['../group__libtarget__uart.html#a865ad361df6165178bf76ad41350cb4a',1,'Avr::Uart']]],
   ['sensor',['Sensor',['../group__libsensors__sensor.html#classSensors_1_1Sensor',1,'Sensors']]],
   ['sensor_2eh',['sensor.h',['../sensor_8h.html',1,'']]],
   ['sensor_3c_20hidekisensor_20_3e',['Sensor&lt; HidekiSensor &gt;',['../group__libsensors__sensor.html',1,'Sensors']]],
@@ -24,6 +24,7 @@ var searchData=
   ['setreferencehumidity',['setReferenceHumidity',['../group__libsensors__tgs2600.html#a1e0944d3336a96497b594616b2abb501',1,'Sensors::Tgs2600']]],
   ['setreferenceresistance',['setReferenceResistance',['../group__libsensors__tgs2600.html#ada2d09e1855a2d3180dc8c5cb542f2a0',1,'Sensors::Tgs2600']]],
   ['setreferencetemperature',['setReferenceTemperature',['../group__libsensors__tgs2600.html#a4f1f720f7be4d34f49428add106927ad',1,'Sensors::Tgs2600']]],
+  ['standard',['Standard',['../group__libtarget__bmp180.html#gga063e2466b24219a364231e235fe01990aeb6d8ae6f20283755b339c0dc273988b',1,'Avr::Bmp180']]],
   ['storesensorvalues',['storeSensorValues',['../group__libsensors__hideki.html#a25ca1a85ff98ef8e73e2d7c473101537',1,'Sensors::HidekiData']]],
   ['supported_20targets',['Supported targets',['../group__targets.html',1,'']]]
 ];

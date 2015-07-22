@@ -1,3 +1,3 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$group__libsensors__bitdecoder.html" title="Sensors::BitDecoderBase\l\&lt; T, BitDecoder\&lt; T, NoParity,\l TBitNumbering \&gt; \&gt;" alt="" coords="5,5,204,61"/>
+<area shape="rect" id="node1" href="$group__libtarget__uart.html#classAvr_1_1Uart" title="A C++ wrapper for accessing the built&#45;in UART communication interfaces. " alt="" coords="5,5,132,32"/>
 </map>

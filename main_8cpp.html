@@ -103,6 +103,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <code>#include &lt;util/delay.h&gt;</code><br />
 <code>#include &quot;<a class="el" href="hidekisensor_8h_source.html">lib/hidekisensor.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="dht22_8h_source.html">lib/dht22.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="bmp180_8h_source.html">lib/bmp180.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="mlx90614_8h_source.html">lib/mlx90614.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="tgs2600_8h_source.html">lib/tgs2600.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="adc_8h_source.html">lib/adc.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="uart_8h_source.html">lib/uart.h</a>&quot;</code><br />
@@ -120,7 +122,9 @@ Functions</h2></td></tr>
 <div class="textblock"><p>The main weather station application utilizing <a class="el" href="group__libsensors.html">Sensors library</a> and <a class="el" href="group__libtarget.html">AVR C++ utilities library</a>. </p>
 <p>Setup:</p><ul>
 <li>Receives <em>temperature</em> and <em>humidity</em> from a Hideki Thermo/Hygro sensor connected to the AVR's input capture pin (ICP).</li>
-<li>Recieves <em>temperature</em> and <em>humidity</em> from a DHT22 sensor connected to the AVR's digital I/O pin PD2.</li>
+<li>Receives <em>temperature</em> and <em>humidity</em> from a DHT22 sensor connected to the AVR's digital I/O pin PD2.</li>
+<li>Receives <em>temperature</em> and <em>pressure</em> from a Bosch BMP180 sensor connected to the AVR's I2C (TWI) interface.</li>
+<li>Receives <em>ambient_temperature</em> and <em>object_temperature</em> from a Melexis MLX90614 sensor connected to the AVR's I2C (TWI) interface.</li>
 <li>Receives <em>sensor_resistance</em> from a Figaro TGS 2600 sensor connected to the AVR's Analog to Digital Conversion pin 0 (ADC0).</li>
 </ul>
 <p>The received sensor values are transmitted over the UART interface as JSON object.</p>
@@ -136,7 +140,7 @@ Functions</h2></td></tr>
 <div class="line">                    <span class="stringliteral">&quot;type&quot;</span>: <span class="stringliteral">&quot;number&quot;</span></div>
 <div class="line">                },</div>
 <div class="line">                <span class="stringliteral">&quot;humidity&quot;</span>: {</div>
-<div class="line">                    <span class="stringliteral">&quot;description&quot;</span>: <span class="stringliteral">&quot;Humindity (in %) from wireless sensor.&quot;</span>,</div>
+<div class="line">                    <span class="stringliteral">&quot;description&quot;</span>: <span class="stringliteral">&quot;Humidity (in %) from wireless sensor.&quot;</span>,</div>
 <div class="line">                    <span class="stringliteral">&quot;type&quot;</span>: <span class="stringliteral">&quot;integer&quot;</span>,</div>
 <div class="line">                    <span class="stringliteral">&quot;minimum&quot;</span>: 0,</div>
 <div class="line">                    <span class="stringliteral">&quot;maximum&quot;</span>: 100</div>
@@ -152,10 +156,40 @@ Functions</h2></td></tr>
 <div class="line">                    <span class="stringliteral">&quot;type&quot;</span>: <span class="stringliteral">&quot;number&quot;</span></div>
 <div class="line">                },</div>
 <div class="line">                <span class="stringliteral">&quot;humidity&quot;</span>: {</div>
-<div class="line">                    <span class="stringliteral">&quot;description&quot;</span>: <span class="stringliteral">&quot;Humindity (in %) from DHT22 sensor.&quot;</span>,</div>
+<div class="line">                    <span class="stringliteral">&quot;description&quot;</span>: <span class="stringliteral">&quot;Humidity (in %) from DHT22 sensor.&quot;</span>,</div>
 <div class="line">                    <span class="stringliteral">&quot;type&quot;</span>: <span class="stringliteral">&quot;number&quot;</span>,</div>
 <div class="line">                    <span class="stringliteral">&quot;minimum&quot;</span>: 0,</div>
 <div class="line">                    <span class="stringliteral">&quot;maximum&quot;</span>: 100</div>
+<div class="line">                }</div>
+<div class="line">            }</div>
+<div class="line">        },</div>
+<div class="line">        <span class="stringliteral">&quot;bmp180&quot;</span>: {</div>
+<div class="line">            <span class="stringliteral">&quot;type&quot;</span>: <span class="stringliteral">&quot;object&quot;</span>,</div>
+<div class="line">            <span class="stringliteral">&quot;properties&quot;</span>: {</div>
+<div class="line">                <span class="stringliteral">&quot;temperature&quot;</span>: {</div>
+<div class="line">                    <span class="stringliteral">&quot;description&quot;</span>:</div>
+<div class="line">                        <span class="stringliteral">&quot;Temperature (in °C) from BMP180 sensor.&quot;</span>,</div>
+<div class="line">                    <span class="stringliteral">&quot;type&quot;</span>: <span class="stringliteral">&quot;number&quot;</span></div>
+<div class="line">                },</div>
+<div class="line">                <span class="stringliteral">&quot;pressure&quot;</span>: {</div>
+<div class="line">                    <span class="stringliteral">&quot;description&quot;</span>:</div>
+<div class="line">                        <span class="stringliteral">&quot;Barometric pressure (in hPa) from BMP180 sensor.&quot;</span>,</div>
+<div class="line">                    <span class="stringliteral">&quot;type&quot;</span>: <span class="stringliteral">&quot;number&quot;</span></div>
+<div class="line">                },</div>
+<div class="line">            }</div>
+<div class="line">        },</div>
+<div class="line">        <span class="stringliteral">&quot;mlx90614&quot;</span>: {</div>
+<div class="line">            <span class="stringliteral">&quot;type&quot;</span>: <span class="stringliteral">&quot;object&quot;</span>,</div>
+<div class="line">            <span class="stringliteral">&quot;properties&quot;</span>: {</div>
+<div class="line">                <span class="stringliteral">&quot;ambient_temperature&quot;</span>: {</div>
+<div class="line">                    <span class="stringliteral">&quot;description&quot;</span>:</div>
+<div class="line">                        <span class="stringliteral">&quot;Ambient temperature (in °C) from MLX90614 sensor.&quot;</span>,</div>
+<div class="line">                    <span class="stringliteral">&quot;type&quot;</span>: <span class="stringliteral">&quot;number&quot;</span></div>
+<div class="line">                },</div>
+<div class="line">                <span class="stringliteral">&quot;object_temperature&quot;</span>: {</div>
+<div class="line">                    <span class="stringliteral">&quot;description&quot;</span>:</div>
+<div class="line">                        <span class="stringliteral">&quot;Object temperature (in °C) from MLX90614 sensor.&quot;</span>,</div>
+<div class="line">                    <span class="stringliteral">&quot;type&quot;</span>: <span class="stringliteral">&quot;number&quot;</span>,</div>
 <div class="line">                }</div>
 <div class="line">            }</div>
 <div class="line">        },</div>

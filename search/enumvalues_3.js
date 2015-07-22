@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['parityerror',['ParityError',['../group__libsensors__bitdecoder.html#gga93e221a684f98d70ee61d17bfbfebd02a63440a36bf6fd0748b3c188f3e9fda78',1,'Sensors']]]
+  ['outofrangeerror',['OutOfRangeError',['../group__libsensors__demodulator.html#gga9d34c624f644a48b51d806e3d988afd4ad580a0a3b08f07259ec2e70a94bde7e3',1,'Sensors']]]
 ];
