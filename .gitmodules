@@ -1,3 +1,6 @@
 [submodule "target/external/uart"]
 	path = target/external/uart
 	url = https://github.com/andygock/avr-uart
+[submodule "target/external/wiznet"]
+	path = target/external/wiznet
+	url = https://github.com/Wiznet/ioLibrary_Driver
