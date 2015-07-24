@@ -1,6 +1,9 @@
 # Disable language features that cannot be easily fulfilled on AVR
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-threadsafe-statics")
 
+# Enable floating point format in printf
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -uvfprintf -lprintf_flt")
+
 include_directories(${CMAKE_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR})
 
 set(HEADERS

@@ -133,6 +133,7 @@
  */
 
 #include <inttypes.h>  // AVR toolchain doesn't offer cinttypes header
+#include <stdio.h>
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
@@ -155,6 +156,7 @@ static const uint16_t PRESCALER = 8;
 static const uint32_t TGS2600_LOADRESISTOR = 10000;
 static const uint32_t ALTITUDE = 470;
 static const uint32_t DELAY = 30000;
+static const uint16_t SEND_BUFFER_SIZE = 128;
 
 static Sensors::HidekiDevice<
     Avr::TimerUtils<PRESCALER>::usToTicks<183>(),  // Short min
@@ -196,11 +198,12 @@ int main()
     // Arduino boards restart when a serial connection is established (DTR).
     // Transmitting an initial string allows the client to know that the
     // microcontroller is ready.
-    Avr::Uart<BAUD>::instance().sendLine("READY");
+    auto uart = Avr::Uart<BAUD>::instance();
+    uart.sendLine("READY");
+
+    char str[SEND_BUFFER_SIZE];
 
     while (true) {
-        auto uart = Avr::Uart<BAUD>::instance();
-
         // Copy Hideki sensor result set
         Sensors::HidekiData hidekiData;
         {
@@ -212,46 +215,43 @@ int main()
         }
 
         if (hidekiData.isValid()) {
-            uart.sendString("{\"rf433\":");
-            uart.sendString("{\"temperature\":");
-            uart.sendDouble(hidekiData.temperatureF());
-            uart.sendString(",\"humidity\":");
-            uart.sendUInt(hidekiData.humidity());
-            uart.sendString("}}\n");
+            snprintf(str, SEND_BUFFER_SIZE,
+                     "{\"rf433\":{\"temperature\":%.2f,\"humidity\":%d}}\n",
+                     static_cast<double>(hidekiData.temperatureF()),
+                     hidekiData.humidity());
+            uart.sendString(str);
         }
 
         if (dht22.read()) {
-            uart.sendString("{\"dht22\":");
-            uart.sendString("{\"temperature\":");
-            uart.sendDouble(dht22.temperature());
-            uart.sendString(",\"humidity\":");
-            uart.sendDouble(dht22.humidity());
-            uart.sendString("}}\n");
+            snprintf(str, SEND_BUFFER_SIZE,
+                     "{\"dht22\":{\"temperature\":%.2f,\"humidity\":%.2f}}\n",
+                     static_cast<double>(dht22.temperature()),
+                     static_cast<double>(dht22.humidity()));
+            uart.sendString(str);
         }
 
         if (bmp180.read()) {
-            uart.sendString("{\"bmp180\":");
-            uart.sendString("{\"temperature\":");
-            uart.sendDouble(bmp180.temperature());
-            uart.sendString(",\"pressure\":");
-            uart.sendDouble(bmp180.pressureAtSeaLevel(ALTITUDE));
-            uart.sendString("}}\n");
+            snprintf(str, SEND_BUFFER_SIZE,
+                     "{\"bmp180\":{\"temperature\":%.2f,\"pressure\":%.2f}}\n",
+                     static_cast<double>(bmp180.temperature()),
+                     static_cast<double>(bmp180.pressureAtSeaLevel(ALTITUDE)));
+            uart.sendString(str);
         }
 
         if (mlx90614.read()) {
-            uart.sendString("{\"mlx90614\":");
-            uart.sendString("{\"ambient_temperature\":");
-            uart.sendDouble(mlx90614.ambientTemperature());
-            uart.sendString(",\"object_temperature\":");
-            uart.sendDouble(mlx90614.objectTemperature());
-            uart.sendString("}}\n");
+            snprintf(str, SEND_BUFFER_SIZE,
+                     "{\"mlx90614\":{\"ambient_temperature\":%.2f,"
+                     "\"objectTemperature\":%.2f}}\n",
+                     static_cast<double>(mlx90614.ambientTemperature()),
+                     static_cast<double>(mlx90614.objectTemperature()));
+            uart.sendString(str);
         }
 
-        uart.sendString("{\"tgs2600\":");
-        uart.sendString("{\"sensor_resistance\":");
-        auto adc = Avr::Adc::instance().readMilliVolts(0, 5);
-        uart.sendUInt(tgs2600.sensorResistance(adc));
-        uart.sendString("}}\n");
+        snprintf(str, SEND_BUFFER_SIZE,
+                 "{\"tgs2600\":{\"sensor_resistance\":%ld}}\n",
+                 tgs2600.sensorResistance(
+                 Avr::Adc::instance().readMilliVolts(0, 5)));
+        uart.sendString(str);
 
         _delay_ms(DELAY);
     }
