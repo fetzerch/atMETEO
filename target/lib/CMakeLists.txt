@@ -12,14 +12,23 @@ set(HEADERS
     mlx90614.h
     spi.h
     ethernet.h
+    wiznet.h
 
     ${CMAKE_SOURCE_DIR}/target/external/avr_io_cpp.h
     ${CMAKE_SOURCE_DIR}/target/external/i2cmaster/i2cmaster.h
 )
 
 set(SOURCES
+    wiznet.cpp
     ${CMAKE_SOURCE_DIR}/target/external/uart/uart.c
     ${CMAKE_SOURCE_DIR}/target/external/i2cmaster/twimaster.c
+    ${CMAKE_SOURCE_DIR}/target/external/wiznet/Ethernet/socket.c
+    ${CMAKE_SOURCE_DIR}/target/external/wiznet/Ethernet/wizchip_conf.c
+    ${CMAKE_SOURCE_DIR}/target/external/wiznet/Ethernet/W5100/w5100.c
+    ${CMAKE_SOURCE_DIR}/target/external/wiznet/Ethernet/W5100/w5100.c
+    ${CMAKE_SOURCE_DIR}/target/external/wiznet/Ethernet/W5200/w5200.c
+    ${CMAKE_SOURCE_DIR}/target/external/wiznet/Ethernet/W5300/w5300.c
+    ${CMAKE_SOURCE_DIR}/target/external/wiznet/Ethernet/W5500/w5500.c
 )
 
 set(OTHERS
@@ -28,6 +37,7 @@ set(OTHERS
 
 include_directories(
     ${CMAKE_SOURCE_DIR}/target/external/i2cmaster
+    ${CMAKE_SOURCE_DIR}/target/external/wiznet/Ethernet
 )
 
 set(LIBTARGET_LIBRARY libtarget)
