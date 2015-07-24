@@ -57,8 +57,8 @@ this sensor, it has to be connected to the Analog to Digital Conversion Pin 0
 
 Output format
 -------------
-The received sensor values are transmitted over the UART interface as JSON
-object.
+The received sensor values are transmitted over the UART interface and / or
+over Ethernet using UDP messages as JSON object.
 
 Exemplary data:
 

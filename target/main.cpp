@@ -36,8 +36,8 @@
  * - Receives \a sensor_resistance from a Figaro TGS 2600 sensor connected
  *   to the AVR's Analog to Digital Conversion pin 0 (ADC0).
  *
- * The received sensor values are transmitted over the UART interface as
- * JSON object.
+ * The received sensor values are transmitted over the UART interface and / or
+ * over Ethernet using UDP messages as JSON object.
  *
  * JSON Schema:
  * \code
@@ -144,6 +144,8 @@
 #include "lib/bmp180.h"
 #include "lib/mlx90614.h"
 #include "lib/tgs2600.h"
+#include "lib/ethernet.h"
+#include "lib/wiznet.h"
 
 #include "lib/adc.h"
 #include "lib/uart.h"
@@ -157,6 +159,12 @@ static const uint32_t TGS2600_LOADRESISTOR = 10000;
 static const uint32_t ALTITUDE = 470;
 static const uint32_t DELAY = 30000;
 static const uint16_t SEND_BUFFER_SIZE = 128;
+
+static const Avr::MacAddress ETHERNET_MAC(0x00, 0x16, 0x36, 0xDE, 0x58, 0xF6);
+static const Avr::IpAddress ETHERNET_IP(10, 0, 1, 254);
+static const Avr::IpAddress ETHERNET_SUBNET(255, 255, 0, 0);
+static const Avr::IpAddress UDP_SERVER(10, 0, 1, 10);
+static const uint16_t UDP_PORT = 8600;
 
 static Sensors::HidekiDevice<
     Avr::TimerUtils<PRESCALER>::usToTicks<183>(),  // Short min
@@ -201,6 +209,10 @@ int main()
     auto uart = Avr::Uart<BAUD>::instance();
     uart.sendLine("READY");
 
+    auto ethernet = Avr::Ethernet<Avr::Wiznet>(ETHERNET_MAC,
+                                               ETHERNET_IP, ETHERNET_SUBNET);
+    uart.sendLine("ETHERNET READY");
+
     char str[SEND_BUFFER_SIZE];
 
     while (true) {
@@ -220,6 +232,7 @@ int main()
                      static_cast<double>(hidekiData.temperatureF()),
                      hidekiData.humidity());
             uart.sendString(str);
+            ethernet.sendUdpMessage(UDP_SERVER, UDP_PORT, str);
         }
 
         if (dht22.read()) {
@@ -228,6 +241,7 @@ int main()
                      static_cast<double>(dht22.temperature()),
                      static_cast<double>(dht22.humidity()));
             uart.sendString(str);
+            ethernet.sendUdpMessage(UDP_SERVER, UDP_PORT, str);
         }
 
         if (bmp180.read()) {
@@ -236,6 +250,7 @@ int main()
                      static_cast<double>(bmp180.temperature()),
                      static_cast<double>(bmp180.pressureAtSeaLevel(ALTITUDE)));
             uart.sendString(str);
+            ethernet.sendUdpMessage(UDP_SERVER, UDP_PORT, str);
         }
 
         if (mlx90614.read()) {
@@ -245,6 +260,7 @@ int main()
                      static_cast<double>(mlx90614.ambientTemperature()),
                      static_cast<double>(mlx90614.objectTemperature()));
             uart.sendString(str);
+            ethernet.sendUdpMessage(UDP_SERVER, UDP_PORT, str);
         }
 
         snprintf(str, SEND_BUFFER_SIZE,
@@ -252,6 +268,7 @@ int main()
                  tgs2600.sensorResistance(
                  Avr::Adc::instance().readMilliVolts(0, 5)));
         uart.sendString(str);
+        ethernet.sendUdpMessage(UDP_SERVER, UDP_PORT, str);
 
         _delay_ms(DELAY);
     }

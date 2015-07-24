@@ -27,6 +27,9 @@ elseif(TARGET_CONFIGURATION STREQUAL "atdemo")
     add_definitions(-DVCC=5000U)
 endif()
 
+# WIZnet Ethernet configuration (W5100)
+add_definitions(-D_WIZCHIP_=5100)
+
 add_subdirectory(lib)
 
 add_avr_executable(sensors ${HEADERS} ${SOURCES} ${OTHERS})
