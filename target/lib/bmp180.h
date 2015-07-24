@@ -208,9 +208,9 @@ private:
     float m_pressure = 0.0;
 
     // Calibration
-    int16_t m_ac1, m_ac2, m_ac3;
-    uint16_t m_ac4, m_ac5, m_ac6;
-    int16_t m_b1, m_b2, m_mb, m_mc, m_md;
+    int16_t m_ac1 = 0, m_ac2 = 0, m_ac3 = 0;
+    uint16_t m_ac4 = 0, m_ac5 = 0, m_ac6 = 0;
+    int16_t m_b1 = 0, m_b2 = 0, m_mb = 0, m_mc = 0, m_md = 0;
 
     // Polynomials
     float m_fc5 = 0.0, m_fc6 = 0.0, m_fmc = 0.0, m_fmd = 0.0;
