@@ -21,41 +21,60 @@
 
 from __future__ import print_function
 
+import abc
 import argparse
 import datetime
 import json
 import serial
+import socket
 import time
 import threading
 
 
-class SerialReceiverThread(threading.Thread):
-    """ Thread that reads from serial port """
+class ReceiverThread(threading.Thread):
+    """ Generic Thread for receiving data asynchronously """
+    __metaclass__ = abc.ABCMeta
 
-    def __init__(self, port, num_read=-1):
+    def __init__(self, port, reconnect_timeout):
         """ Initialization """
         threading.Thread.__init__(self)
-        self._serial = serial.Serial(port, 9600, timeout=3)
-        self._num_read = num_read
+        self._connection = None
+        self._port = port
+        self._reconnect_timeout = reconnect_timeout
         self._handler = []
         self._stop = threading.Event()
+
+    @abc.abstractmethod
+    def initialize(self):
+        """ Initialize connection """
+        pass
+
+    @abc.abstractmethod
+    def receive(self):
+        """ Receiver loop """
+        pass
+
+    def handle_received(self, data):
+        """ Handle received data """
+        line = data.rstrip('\n')
+        if len(line) > 0:
+            for handler in self._handler:
+                handler(line)
 
     def run(self):
         """ Execute thread """
         while not self.stopped():
             try:
-                line = self._serial.readline().rstrip('\n')
-
-                if len(line) > 0:
-                    for handler in self._handler:
-                        handler(line)
-                    if self._num_read > 0:
-                        self._num_read -= 1
-
-            except serial.serialutil.SerialException as err:
-                print("Disconnected: %s" % err)
-                self._serial.close()
-                return
+                if self._connection is None:
+                    self.initialize()
+                self.receive()
+            except IOError as err:
+                print("Error: %s" % err)
+                if self._reconnect_timeout >= 0:
+                    print("Restarting in %d s" % self._reconnect_timeout)
+                    time.sleep(self._reconnect_timeout)
+                else:
+                    self.stop()
 
     def add_handler(self, handler):
         """ Add handler that is called whenever data has been read """
@@ -67,7 +86,50 @@ class SerialReceiverThread(threading.Thread):
 
     def stopped(self):
         """ Check if thread is stopped or is being stopped """
-        return self._stop.isSet() or self._num_read == 0
+        return self._stop.isSet()
+
+
+class UdpReceiverThread(ReceiverThread):
+    """ Thread that reads from UDP port """
+
+    def __init__(self, port, reconnect_timeout):
+        ReceiverThread.__init__(self, port, reconnect_timeout)
+
+    def initialize(self):
+        try:
+            self._connection = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+            self._connection.bind(('0.0.0.0', self._port))
+            self._connection.settimeout(3)
+        except socket.error as err:
+            self._connection = None
+            raise IOError(err)
+
+    def receive(self):
+        try:
+            self.handle_received(self._connection.recv(1024))
+        except socket.timeout:
+            pass
+
+
+class SerialReceiverThread(ReceiverThread):
+    """ Thread that reads from serial port """
+
+    def __init__(self, port, reconnect_timeout):
+        ReceiverThread.__init__(self, port, reconnect_timeout)
+
+    def initialize(self):
+        try:
+            self._connection = serial.Serial(self._port, 9600, timeout=3)
+        except serial.serialutil.SerialException as err:
+            raise IOError(err)
+
+    def receive(self):
+        try:
+            self.handle_received(self._connection.readline())
+        except serial.serialutil.SerialException as err:
+            self._connection.close()
+            self._connection = None
+            raise IOError(err)
 
 
 class CommandLineClient(object):
@@ -78,11 +140,21 @@ class CommandLineClient(object):
         """ Parse command line arguments """
         parser = argparse.ArgumentParser()
 
-        # General
+        # Serial connection
+        parser.add_argument('--serial', action='store_true',
+                            help="Receive metrics from serial port")
         parser.add_argument('--serial-port', type=str, default='/dev/ttyACM0',
                             help="Serial port to connect to target")
         parser.add_argument('--reconnect-timeout', type=int, default=-1,
                             help="Reconnect serial connection")
+
+        # Network connection (UDP)
+        parser.add_argument('--udp', action='store_true',
+                            help="Receive metrics from UDP port")
+        parser.add_argument('--udp-port', type=int, default=8600,
+                            help="UDP port to connect to bind to")
+
+        # General
         parser.add_argument('--num-read', type=int, default=-1,
                             help="Stop program after specified reads")
         parser.add_argument('--timeout', type=int, default=-1,
@@ -107,12 +179,19 @@ class CommandLineClient(object):
     def __init__(self):
         """ Initialization """
         self._args = self._parse_arguments()
-        self._serial_thread = None
+        self._receive_threads = []
+        self._num_read = self._args.num_read
 
     @classmethod
-    def _console_serial_handler(cls, line):
+    def _console_handler(cls, line):
         """ Console output """
         print("%s: %s" % (datetime.datetime.now(), line))
+
+    def _num_read_handler(self, _):
+        """ Stops receiving after specified messages """
+        self._num_read -= 1
+        if self._num_read <= 0:
+            self.stop()
 
     @classmethod
     def _graphite_preprocess_metrics(cls, metrics,
@@ -138,7 +217,7 @@ class CommandLineClient(object):
         except AttributeError as err:
             print(err)
 
-    def _graphite_serial_handler(self, line):
+    def _graphite_handler(self, line):
         """ Send metrics to graphite server """
         try:
             metrics = self._graphite_preprocess_metrics(
@@ -153,6 +232,8 @@ class CommandLineClient(object):
                     system_name=self._args.graphite_name)
                 graphite.send_dict(metrics)
                 graphite.disconnect()
+            except ImportError as err:
+                print("Error: %s" % err)
             except graphitesend.GraphiteSendException as err:
                 print("Error: %s" % err)
         except ValueError as err:
@@ -164,43 +245,40 @@ class CommandLineClient(object):
             timer = threading.Timer(self._args.timeout, self.stop)
             timer.start()
 
-        while True:
-            # Setup serial port
-            try:
-                self._serial_thread = SerialReceiverThread(
-                    port=self._args.serial_port, num_read=self._args.num_read)
-            except serial.serialutil.SerialException as err:
-                print("Error: %s" % err)
-                return 1
+        # Setup serial thread
+        if self._args.serial:
+            self._receive_threads.append(SerialReceiverThread(
+                self._args.serial_port, self._args.reconnect_timeout))
 
-            self._serial_thread.add_handler(self._console_serial_handler)
+        # Setup UDP thread
+        if self._args.udp:
+            self._receive_threads.append(UdpReceiverThread(
+                self._args.udp_port, self._args.reconnect_timeout))
+
+        # Assign handler and start receiving
+        for thread in self._receive_threads:
+            thread.add_handler(self._console_handler)
+            if self._args.num_read > 0:
+                thread.add_handler(self._num_read_handler)
             if self._args.graphite:
-                self._serial_thread.add_handler(self._graphite_serial_handler)
+                thread.add_handler(self._graphite_handler)
+            thread.start()
 
-            # Start receive
-            try:
-                self._serial_thread.start()
-                while self._serial_thread.isAlive():
-                    time.sleep(1)
-
-                if self._args.reconnect_timeout >= 0:
-                    print("Restarting in %d s" % self._args.reconnect_timeout)
-                    time.sleep(self._args.reconnect_timeout)
-                    continue
-
-            except serial.serialutil.SerialException as err:
-                print("Serial port error: %s" % err)
-                if self._args.reconnect_timeout >= 0:
-                    print("Restarting in %d s" % self._args.reconnect_timeout)
-                    time.sleep(self._args.reconnect_timeout)
-                    continue
-
-            return
+        while True:
+            keepalive = False
+            for thread in self._receive_threads:
+                if thread.isAlive():
+                    keepalive = True
+                    break
+            if keepalive:
+                time.sleep(1)
+            else:
+                return
 
     def stop(self):
         """ Stop receiver """
-        if self._serial_thread is not None:
-            self._serial_thread.stop()
+        for thread in self._receive_threads:
+            thread.stop()
 
 
 if __name__ == '__main__':
