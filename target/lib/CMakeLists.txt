@@ -11,6 +11,7 @@ set(HEADERS
     bmp180.h
     mlx90614.h
     spi.h
+    ethernet.h
 
     ${CMAKE_SOURCE_DIR}/target/external/avr_io_cpp.h
     ${CMAKE_SOURCE_DIR}/target/external/i2cmaster/i2cmaster.h
