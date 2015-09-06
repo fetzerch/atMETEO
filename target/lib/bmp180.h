@@ -132,7 +132,7 @@ public:
      * \param altitude The reference altitude.
      * \return The cached pressure value relative to sea level.
      */
-    float pressureAtSeaLevel(float altitude) {
+    float pressureAtSeaLevel(float altitude) const {
         return (static_cast<float>(m_pressure) /
                 pow(1.0f - (static_cast<float>(altitude) / 44330.0f), 5.255f));
     }
