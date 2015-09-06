@@ -110,7 +110,7 @@ Files</h2></td></tr>
 <li>Receives <em>ambient_temperature</em> and <em>object_temperature</em> from a Melexis MLX90614 sensor connected to the AVR's I2C (TWI) interface.</li>
 <li>Receives <em>sensor_resistance</em> from a Figaro TGS 2600 sensor connected to the AVR's Analog to Digital Conversion pin 0 (ADC0).</li>
 </ul>
-<p>The received sensor values are transmitted over the UART interface as JSON object.</p>
+<p>The received sensor values are transmitted over the UART interface and / or over Ethernet using UDP messages as JSON object.</p>
 <p>JSON Schema: </p><div class="fragment"><div class="line">{</div>
 <div class="line">    <span class="stringliteral">&quot;type&quot;</span>: <span class="stringliteral">&quot;object&quot;</span>,</div>
 <div class="line">    <span class="stringliteral">&quot;properties&quot;</span>: {</div>

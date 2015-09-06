@@ -21,5 +21,7 @@ var searchData=
   ['timerutils',['TimerUtils',['../group__libtarget__timer.html#structAvr_1_1TimerUtils',1,'Avr']]],
   ['timsk1',['TIMSK1',['../timer_8h.html#aeca81c7042471f3d2a10cd53d35993cb',1,'timer.h']]],
   ['to_5fhex',['to_hex',['../group__libsensors__tests.html#ga1c4bebd5efc7dc139b42ee33983cd5b5',1,'to_hex(T value):&#160;utils.h'],['../group__libsensors__tests.html#ga4b47c6d0d9f2702dece3fc217741092a',1,'to_hex(T *data, uint16_t length):&#160;utils.h']]],
-  ['toomuchdata',['TooMuchData',['../group__libsensors__sensor.html#gga0b5b9591c1d6882987931c0b97d466b2acc26600e75154c8029e8c82dca7dcc7a',1,'Sensors']]]
+  ['toomuchdata',['TooMuchData',['../group__libsensors__sensor.html#gga0b5b9591c1d6882987931c0b97d466b2acc26600e75154c8029e8c82dca7dcc7a',1,'Sensors']]],
+  ['transceive',['transceive',['../group__libtarget__spi.html#a0f29b1d79ab4acbcab4ef53fb2f91678',1,'Avr::Spi']]],
+  ['transmit',['transmit',['../group__libtarget__spi.html#aedc983889fdc9f1a047bfecb4c844cd0',1,'Avr::Spi']]]
 ];

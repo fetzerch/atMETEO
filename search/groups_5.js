@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['i2c_20_28twi_29_20module',['I2C (TWI) module',['../group__libtarget__i2c.html',1,'']]],
-  ['interrupt_20handling',['Interrupt handling',['../group__libtarget__interrupt.html',1,'']]]
+  ['hideki_20rf_20433_20mhz',['Hideki RF 433 MHz',['../group__libsensors__hideki.html',1,'']]],
+  ['hardware_2ftarget_20specific',['Hardware/target specific',['../group__target.html',1,'']]]
 ];

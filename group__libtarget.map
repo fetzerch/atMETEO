@@ -6,8 +6,10 @@
 <area shape="rect" id="node5" href="$group__libtarget__pin.html" title="Wrapper for accessing digital I/O ports. " alt="" coords="491,208,577,235"/>
 <area shape="rect" id="node6" href="$group__libtarget__mlx90614.html" title="Avr::Mlx90614 decodes data from Melexis MLX90614 Infrared thermometer sensors. " alt="" coords="429,259,639,285"/>
 <area shape="rect" id="node7" href="$group__libtarget__timer.html" title="Wrapper for accessing built&#45;in timers facilities. " alt="" coords="483,309,585,336"/>
-<area shape="rect" id="node10" href="$group__libtarget__bmp180.html" title="Avr::Bmp180 decodes data from Bosch BMP180 Digital pressure sensors. " alt="" coords="451,361,617,402"/>
-<area shape="rect" id="node11" href="$group__libtarget__adc.html" title="Wrapper for accessing built&#45;in analog to digital conversion facilities. " alt="" coords="445,426,623,467"/>
-<area shape="rect" id="node12" href="$group__libtarget__dht22.html" title="Avr::Dht22 decodes data from DHT22 / AM2302 Temperature and Humidity sensors. " alt="" coords="461,491,607,533"/>
-<area shape="rect" id="node9" href="$group__target.html" title="AVR dependent code. " alt="" coords="5,233,169,260"/>
+<area shape="rect" id="node8" href="$group__libtarget__spi.html" title="Wrapper for accessing built&#45;in SPI communication interface. " alt="" coords="489,360,579,387"/>
+<area shape="rect" id="node11" href="$group__libtarget__ethernet.html" title="Utilities for Ethernet communication interfaces. " alt="" coords="475,411,593,437"/>
+<area shape="rect" id="node12" href="$group__libtarget__bmp180.html" title="Avr::Bmp180 decodes data from Bosch BMP180 Digital pressure sensors. " alt="" coords="451,462,617,503"/>
+<area shape="rect" id="node13" href="$group__libtarget__adc.html" title="Wrapper for accessing built&#45;in analog to digital conversion facilities. " alt="" coords="445,527,623,569"/>
+<area shape="rect" id="node14" href="$group__libtarget__dht22.html" title="Avr::Dht22 decodes data from DHT22 / AM2302 Temperature and Humidity sensors. " alt="" coords="461,593,607,634"/>
+<area shape="rect" id="node10" href="$group__target.html" title="AVR dependent code. " alt="" coords="5,284,169,311"/>
 </map>

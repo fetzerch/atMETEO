@@ -5,6 +5,7 @@ var searchData=
   ['demodulatorbase',['DemodulatorBase',['../group__libsensors__demodulator.html#classSensors_1_1DemodulatorBase',1,'Sensors']]],
   ['demodulatorbase_3c_20demodulator_3c_20biphasemark_3c_20tshortmin_2c_20tshortmax_2c_20tlongmin_2c_20tlongmax_20_3e_20_3e_20_3e',['DemodulatorBase&lt; Demodulator&lt; BiphaseMark&lt; TShortMin, TShortMax, TLongMin, TLongMax &gt; &gt; &gt;',['../group__libsensors__demodulator.html',1,'Sensors']]],
   ['demodulatorstatus',['DemodulatorStatus',['../group__libsensors__demodulator.html#ga9d34c624f644a48b51d806e3d988afd4',1,'Sensors']]],
+  ['deselect',['deselect',['../group__libtarget__spi.html#a9fedd025551877aceba25a550f83a080',1,'Avr::Spi']]],
   ['dht22',['Dht22',['../group__libtarget__dht22.html#classAvr_1_1Dht22',1,'Avr']]],
   ['dht22_2eh',['dht22.h',['../dht22_8h.html',1,'']]],
   ['digitalio',['DigitalIo',['../group__libtarget__pin.html#structAvr_1_1DigitalIo',1,'Avr']]],

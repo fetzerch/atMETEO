@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['word',['word',['../group__libsensors__utils.html#gafce48d89cf9ef5ee68ea9f76af077280',1,'Sensors']]],
-  ['write',['write',['../group__libtarget__i2c.html#a22fad5b7554fd15081200287cfaa9d93',1,'Avr::I2c']]]
+  ['ustoticks',['usToTicks',['../group__libtarget__timer.html#ae81036d4142aad78ad2cfe3b4891c3d9',1,'Avr::TimerUtils']]]
 ];

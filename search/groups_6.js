@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['main_20application',['Main application',['../group__application.html',1,'']]],
-  ['mlx90614_20infrared_20thermometer',['MLX90614 Infrared thermometer',['../group__libtarget__mlx90614.html',1,'']]]
+  ['i2c_20_28twi_29_20module',['I2C (TWI) module',['../group__libtarget__i2c.html',1,'']]],
+  ['interrupt_20handling',['Interrupt handling',['../group__libtarget__interrupt.html',1,'']]]
 ];

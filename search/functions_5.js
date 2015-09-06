@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['getdata',['getData',['../group__libsensors__bitdecoder.html#ac78ad51e5401a4a1a165686989a7bfd1',1,'Sensors::BitDecoderBase::getData()'],['../group__libsensors__demodulator.html#aa5210fbcb10770c6404d3dfa270c4ce5',1,'Sensors::DemodulatorBase::getData()']]]
+  ['flip',['flip',['../group__libtarget__pin.html#a7458e7203913f9fd5c448ba389007fe9',1,'Avr::OutputConfiguration::flip()'],['../group__libtarget__pin.html#a486b29c97a61a62d51615d390c7da172',1,'Avr::OutputConfigurationInverted::flip()']]]
 ];
