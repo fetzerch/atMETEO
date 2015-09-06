@@ -128,7 +128,7 @@ public:
      *        sensorResistanceRelative()
      * \param humidity Reference humidity.
      */
-    void setReferenceHumidity(uint16_t humidity)
+    void setReferenceHumidity(float humidity)
     {
         m_referenceHumidity = humidity;
         updateCalibration();
@@ -139,7 +139,7 @@ public:
      *        and sensorResistanceRelative().
      * \param temperature Reference temperature.
      */
-    void setReferenceTemperature(uint16_t temperature)
+    void setReferenceTemperature(float temperature)
     {
         m_referenceTemperature = temperature;
         updateCalibration();
@@ -178,8 +178,8 @@ private:
     static const uint16_t c_vcc = 5000;
 
     float m_referenceResistance;
-    uint16_t m_referenceHumidity;
-    uint16_t m_referenceTemperature;
+    float m_referenceHumidity;
+    float m_referenceTemperature;
     float m_calibration;
 };
 
