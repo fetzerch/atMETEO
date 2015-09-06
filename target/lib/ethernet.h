@@ -79,7 +79,7 @@ private:
     uint8_t m_address[6];
 
     friend class Wiznet;
-    const uint8_t *rawAddress() { return m_address; }
+    const uint8_t *rawAddress() const { return m_address; }
 };
 
 /*!
