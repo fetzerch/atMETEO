@@ -242,6 +242,9 @@ int main()
                      static_cast<double>(dht22.humidity()));
             uart.sendString(str);
             ethernet.sendUdpMessage(UDP_SERVER, UDP_PORT, str);
+
+            tgs2600.setReferenceTemperature(dht22.temperature());
+            tgs2600.setReferenceHumidity(dht22.humidity());
         }
 
         if (bmp180.read()) {
@@ -263,10 +266,12 @@ int main()
             ethernet.sendUdpMessage(UDP_SERVER, UDP_PORT, str);
         }
 
+        uint16_t vout = Avr::Adc::instance().readMilliVolts(0, 5);
         snprintf(str, SEND_BUFFER_SIZE,
-                 "{\"tgs2600\":{\"sensor_resistance\":%ld}}\n",
-                 tgs2600.sensorResistance(
-                 Avr::Adc::instance().readMilliVolts(0, 5)));
+                 "{\"tgs2600\":{\"sensor_resistance\":%ld,"
+                 "\"sensor_resistance_calibrated\":%ld}}\n",
+                 tgs2600.sensorResistance(vout),
+                 tgs2600.sensorResistanceCalibrated(vout));
         uart.sendString(str);
         ethernet.sendUdpMessage(UDP_SERVER, UDP_PORT, str);
 
