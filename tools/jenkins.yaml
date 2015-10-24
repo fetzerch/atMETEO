@@ -2,12 +2,11 @@
 
 - defaults:
     name: global
+    description: atMETEO - An ATmega based weather station
     project-type: freestyle
     concurrent: true
     logrotate:
         numToKeep: 10
-    triggers:
-        - pollscm:
     wrappers:
         - ansicolor
         - timestamps
@@ -19,15 +18,15 @@
     name: scm-git
     scm:
         - git:
-            skip-tag: true
             url: ssh://git@10.0.1.12/fetzerch/weather-station.git
             basedir: sources
             submodule:
                 recursive: true
             branches:
-                - origin/master
+                - origin/${gitlabSourceBranch}
+            merge:
+                branch: ${gitlabTargetBranch}
             browser: gitlab
-            browser-version: 7.5
             browser-url: https://10.0.1.12/fetzerch/weather-station
 
 
@@ -37,16 +36,16 @@
     name: build-linux-desktop
     builders:
         - shell: |
-            #!/bin/bash -eu
+            #!/bin/bash -eux
             export TERM=xterm
             export GTEST_COLOR=yes
-            cmake() {{ unbuffer /usr/bin/cmake "$@"; }}
-            make() {{ /usr/bin/make -j$(nproc) VERBOSE=1 "$@"; }}
+            cmake() { unbuffer /usr/bin/cmake "$@"; }
+            make() { /usr/bin/make -j$(nproc) VERBOSE=1 "$@"; }
 
             echo -e "\n----- CMake -----\n"
-            rm -r $WORKSPACE/build || true
-            mkdir $WORKSPACE/build ; cd $WORKSPACE/build
-            cmake -DCMAKE_BUILD_TYPE={build-type} \
+            rm -rf $WORKSPACE/build-linux64
+            mkdir $WORKSPACE/build-linux64 ; cd $WORKSPACE/build-linux64
+            cmake -DCMAKE_BUILD_TYPE=Coverage \
                   -DGMOCK_SOURCE_DIR=$HOME/buildsys/gmock-1.7.0 \
                   -DGMOCK_BINARY_DIR=$WORKSPACE/gmock \
                   $WORKSPACE/sources
@@ -69,13 +68,13 @@
         - shell: |
             #!/bin/bash -eu
             export TERM=xterm
-            cmake() {{ unbuffer /usr/bin/cmake "$@"; }}
-            make() {{ /usr/bin/make -j$(nproc) VERBOSE=1 "$@"; }}
+            cmake() { unbuffer /usr/bin/cmake "$@"; }
+            make() { /usr/bin/make -j$(nproc) VERBOSE=1 "$@"; }
 
             echo -e "\n----- CMake -----\n"
-            rm -rf $WORKSPACE/build
-            mkdir $WORKSPACE/build ; cd $WORKSPACE/build
-            scan-build cmake -DCMAKE_BUILD_TYPE={build-type} \
+            rm -rf $WORKSPACE/build-scanbuild
+            mkdir $WORKSPACE/build-scanbuild ; cd $WORKSPACE/build-scanbuild
+            scan-build cmake -DCMAKE_BUILD_TYPE=Debug \
                              -DGMOCK_SOURCE_DIR=$HOME/buildsys/gmock-1.7.0 \
                              -DGMOCK_BINARY_DIR=$WORKSPACE/gmock \
                              $WORKSPACE/sources
@@ -104,8 +103,9 @@
             TOOLCHAIN_FILE=$WORKSPACE/cmake-avr/generic-gcc-avr.cmake
 
             echo -e "\n----- CMake -----\n"
-            rm -r $WORKSPACE/build || true
-            mkdir $WORKSPACE/build ; cd $WORKSPACE/build
+            rm -rf $WORKSPACE/build-{configuration}
+            mkdir $WORKSPACE/build-{configuration}
+            cd $WORKSPACE/build-{configuration}
             cmake -DCMAKE_TOOLCHAIN_FILE=$TOOLCHAIN_FILE \
                   -DBUILD_DOCUMENTATION=OFF \
                   -DTARGET_CONFIGURATION={configuration} \
@@ -201,10 +201,10 @@
             set +o nounset  # Bug in virtualenv 1.11.4
             source virtualenv-{python}/bin/activate
             set -o nounset
-            pip install pylint {dependencies}
+            pip install pylint pyserial graphitesend
 
             echo -e "\n----- Preparing build directory -----\n"
-            rm -r $WORKSPACE/build-{python} || true
+            rm -rf $WORKSPACE/build-{python}
             mkdir $WORKSPACE/build-{python} && cd $WORKSPACE/build-{python}
 
             echo -e "\n----- Running Python checkers -----"
@@ -223,85 +223,170 @@
             fingerprint: true
 
 - publisher:
-    name: publish-warnings-gcc
+    name: publish-warnings
     publishers:
+        - archive:
+            artifacts: 'build-*/*.log'
+            fingerprint: true
         - warnings:
             run-always: true
             workspace-file-scanners:
-                - file-pattern: build/gcc_stderr.log
+                - file-pattern: build-*/gcc_stderr.log
                   scanner: GNU C Compiler 4 (gcc)
+                - file-pattern: build-*/scan-build_stderr.log
+                  scanner: Clang (LLVM based)
+                - file-pattern: build-*/doxygen_stderr.log
+                  scanner: Doxygen
+                - file-pattern: build-*/pep8.log
+                  scanner: Pep8
+                - file-pattern: build-*/pylint.log
+                  scanner: PyLint
             total-thresholds:
                 unstable:
                     total-all: 0
 
-
-# ----- Jobs ------------------------------------------------------------------
-
-- job:
-    name: weather-station-linux64
-    scm:
-        - scm-git
-    builders:
-        - build-linux-desktop:
-            build-type: Coverage
+- publisher:
+    name: publish-tests
     publishers:
         - archive:
-            artifacts: build/tests/*.xml
+            artifacts: 'build-*/tests/*.xml'
             fingerprint: true
-        - doxygen:
-            doxyfile: build/Doxyfile
-            folder: build
         - junit:
-            results: build/tests/test_*.xml
+            results: build-*/tests/test_*.xml
             test-stability: true
         - cobertura:
-            report-file: build/tests/coverage.xml
+            report-file: build-*/tests/coverage.xml
             fail-no-reports: true
             targets:
                 - files:
-                    failing: 100
+                    failing: 10000000
                 - line:
-                    failing: 100
+                    failing: 10000000
                 - conditional:
-                    failing: 100
+                    failing: 10000000
         - valgrind:
-            pattern: build/tests/valgrind_*.xml
+            pattern: build-*/tests/valgrind_*.xml
             thresholds:
                 unstable:
                     total: 0
             fail-no-reports: true
             fail-invalid-reports: true
-        - publish-warnings-gcc
-        - warnings:
-            run-always: true
-            workspace-file-scanners:
-                - file-pattern: build/doxygen_stderr.log
-                  scanner: Doxygen
-            total-thresholds:
-                unstable:
-                    total-all: 0
+
+
+# ----- Parameter -------------------------------------------------------------
+
+- parameter:
+    name: gitlab-parameters
+    parameters:
+        - string:
+            name: gitlabTargetBranch
+            default: master
+        - string:
+            name: gitlabSourceBranch
+            default: master
+        - string:
+            name: gitlabBranch
+            default: master
+
+
+# ----- Jobs ------------------------------------------------------------------
 
 - job:
-    name: weather-station-scanbuild
+    name: weather-station
+    project-type: multijob
+    parameters:
+        - gitlab-parameters
+    scm:
+        - scm-git
+    triggers:
+        - gitlab:
+            add-ci-message: true
+    builders:
+        - shell: |
+            #!/bin/bash -eu
+            rm -rf $WORKSPACE/build-*
+        - multijob:
+            name: weather-station-build
+            condition: COMPLETED
+            projects:
+                - name: weather-station-linux64
+                  current-parameters: true
+                - name: weather-station-scanbuild
+                  current-parameters: true
+                - name: weather-station-tools
+                  current-parameters: true
+                - name: weather-station-arduino
+                  current-parameters: true
+                - name: weather-station-atdemo
+                  current-parameters: true
+        - multijob:
+            name: weather-station-test
+            condition: COMPLETED
+            projects:
+                - name: weather-station-arduino-flash
+        - copyartifact:
+            project: weather-station-linux64
+        - copyartifact:
+            project: weather-station-scanbuild
+            optional: true
+        - copyartifact:
+            project: weather-station-tools
+        - copyartifact:
+            project: weather-station-arduino
+        - copyartifact:
+            project: weather-station-atdemo
+    publishers:
+        - archive:
+            artifacts: '**'
+            fingerprint: true
+        - publish-tests
+        - publish-warnings
+    properties:
+        - sidebar:
+            url: lastCompletedBuild/testReport
+            text: Test Result
+            icon: images/24x24/clipboard.png
+        - sidebar:
+            url: /job/weather-station-linux64/doxygen
+            text: DoxyGen HTML
+            icon: images/24x24/help.png
+
+- job:
+    name: weather-station-linux64
+    parameters:
+        - gitlab-parameters
     scm:
         - scm-git
     builders:
-        - build-linux-desktop-scanbuild:
-            build-type: Debug
+        - build-linux-desktop
     publishers:
-        - warnings:
-            run-always: true
-            workspace-file-scanners:
-                - file-pattern: build/scan-build_stderr.log
-                  scanner: Clang (LLVM based)
-            total-thresholds:
-                unstable:
-                    total-all: 0
+        - doxygen:
+            doxyfile: build-linux64/Doxyfile
+            folder: build-linux64
+        - publish-tests
+        - publish-warnings
+
+- job:
+    name: weather-station-scanbuild
+    parameters:
+        - gitlab-parameters
+    scm:
+        - scm-git
+    builders:
+        - build-linux-desktop-scanbuild
+    publishers:
+        - archive:
+            artifacts: clangScanBuildReports
+            allow-empty: true
+            fingerprint: true
         - scan-build:
             threshold: 0
+        - publish-warnings
 
 - job:
     name: weather-station-arduino
+    parameters:
+        - gitlab-parameters
     scm:
         - scm-git
     builders:
@@ -310,10 +395,12 @@
             avr-mcu: atmega328p
     publishers:
         - publish-archive-avr
-        - publish-warnings-gcc
+        - publish-warnings
 
 - job:
     name: weather-station-atdemo
+    parameters:
+        - gitlab-parameters
     scm:
         - scm-git
     builders:
@@ -322,10 +409,11 @@
             avr-mcu: atmega32
     publishers:
         - publish-archive-avr
-        - publish-warnings-gcc
+        - publish-warnings
 
 - job:
     name: weather-station-arduino-flash
+    disabled: true
     node: arduino
     concurrent: false
     triggers:
@@ -342,12 +430,11 @@
         - build-linux-arduino-test:
             device: /dev/arduino_uno_5543131303835151E052
     publishers:
-        - archive:
-            artifacts: '*.log'
-            fingerprint: true
+        - publish-warnings
 
 - job:
     name: weather-station-arduino-flash-hourly
+    disabled: true
     node: arduino
     concurrent: false
     logrotate:
@@ -379,26 +466,14 @@
 
 - job:
     name: weather-station-tools
+    parameters:
+        - gitlab-parameters
     scm:
         - scm-git
     builders:
         - build-python-check:
             python: 2.7
-            dependencies: pyserial graphitesend
         - build-python-check:
             python: 3.4
-            dependencies: pyserial graphitesend
     publishers:
-        - archive:
-            artifacts: build-*/*.log
-            fingerprint: true
-        - warnings:
-            run-always: true
-            workspace-file-scanners:
-                - file-pattern: build-*/pep8.log
-                  scanner: Pep8
-                - file-pattern: build-*/pylint.log
-                  scanner: PyLint
-            total-thresholds:
-                unstable:
-                    total-all: 0
+        - publish-warnings
