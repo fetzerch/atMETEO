@@ -25,9 +25,9 @@ set(OTHERS
 )
 
 function(add_test_gmock _NAME)
-    include_directories(${CMAKE_SOURCE_DIR} ${GMOCK_INCLUDE_DIRS})
     add_executable(${_NAME} ${ARGN} ${HEADERS} ${OTHERS})
-    target_link_libraries(${_NAME} libsensors ${GMOCK_BOTH_LIBRARIES})
+    target_link_libraries(${_NAME} PRIVATE libsensors ${GMOCK_BOTH_LIBRARIES})
+    target_include_directories(${_NAME} PRIVATE ${GMOCK_INCLUDE_DIRS})
     add_test(
         NAME ${_NAME}
         COMMAND ${_NAME} --gtest_output=xml:${_NAME}.xml)

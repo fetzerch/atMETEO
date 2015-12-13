@@ -35,11 +35,6 @@ set(OTHERS
     libtarget.dox
 )
 
-include_directories(
-    ${CMAKE_SOURCE_DIR}/target/external/i2cmaster
-    ${CMAKE_SOURCE_DIR}/target/external/wiznet/Ethernet
-)
-
 set(LIBTARGET_LIBRARY libtarget)
 if(CMAKE_CROSSCOMPILING AND CMAKE_SYSTEM_PROCESSOR STREQUAL "avr")
     add_avr_library(libtarget ${HEADERS} ${SOURCES} ${OTHERS})
@@ -50,3 +45,9 @@ endif()
 
 set_target_properties(${LIBTARGET_LIBRARY} PROPERTIES PREFIX "")
 set_target_properties(${LIBTARGET_LIBRARY} PROPERTIES LINKER_LANGUAGE CXX)
+target_include_directories(${LIBTARGET_LIBRARY}
+    PUBLIC ${CMAKE_SOURCE_DIR}
+    PUBLIC ${CMAKE_SOURCE_DIR}/target
+    PRIVATE ${CMAKE_SOURCE_DIR}/target/external/i2cmaster
+    PRIVATE ${CMAKE_SOURCE_DIR}/target/external/wiznet/Ethernet
+)
