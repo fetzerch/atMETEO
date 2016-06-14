@@ -39,6 +39,8 @@
 
 #include "lib/utils.h"
 
+#include "pin.h"
+
 namespace Avr
 {
 

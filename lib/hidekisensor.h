@@ -351,7 +351,7 @@ public:
 
 private:
     bool m_valid;
-    uint8_t m_temperature;
+    int8_t m_temperature;
     float m_temperatureF;
     uint8_t m_humidity;
 };

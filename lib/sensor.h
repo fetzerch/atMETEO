@@ -33,6 +33,7 @@
  */
 
 #include <inttypes.h>  // AVR toolchain doesn't offer cinttypes header
+#include <stdlib.h>    // AVR toolchain doesn't offer cstdlib header
 
 namespace Sensors
 {
