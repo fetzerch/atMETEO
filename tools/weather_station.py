@@ -25,10 +25,11 @@ import abc
 import argparse
 import datetime
 import json
-import serial
 import socket
 import time
 import threading
+
+import serial
 
 
 class ReceiverThread(threading.Thread):

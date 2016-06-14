@@ -201,7 +201,7 @@
             set +o nounset  # Bug in virtualenv 1.11.4
             source virtualenv-{python}/bin/activate
             set -o nounset
-            pip install pylint pyserial graphitesend
+            pip install pylint pyserial graphitesend==0.3.4
 
             echo -e "\n----- Preparing build directory -----\n"
             rm -rf $WORKSPACE/build-{python}
@@ -474,6 +474,6 @@
         - build-python-check:
             python: 2.7
         - build-python-check:
-            python: 3.4
+            python: 3.5
     publishers:
         - publish-warnings
