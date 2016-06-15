@@ -5,8 +5,6 @@
     description: atMETEO - An ATmega based weather station
     project-type: freestyle
     concurrent: true
-    logrotate:
-        numToKeep: 10
     wrappers:
         - ansicolor
         - timestamps
@@ -26,6 +24,12 @@
 
 
 # ----- Properties ------------------------------------------------------------
+
+- property:
+    name: logrotate-property
+    properties:
+        - build-discarder:
+            num-to-keep: 10
 
 - property:
     name: gitlab-properties
@@ -337,6 +341,7 @@
         - gitlab-parameters
     properties:
         - gitlab-properties
+        - logrotate-property
         - sidebar:
             url: lastCompletedBuild/testReport
             text: Test Result
@@ -395,6 +400,8 @@
     name: weather-station-linux64
     parameters:
         - gitlab-parameters
+    properties:
+        - logrotate-property
     scm:
         - scm-git
     builders:
@@ -410,6 +417,8 @@
     name: weather-station-scanbuild
     parameters:
         - gitlab-parameters
+    properties:
+        - logrotate-property
     scm:
         - scm-git
     builders:
@@ -427,6 +436,8 @@
     name: weather-station-arduino
     parameters:
         - gitlab-parameters
+    properties:
+        - logrotate-property
     scm:
         - scm-git
     builders:
@@ -441,6 +452,8 @@
     name: weather-station-atdemo
     parameters:
         - gitlab-parameters
+    properties:
+        - logrotate-property
     scm:
         - scm-git
     builders:
@@ -456,6 +469,8 @@
     disabled: true
     node: arduino
     concurrent: false
+    properties:
+        - logrotate-property
     triggers:
         - reverse:
             jobs: weather-station-arduino
@@ -477,8 +492,9 @@
     disabled: true
     node: arduino
     concurrent: false
-    logrotate:
-        numToKeep: 100
+    properties:
+        - build-discarder:
+            num-to-keep: 100
     triggers:
         - timed: '@hourly'
     builders:
@@ -508,6 +524,8 @@
     name: weather-station-tools
     parameters:
         - gitlab-parameters
+    properties:
+        - logrotate-property
     scm:
         - scm-git
     builders:
