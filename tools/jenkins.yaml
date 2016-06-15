@@ -12,6 +12,61 @@
         - timestamps
 
 
+# ----- Parameter -------------------------------------------------------------
+
+- parameter:
+    name: gitlab-parameters
+    parameters:
+        - string:
+            name: SourceBranch
+            default: master
+        - string:
+            name: TargetBranch
+            default: master
+
+
+# ----- Properties ------------------------------------------------------------
+
+- property:
+    name: gitlab-properties
+    properties:
+        - gitlab:
+            connection: https://10.0.1.12
+        - inject:
+            groovy-content: |
+                // overrides "SourceBranch" and "TargetBranch" parameters if
+                // gitlabSourceBranch or gitlabTargetBranch env vars are set
+                import hudson.model.*
+                def currentParamActions = currentBuild.getAction(
+                    ParametersAction.class)
+                def currentParams = currentParamActions.getParameters()
+                List<ParameterValue> newParams = []
+                def map = [:]
+                currentParams.each() {
+                    if (it.name.equals('SourceBranch') &&
+                        binding.variables.containsKey('gitlabSourceBranch'))
+                    {
+                        def branch = binding.variables.gitlabSourceBranch
+                        newParams << new StringParameterValue('SourceBranch',
+                                                              branch)
+                        map.SourceBranch = branch
+                    } else if (it.name.equals('TargetBranch') &&
+                        binding.variables.containsKey('gitlabTargetBranch'))
+                    {
+                        def branch = binding.variables.gitlabTargetBranch
+                        newParams << new StringParameterValue('TargetBranch',
+                                                              branch)
+                        map.TargetBranch = branch
+                    } else {
+                        newParams.add(it)
+                    }
+                }
+                currentBuild.actions.remove(currentParamActions)
+                currentBuild.actions.add(
+                    currentParamActions.createUpdated(newParams))
+                return map
+
+
 # ----- SCM -------------------------------------------------------------------
 
 - scm:
@@ -23,9 +78,9 @@
             submodule:
                 recursive: true
             branches:
-                - origin/${gitlabSourceBranch}
+                - origin/${SourceBranch}
             merge:
-                branch: ${gitlabTargetBranch}
+                branch: ${TargetBranch}
             browser: gitlab
             browser-url: https://10.0.1.12/fetzerch/weather-station
 
@@ -273,22 +328,6 @@
             fail-invalid-reports: true
 
 
-# ----- Parameter -------------------------------------------------------------
-
-- parameter:
-    name: gitlab-parameters
-    parameters:
-        - string:
-            name: gitlabTargetBranch
-            default: master
-        - string:
-            name: gitlabSourceBranch
-            default: master
-        - string:
-            name: gitlabBranch
-            default: master
-
-
 # ----- Jobs ------------------------------------------------------------------
 
 - job:
@@ -296,11 +335,20 @@
     project-type: multijob
     parameters:
         - gitlab-parameters
+    properties:
+        - gitlab-properties
+        - sidebar:
+            url: lastCompletedBuild/testReport
+            text: Test Result
+            icon: images/24x24/clipboard.png
+        - sidebar:
+            url: /job/weather-station-linux64/doxygen
+            text: DoxyGen HTML
+            icon: images/24x24/help.png
     scm:
         - scm-git
     triggers:
-        - gitlab:
-            add-ci-message: true
+        - gitlab
     builders:
         - shell: |
             #!/bin/bash -eu
@@ -341,15 +389,7 @@
             fingerprint: true
         - publish-tests
         - publish-warnings
-    properties:
-        - sidebar:
-            url: lastCompletedBuild/testReport
-            text: Test Result
-            icon: images/24x24/clipboard.png
-        - sidebar:
-            url: /job/weather-station-linux64/doxygen
-            text: DoxyGen HTML
-            icon: images/24x24/help.png
+        - gitlab-notifier
 
 - job:
     name: weather-station-linux64
