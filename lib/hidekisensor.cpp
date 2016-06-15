@@ -151,7 +151,7 @@ uint8_t HidekiSensor::crc1() const
 }
 
 /*!
- * \note CRC algorithm has been reverse engineered using CRC RegEng
+ * \note CRC algorithm has been reverse engineered using CRC RevEng
  * (http://reveng.sourceforge.net/):
  * width=8  poly=0x07  init=0x00  refin=true  refout=true \
  * xorout=0x00  check=0x20  name=(none)

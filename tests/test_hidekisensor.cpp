@@ -47,7 +47,8 @@ TEST(HidekiSensorTest, MessageOk)
 
     EXPECT_EQ(SensorStatus::Complete, status);
     EXPECT_TRUE(sensor.isValid());
-    EXPECT_EQ(0x2C, sensor.sensorId());
+    EXPECT_EQ(1, sensor.channel());
+    EXPECT_EQ(0x0C, sensor.sensorId());
     EXPECT_EQ(1, sensor.message());
     EXPECT_TRUE(sensor.isThermoHygro());
     EXPECT_EQ(24, sensor.temperature());
@@ -91,7 +92,8 @@ TEST(HidekiSensorTest, ContinuousData)
     auto status = sensor.addByte(bytes[sizeof(bytes)-1]);
     EXPECT_EQ(SensorStatus::Complete, status);
     EXPECT_TRUE(sensor.isValid());
-    EXPECT_EQ(0x2C, sensor.sensorId());
+    EXPECT_EQ(1, sensor.channel());
+    EXPECT_EQ(0x0C, sensor.sensorId());
     EXPECT_EQ(1, sensor.message());
     EXPECT_TRUE(sensor.isThermoHygro());
     EXPECT_EQ(24, sensor.temperature());
