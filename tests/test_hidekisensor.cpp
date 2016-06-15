@@ -147,6 +147,21 @@ TEST(HidekiSensorTest, WrongHeader)
 }
 
 /*!
+ * \brief Tests Sensors::HidekiSensor with an incorrect channel.
+ */
+TEST(HidekiSensorTest, IncorrectChannel)
+{
+    uint8_t bytes[] = {0x9F, 0xE3, 0xCE, 0x5E, 0x48,
+                       0xC2, 0x16, 0xFB, 0xDB, 0xFC};
+
+    auto sensor = HidekiSensor();
+    auto status = sensor.setData(bytes, sizeof(bytes));
+
+    EXPECT_EQ(SensorStatus::InvalidData, status);
+    EXPECT_FALSE(sensor.isValid());
+}
+
+/*!
  * \brief Tests Sensors::HidekiSensor with an incorrect CRC1.
  */
 TEST(HidekiSensorTest, WrongCRC1)
@@ -174,6 +189,72 @@ TEST(HidekiSensorTest, WrongCRC2)
 
     EXPECT_EQ(SensorStatus::InvalidData, status);
     EXPECT_FALSE(sensor.isValid());
+}
+
+/*!
+ * \brief Tests Sensors::HidekiSensor channels.
+ */
+TEST(HidekiSensorTest, Channels)
+{
+    uint8_t bytes1[] = {0x9F, 0x24, 0xCE, 0x5E, 0x48,
+                        0xC2, 0x16, 0xFB, 0xD3, 0x1E};
+
+    auto sensor = HidekiSensor();
+    auto status = sensor.setData(bytes1, sizeof(bytes1));
+
+    EXPECT_EQ(SensorStatus::Complete, status);
+    EXPECT_TRUE(sensor.isValid());
+    EXPECT_EQ(1, sensor.channel());
+
+    uint8_t bytes2[] = {0x9F, 0x43, 0xCE, 0x5E, 0x48,
+                        0xC2, 0x16, 0xFB, 0xB4, 0xC5};
+
+    sensor = HidekiSensor();
+    status = sensor.setData(bytes2, sizeof(bytes2));
+
+    EXPECT_EQ(SensorStatus::Complete, status);
+    EXPECT_TRUE(sensor.isValid());
+    EXPECT_EQ(2, sensor.channel());
+
+    uint8_t bytes3[] = {0x9F, 0x67, 0xCE, 0x5E, 0x48,
+                        0xC2, 0x16, 0xFB, 0x90, 0xBE};
+
+    sensor = HidekiSensor();
+    status = sensor.setData(bytes3, sizeof(bytes3));
+
+    EXPECT_EQ(SensorStatus::Complete, status);
+    EXPECT_TRUE(sensor.isValid());
+    EXPECT_EQ(3, sensor.channel());
+
+    uint8_t bytes4[] = {0x9F, 0xAE, 0xCE, 0x5E, 0x48,
+                        0xC2, 0x16, 0xFB, 0x59, 0x0C};
+
+    sensor = HidekiSensor();
+    status = sensor.setData(bytes4, sizeof(bytes4));
+
+    EXPECT_EQ(SensorStatus::Complete, status);
+    EXPECT_TRUE(sensor.isValid());
+    EXPECT_EQ(4, sensor.channel());
+
+    uint8_t bytes5[] = {0x9F, 0xC8, 0xCE, 0x5E, 0x48,
+                        0xC2, 0x16, 0xFB, 0x3F, 0xBB};
+
+    sensor = HidekiSensor();
+    status = sensor.setData(bytes5, sizeof(bytes5));
+
+    EXPECT_EQ(SensorStatus::Complete, status);
+    EXPECT_TRUE(sensor.isValid());
+    EXPECT_EQ(5, sensor.channel());
+
+    uint8_t bytes6[] = {0x9F, 0x9F, 0xCE, 0x5E, 0x48,
+                        0xC2, 0x16, 0xFB, 0x68, 0x6F};
+
+    sensor = HidekiSensor();
+    status = sensor.setData(bytes6, sizeof(bytes6));
+
+    EXPECT_EQ(SensorStatus::Complete, status);
+    EXPECT_TRUE(sensor.isValid());
+    EXPECT_EQ(6, sensor.channel());
 }
 
 /*!

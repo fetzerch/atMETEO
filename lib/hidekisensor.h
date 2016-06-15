@@ -86,11 +86,28 @@ public:
     bool isPossiblyValid() const;
 
     /*!
+     * \brief Returns the channel of the current message.
+     *
+     * The channel can be used to distinguish between multiple sensors
+     * of the same type. Hideki sensors support up to 5 channels.
+     *
+     * Thermo/Hygro sensors that can be configured with a dip switch use
+     * channels `1`-`3` or `1`-`5`.
+     * Thermo/Hygro sensors that cannot be configured operate on fixed channel
+     * `1`.
+     * Other sensors (rain/wind) operate on a dedicated channel `6`.
+     *
+     * \return The channel of the current message `1`-`6`. `0` indicates an
+     *         invalid value.
+     */
+    uint8_t channel() const;
+
+    /*!
      * \brief Returns the sensor id of the current message.
      *
-     * The sensor id can be used to distinguish between multiple sensors
-     * of the same type. Hideki sensors change their id when replacing the
-     * battery or on a manual sensor reset.
+     * Hideki sensors change their id when replacing the battery or on a manual
+     * sensor reset. This can be used to identify sensors that operate on the
+     * same channel.
      *
      * \return The sensor id of the current message.
      */
@@ -293,6 +310,7 @@ public:
     void storeSensorValues(const HidekiSensor &sensor)
     {
         m_valid = sensor.isValid();
+        m_channel = sensor.channel();
         m_temperature = sensor.temperature();
         m_temperatureF = sensor.temperatureF();
         m_humidity = sensor.humidity();
@@ -303,6 +321,7 @@ public:
      */
     void reset()
     {
+        m_channel = 0;
         m_temperature = 0;
         m_temperatureF = 0.0;
         m_humidity = 0;
@@ -317,6 +336,16 @@ public:
     bool isValid() const
     {
         return m_valid;
+    }
+
+    /*!
+     * \brief Gets the channel value.
+     *
+     * \return The channel value.
+     */
+    uint8_t channel() const
+    {
+        return m_channel;
     }
 
     /*!
@@ -351,6 +380,7 @@ public:
 
 private:
     bool m_valid;
+    uint8_t m_channel;
     int8_t m_temperature;
     float m_temperatureF;
     uint8_t m_humidity;

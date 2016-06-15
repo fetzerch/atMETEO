@@ -78,6 +78,7 @@ bool HidekiSensor::isValid() const
 {
     return ((m_byteIndex == packageLength() + 3) &&
             (header() == c_header) &&
+            (channel() != 0) &&
             (crc1() == m_data[packageLength() + 1]) &&
             (crc2() == m_data[packageLength() + 2]));
 }
@@ -102,9 +103,22 @@ bool HidekiSensor::isPossiblyValid() const
     return true;
 }
 
+uint8_t HidekiSensor::channel() const
+{
+    switch (m_data[1] >> 5) {
+    case 1: return 1;
+    case 2: return 2;
+    case 3: return 3;
+    case 4: return 6;
+    case 5: return 4;
+    case 6: return 5;
+    default: return 0;
+    }
+}
+
 uint8_t HidekiSensor::sensorId() const
 {
-    return m_data[1];
+    return m_data[1] & 0x1F;
 }
 
 uint8_t HidekiSensor::message() const
