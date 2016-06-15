@@ -43,8 +43,8 @@
  * \code
  * {
  *     "type": "object",
- *     "properties": {
- *         "rf433": {
+ *     "patternProperties": {
+ *         "^rf433_[0-6]$": {
  *             "type": "object",
  *             "properties": {
  *                 "temperature": {
@@ -59,7 +59,9 @@
  *                     "maximum": 100
  *                 }
  *             }
- *         },
+ *         }
+ *     },
+ *     "properties": {
  *         "dht22": {
  *             "type": "object",
  *             "properties": {
@@ -88,7 +90,7 @@
  *                     "description":
  *                         "Barometric pressure (in hPa) from BMP180 sensor.",
  *                     "type": "number"
- *                 },
+ *                 }
  *             }
  *         },
  *         "mlx90614": {
@@ -102,7 +104,7 @@
  *                 "object_temperature": {
  *                     "description":
  *                         "Object temperature (in °C) from MLX90614 sensor.",
- *                     "type": "number",
+ *                     "type": "number"
  *                 }
  *             }
  *         },
@@ -166,13 +168,14 @@ static const Avr::IpAddress ETHERNET_SUBNET(255, 255, 0, 0);
 static const Avr::IpAddress UDP_SERVER(10, 0, 1, 10);
 static const uint16_t UDP_PORT = 8600;
 
+static const uint8_t HIDEKISENSORS = 2;
 static Sensors::HidekiDevice<
     Avr::TimerUtils<PRESCALER>::usToTicks<183>(),  // Short min
     Avr::TimerUtils<PRESCALER>::usToTicks<726>(),  // Short max
     Avr::TimerUtils<PRESCALER>::usToTicks<726>(),  // Long min
     Avr::TimerUtils<PRESCALER>::usToTicks<1464>()  // Long max
     > s_hidekiDevice;
-static Sensors::HidekiData s_hidekiData;
+static Sensors::HidekiData s_hidekiData[HIDEKISENSORS];
 
 class TimerObserver
 {
@@ -181,7 +184,10 @@ protected:
     {
         if (s_hidekiDevice.addPulseWidth(pulseWidth) ==
                 Sensors::RfDeviceStatus::Complete) {
-            s_hidekiData.storeSensorValues(s_hidekiDevice);
+            uint8_t channel = s_hidekiDevice.channel();
+            if (channel > 0 && channel <= HIDEKISENSORS) {
+                s_hidekiData[channel-1].storeSensorValues(s_hidekiDevice);
+            }
         }
     }
 };
@@ -217,22 +223,27 @@ int main()
 
     while (true) {
         // Copy Hideki sensor result set
-        Sensors::HidekiData hidekiData;
+        Sensors::HidekiData hidekiData[HIDEKISENSORS];
         {
             Avr::AtomicGuard<Avr::AtomicRestoreState> atomicGuard;
-            if (s_hidekiData.isValid()) {
-                hidekiData = s_hidekiData;
-                s_hidekiData.reset();
+            for (int channel = 0; channel < HIDEKISENSORS; ++channel) {
+                if (s_hidekiData[channel].isValid()) {
+                    hidekiData[channel] = s_hidekiData[channel];
+                    s_hidekiData[channel].reset();
+                }
             }
         }
 
-        if (hidekiData.isValid()) {
-            snprintf(str, SEND_BUFFER_SIZE,
-                     "{\"rf433\":{\"temperature\":%.2f,\"humidity\":%d}}\n",
-                     static_cast<double>(hidekiData.temperatureF()),
-                     hidekiData.humidity());
-            uart.sendString(str);
-            ethernet.sendUdpMessage(UDP_SERVER, UDP_PORT, str);
+        for (const auto &sensor : hidekiData) {
+            if (sensor.isValid()) {
+                snprintf(str, SEND_BUFFER_SIZE,
+                    "{\"rf433_%d\":{\"temperature\":%.2f,\"humidity\":%d}}\n",
+                    sensor.channel(),
+                    static_cast<double>(sensor.temperatureF()),
+                    sensor.humidity());
+                uart.sendString(str);
+                ethernet.sendUdpMessage(UDP_SERVER, UDP_PORT, str);
+            }
         }
 
         if (dht22.read()) {
