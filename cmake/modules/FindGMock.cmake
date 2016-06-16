@@ -68,23 +68,21 @@ if(GMOCK_LOCAL_SOURCE)
         BINARY_DIR ${GMOCK_BINARY_DIR}
         INSTALL_COMMAND "")
 
-# Download GMock from SVN.
+# Download GMock.
 else()
 
-    # GMock download URL. Download from tags if specific version was requested,
-    # download latest verion from trunk otherwise.
-    set(GMOCK_URL "http://googlemock.googlecode.com/svn/")
-    if(GMock_FIND_VERSION)
-        message(STATUS "Downloading GMock ${GMock_FIND_VERSION}")
-        set(GMOCK_URL "${GMOCK_URL}/tags/release-${GMock_FIND_VERSION}")
-    else()
-        message(STATUS "Downloading latest available GMock version")
-        set(GMOCK_URL "${GMOCK_URL}/trunk")
+    # Latest version available on the googlecode.com mirror.
+    if(NOT GMock_FIND_VERSION)
+        set(GMock_FIND_VERSION 1.7.0)
     endif()
+
+    message(STATUS "Downloading GMock ${GMock_FIND_VERSION}")
+    set(GMOCK_URL "http://googlemock.googlecode.com/files/")
+    set(GMOCK_URL "${GMOCK_URL}/gmock-${GMock_FIND_VERSION}.zip")
 
     externalproject_add(GMock
         PREFIX gmock
-        SVN_REPOSITORY "${GMOCK_URL}"
+        URL "${GMOCK_URL}"
         CMAKE_ARGS ${CMAKE_ARGS}
         SOURCE_DIR ${GMOCK_SOURCE_DIR}
         BINARY_DIR ${GMOCK_BINARY_DIR}
