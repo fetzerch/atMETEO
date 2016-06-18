@@ -29,6 +29,7 @@ import socket
 import time
 import threading
 
+import pywws.conversions
 import serial
 
 
@@ -198,6 +199,14 @@ class CommandLineClient(object):
 
                 # Add count metric for graphite
                 result[index((sensor_prefix, sensor, 'count'))] = 1
+
+                # Calculate dewpoint
+                try:
+                    result[index((sensor_prefix, sensor, 'dewpoint'))] = \
+                        round(pywws.conversions.dew_point(
+                            data['temperature'], data['humidity']), 2)
+                except (KeyError, TypeError):
+                    pass
         except (ValueError, AttributeError):
             print("Error parsing line: %s" % line)
         return result
