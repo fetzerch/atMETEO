@@ -155,12 +155,6 @@ class CommandLineClient(object):
         parser.add_argument('--udp-port', type=int, default=8600,
                             help="UDP port to connect to bind to")
 
-        # General
-        parser.add_argument('--num-read', type=int, default=-1,
-                            help="Stop program after specified reads")
-        parser.add_argument('--timeout', type=int, default=-1,
-                            help="Stop program after specified timeout (in s)")
-
         # Graphite
         parser_gra = parser.add_argument_group('Graphite')
         parser_gra.add_argument('--graphite', action='store_true',
@@ -181,18 +175,11 @@ class CommandLineClient(object):
         """ Initialization """
         self._args = self._parse_arguments()
         self._receive_threads = []
-        self._num_read = self._args.num_read
 
     @classmethod
     def _console_handler(cls, line):
         """ Console output """
         print("%s: %s" % (datetime.datetime.now(), line))
-
-    def _num_read_handler(self, _):
-        """ Stops receiving after specified messages """
-        self._num_read -= 1
-        if self._num_read <= 0:
-            self.stop()
 
     @classmethod
     def _graphite_preprocess_metrics(cls, metrics,
@@ -242,9 +229,6 @@ class CommandLineClient(object):
 
     def start(self):
         """ Start receiver """
-        if self._args.timeout > -1:
-            timer = threading.Timer(self._args.timeout, self.stop)
-            timer.start()
 
         # Setup serial thread
         if self._args.serial:
@@ -259,8 +243,6 @@ class CommandLineClient(object):
         # Assign handler and start receiving
         for thread in self._receive_threads:
             thread.add_handler(self._console_handler)
-            if self._args.num_read > 0:
-                thread.add_handler(self._num_read_handler)
             if self._args.graphite:
                 thread.add_handler(self._graphite_handler)
             thread.start()
