@@ -114,6 +114,13 @@ public:
     uint8_t sensorId() const;
 
     /*!
+     * \brief Determines if the battery is ok.
+     *
+     * \return `true` if the battery level is ok, `false` if the battery is low.
+     */
+    bool batteryOk() const;
+
+    /*!
      * \brief Returns the number of the current message.
      *
      * Hideki sensors retransmit a message 3 times.
@@ -311,6 +318,7 @@ public:
     {
         m_valid = sensor.isValid();
         m_channel = sensor.channel();
+        m_batteryOk = sensor.batteryOk();
         m_temperature = sensor.temperature();
         m_temperatureF = sensor.temperatureF();
         m_humidity = sensor.humidity();
@@ -322,6 +330,7 @@ public:
     void reset()
     {
         m_channel = 0;
+        m_batteryOk = false;
         m_temperature = 0;
         m_temperatureF = 0.0;
         m_humidity = 0;
@@ -346,6 +355,16 @@ public:
     uint8_t channel() const
     {
         return m_channel;
+    }
+
+    /*!
+     * \brief Determines if the battery is ok.
+     *
+     * \return `true` if the battery level is ok, `false` if the battery is low.
+     */
+    bool batteryOk() const
+    {
+        return m_batteryOk;
     }
 
     /*!
@@ -381,6 +400,7 @@ public:
 private:
     bool m_valid;
     uint8_t m_channel;
+    bool m_batteryOk;
     int8_t m_temperature;
     float m_temperatureF;
     uint8_t m_humidity;

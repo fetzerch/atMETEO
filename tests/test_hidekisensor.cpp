@@ -260,6 +260,32 @@ TEST(HidekiSensorTest, Channels)
 }
 
 /*!
+ * \brief Tests Sensors::HidekiSensor battery status.
+ */
+TEST(HidekiSensorTest, BatteryStatus)
+{
+    uint8_t bytes1[] = {0x9F, 0x2C, 0xCE, 0x5E, 0x48,
+                        0xC2, 0x16, 0xFB, 0xDB, 0xFC};
+
+    auto sensor = HidekiSensor();
+    auto status = sensor.setData(bytes1, sizeof(bytes1));
+
+    EXPECT_EQ(SensorStatus::Complete, status);
+    EXPECT_TRUE(sensor.isValid());
+    EXPECT_TRUE(sensor.batteryOk());
+
+    uint8_t bytes2[] = {0x9F, 0x2C, 0x0E, 0x5E, 0x48,
+                       0xC2, 0x16, 0xFB, 0x1B, 0x0A};
+
+    sensor = HidekiSensor();
+    status = sensor.setData(bytes2, sizeof(bytes2));
+
+    EXPECT_EQ(SensorStatus::Complete, status);
+    EXPECT_TRUE(sensor.isValid());
+    EXPECT_FALSE(sensor.batteryOk());
+}
+
+/*!
  * \brief Tests Sensors::HidekiSensor with a non thermo/hygro message.
  */
 TEST(HidekiSensorTest, NonThermoHygroSensor)

@@ -121,6 +121,11 @@ uint8_t HidekiSensor::sensorId() const
     return m_data[1] & 0x1F;
 }
 
+bool HidekiSensor::batteryOk() const
+{
+    return (m_data[2] >> 6) > 0;
+}
+
 uint8_t HidekiSensor::message() const
 {
     return (m_data[3] >> 6);
