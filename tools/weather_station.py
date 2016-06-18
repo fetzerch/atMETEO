@@ -177,14 +177,8 @@ class CommandLineClient(object):
         self._receive_threads = []
 
     @classmethod
-    def _console_handler(cls, line):
-        """ Console output """
-        print("%s: %s" % (datetime.datetime.now(), line))
-
-    @classmethod
-    def _graphite_preprocess_metrics(cls, metrics,
-                                     prefix=None, prefix_rf=None):
-        """ Preprocess metrics for sensing it to graphite """
+    def _preprocess_metrics(cls, line, prefix=None, prefix_rf=None):
+        """ Preprocess metrics """
         if prefix is None:
             prefix_rf = None
         elif prefix_rf is None:
@@ -196,36 +190,39 @@ class CommandLineClient(object):
 
         result = {}
         try:
+            metrics = json.loads(line)
             for sensor, data in metrics.items():
                 sensor_prefix = prefix_rf if sensor == 'rf433' else prefix
                 for metric, value in data.items():
                     result[index((sensor_prefix, sensor, metric))] = value
+
+                # Add count metric for graphite
                 result[index((sensor_prefix, sensor, 'count'))] = 1
-            return result
-        except AttributeError as err:
-            print(err)
+        except (ValueError, AttributeError):
+            print("Error parsing line: %s" % line)
+        return result
+
+    @classmethod
+    def _console_handler(cls, line):
+        """ Console output """
+        print("%s: %s" % (datetime.datetime.now(), line))
 
     def _graphite_handler(self, line):
         """ Send metrics to graphite server """
+        metrics = self._preprocess_metrics(
+            line, self._args.graphite_group,
+            self._args.graphite_group_rf)
+        print("Sending data to graphite: %s" % metrics)
         try:
-            metrics = self._graphite_preprocess_metrics(
-                json.loads(line), self._args.graphite_group,
-                self._args.graphite_group_rf)
-            print("Sending data to graphite: %s" % metrics)
-            try:
-                import graphitesend
-                graphite = graphitesend.init(
-                    graphite_server=self._args.graphite_server,
-                    prefix=self._args.graphite_name,
-                    system_name=self._args.graphite_name)
-                graphite.send_dict(metrics)
-                graphite.disconnect()
-            except ImportError as err:
-                print("Error: %s" % err)
-            except graphitesend.GraphiteSendException as err:
-                print("Error: %s" % err)
-        except ValueError as err:
-            pass
+            import graphitesend
+            graphite = graphitesend.init(
+                graphite_server=self._args.graphite_server,
+                prefix=self._args.graphite_name,
+                system_name=self._args.graphite_name)
+            graphite.send_dict(metrics)
+            graphite.disconnect()
+        except (ImportError, graphitesend.GraphiteSendException) as err:
+            print("Error: %s" % err)
 
     def start(self):
         """ Start receiver """
