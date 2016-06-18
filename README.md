@@ -62,8 +62,8 @@ over Ethernet using UDP messages as JSON object.
 
 Exemplary data:
 
-    {"rf433_1": {"temperature":-5.0,"humidity":48}}
-    {"rf433_2": {"temperature"18.3,"humidity":45}}
+    {"rf433_1": {"temperature":-5.0,"humidity":48,"battery":true}}
+    {"rf433_2": {"temperature"18.3,"humidity":45,"battery":false}}
     {"dht22": {"temperature":10.0,"humidity":32.0}}
     {"bmp180": {"temperature": 17.3,"pressure": 1008.2}}
     {"mlx90614": {"ambient_temperature":22.3,"object_temperature":34.6}}

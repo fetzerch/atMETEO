@@ -57,6 +57,10 @@
  *                     "type": "integer",
  *                     "minimum": 0,
  *                     "maximum": 100
+ *                 },
+ *                 "battery": {
+ *                     "description": "Battery status.",
+ *                     "type": "boolean"
  *                 }
  *             }
  *         }
@@ -237,10 +241,12 @@ int main()
         for (const auto &sensor : hidekiData) {
             if (sensor.isValid()) {
                 snprintf(str, SEND_BUFFER_SIZE,
-                    "{\"rf433_%d\":{\"temperature\":%.2f,\"humidity\":%d}}\n",
+                    "{\"rf433_%d\":{\"temperature\":%.2f,\"humidity\":%d,"
+                                   "\"battery\":%s}}\n",
                     sensor.channel(),
                     static_cast<double>(sensor.temperatureF()),
-                    sensor.humidity());
+                    sensor.humidity(),
+                    sensor.batteryOk() ? "true" : "false");
                 uart.sendString(str);
                 ethernet.sendUdpMessage(UDP_SERVER, UDP_PORT, str);
             }
