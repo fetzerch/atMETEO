@@ -13,6 +13,7 @@ var searchData=
   ['atomicguard',['AtomicGuard',['../group__libtarget__atomic.html#classAvr_1_1AtomicGuard',1,'Avr']]],
   ['atomicrestorestate',['AtomicRestoreState',['../group__libtarget__atomic.html#classAvr_1_1AtomicRestoreState',1,'Avr']]],
   ['avr',['Avr',['../namespaceAvr.html',1,'']]],
+  ['atmeteo_20_2d_20an_20atmega_20based_20weather_20station',['atMETEO - An ATmega based weather station',['../index.html',1,'']]],
   ['avr_20c_2b_2b_20utilities_20library',['AVR C++ utilities library',['../group__libtarget.html',1,'']]],
   ['analog_20to_20digital_20converter_20_28adc_29',['Analog to Digital Converter (ADC)',['../group__libtarget__adc.html',1,'']]],
   ['atomic_20execution',['Atomic execution',['../group__libtarget__atomic.html',1,'']]]
