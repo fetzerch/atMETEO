@@ -25,9 +25,12 @@ import abc
 import argparse
 import datetime
 import json
+import re
 import socket
 import time
 import threading
+
+from nose.tools import eq_
 
 import pywws.conversions
 import serial
@@ -134,6 +137,69 @@ class SerialReceiverThread(ReceiverThread):
             raise IOError(err)
 
 
+class RoomMapping(object):
+    """ Maps a sensor to a room based on a mapping string
+
+        e.g. 'study:*, garden:rf433_1' """
+
+    def __init__(self, mapping_string):
+        """ Instanciate room mapping class """
+        self._mapping = self._prepare_mapping_table(mapping_string)
+
+    @classmethod
+    def _prepare_mapping_table(cls, mapping_string):
+        """ Returns mapping table in form: [(compiled regex, prefix), ...] """
+        mapping = [x.strip().partition(':')
+                   for x in mapping_string.split(',')]
+        mapping = [(re.compile('^{}$'.format(regex.replace('*', '.*')
+                                             if regex != '' else '.*')),
+                    prefix) for prefix, _, regex in mapping[::-1]]
+        return mapping
+
+    def get_mapping_table(self):
+        """ Return the mapping table for testing """
+        return self._mapping
+
+    def get_room_mapping(self, sensor):
+        """ Return the room associated with the sensor """
+        return next((prefix for regex, prefix in self._mapping
+                     if regex.search(sensor)))
+
+
+def test_room_mapping():
+    """ Tests mapping prefixes """
+    mapping = RoomMapping('')
+    eq_(mapping.get_mapping_table(), [(re.compile('^.*$'), '')])
+    eq_(mapping.get_room_mapping('anysensor'), '')
+
+    mapping = RoomMapping('study')
+    eq_(mapping.get_mapping_table(), [(re.compile('^.*$'), 'study')])
+    eq_(mapping.get_room_mapping('anysensor'), 'study')
+
+    mapping = RoomMapping('study:*')
+    eq_(mapping.get_mapping_table(), [(re.compile('^.*$'), 'study')])
+    eq_(mapping.get_room_mapping('anysensor'), 'study')
+
+    mapping = RoomMapping('study:*, garden:rf433*')
+    eq_(mapping.get_mapping_table(),
+        [(re.compile('^rf433.*$'), 'garden'),
+         (re.compile('^.*$'), 'study')])
+    eq_(mapping.get_room_mapping('anysensor'), 'study')
+    eq_(mapping.get_room_mapping('rf433'), 'garden')
+
+    mapping = RoomMapping('garden:rf433*, study:*')
+    eq_(mapping.get_mapping_table(),
+        [(re.compile('^.*$'), 'study'),
+         (re.compile('^rf433.*$'), 'garden')])
+    eq_(mapping.get_room_mapping('anysensor'), 'study')
+    eq_(mapping.get_room_mapping('rf433'), 'study')
+
+    mapping = RoomMapping('study:*, garden:rf433*:incorrect')
+    eq_(mapping.get_mapping_table(),
+        [(re.compile('^rf433.*:incorrect$'), 'garden'),
+         (re.compile('^.*$'), 'study')])
+
+
 class CommandLineClient(object):
     """ Command line client """
 
@@ -164,10 +230,11 @@ class CommandLineClient(object):
                                 default='localhost', help="Graphite server")
         parser_gra.add_argument('--graphite-name', type=str, default='weather',
                                 help="Graphite prefix and system_name")
-        parser_gra.add_argument('--graphite-group', type=str, default=None,
-                                help="Graphite group")
-        parser_gra.add_argument('--graphite-group-rf', type=str, default=None,
-                                help="Graphite group for RF 433 MHz metrics")
+
+        # Generic
+        parser_gra.add_argument('--room-mapping', type=str, default=None,
+                                help="Room mapping"
+                                     "(e.g. 'study:*, garden:rf433_1')")
 
         args = parser.parse_args()
         return args
@@ -175,15 +242,11 @@ class CommandLineClient(object):
     def __init__(self):
         """ Initialization """
         self._args = self._parse_arguments()
+        self._mapping = RoomMapping(self._args.room_mapping)
         self._receive_threads = []
 
-    @classmethod
-    def _preprocess_metrics(cls, line, prefix=None, prefix_rf=None):
+    def _preprocess_metrics(self, line):
         """ Preprocess metrics """
-        if prefix is None:
-            prefix_rf = None
-        elif prefix_rf is None:
-            prefix_rf = prefix
 
         def index(sequence):
             """ Join not None items in sequence with '.' separator. """
@@ -193,7 +256,8 @@ class CommandLineClient(object):
         try:
             metrics = json.loads(line)
             for sensor, data in metrics.items():
-                sensor_prefix = prefix_rf if sensor == 'rf433' else prefix
+                sensor_prefix = self._mapping.get_room_mapping(sensor)
+                sensor = re.sub(r'_\d+$', '', sensor)
                 for metric, value in data.items():
                     result[index((sensor_prefix, sensor, metric))] = value
 
@@ -218,9 +282,7 @@ class CommandLineClient(object):
 
     def _graphite_handler(self, line):
         """ Send metrics to graphite server """
-        metrics = self._preprocess_metrics(
-            line, self._args.graphite_group,
-            self._args.graphite_group_rf)
+        metrics = self._preprocess_metrics(line)
         print("Sending data to graphite: %s" % metrics)
         try:
             import graphitesend
