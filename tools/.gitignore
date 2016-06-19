@@ -1,0 +1,7 @@
+*.py[cod]
+__pycache__
+
+.tox
+
+.coverage
+cover/

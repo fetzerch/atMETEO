@@ -252,24 +252,22 @@
     builders:
         - shell: |
             #!/bin/bash -eu
+            export PY_COLORS=1
 
-            echo -e "\n----- Preparing Python virtualenv -----\n"
-            if [ ! -d venv ] ; then
-                virtualenv --python=python{python} virtualenv-{python}
-            fi
-            set +o nounset  # Bug in virtualenv 1.11.4
-            source virtualenv-{python}/bin/activate
-            set -o nounset
-            pip install pylint pyserial graphitesend==0.3.4
+            rm -rf $WORKSPACE/build-python
+            mkdir $WORKSPACE/build-python
+            cd $WORKSPACE/sources/tools
 
-            echo -e "\n----- Preparing build directory -----\n"
-            rm -rf $WORKSPACE/build-{python}
-            mkdir $WORKSPACE/build-{python} && cd $WORKSPACE/build-{python}
-
-            echo -e "\n----- Running Python checkers -----"
-            FILES=$(find $WORKSPACE/sources/tools -name "*.py" -print)
-            pep8 $FILES | tee pep8.log
-            pylint -f parseable $FILES | tee pylint.log
+            for py in py2 py3; do
+                tox -e $py-flake8 | tee $WORKSPACE/build-python/$py-flake8.log
+                tox -e $py-pylint | tee $WORKSPACE/build-python/$py-pylint.log
+                tox -e $py-coverage -- \
+                    --with-xunit \
+                    --xunit-file=$WORKSPACE/build-python/$py-nosetest.xml \
+                    --cover-xml \
+                    --cover-xml-file=$WORKSPACE/build-python/$py-coverage.xml \
+                    | tee $WORKSPACE/build-python/$py-coverage.log
+            done
 
 
 # ----- Publisher -------------------------------------------------------------
@@ -296,9 +294,9 @@
                   scanner: Clang (LLVM based)
                 - file-pattern: build-*/doxygen_stderr.log
                   scanner: Doxygen
-                - file-pattern: build-*/pep8.log
+                - file-pattern: build-*/py*-flake8.log
                   scanner: Pep8
-                - file-pattern: build-*/pylint.log
+                - file-pattern: build-*/py*-pylint.log
                   scanner: PyLint
             total-thresholds:
                 unstable:
@@ -330,6 +328,26 @@
                     total: 0
             fail-no-reports: true
             fail-invalid-reports: true
+
+- publisher:
+    name: publish-tests-tools
+    publishers:
+        - archive:
+            artifacts: 'build-python/*.xml'
+            fingerprint: true
+        - junit:
+            results: build-python/*-nosetest.xml
+            test-stability: true
+        - cobertura:
+            report-file: build-python/*-coverage.xml
+            fail-no-reports: true
+            targets:
+                - files:
+                    failing: 10000000
+                - line:
+                    failing: 10000000
+                - conditional:
+                    failing: 10000000
 
 
 # ----- Jobs ------------------------------------------------------------------
@@ -393,6 +411,7 @@
             artifacts: '**'
             fingerprint: true
         - publish-tests
+        - publish-tests-tools
         - publish-warnings
         - gitlab-notifier
 
@@ -529,9 +548,7 @@
     scm:
         - scm-git
     builders:
-        - build-python-check:
-            python: 2.7
-        - build-python-check:
-            python: 3.5
+        - build-python-check
     publishers:
+        - publish-tests-tools
         - publish-warnings

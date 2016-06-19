@@ -36,7 +36,7 @@ import pywws.conversions
 import serial
 
 
-class ReceiverThread(threading.Thread):
+class ReceiverThread(threading.Thread):  # pragma: no cover
     """ Generic Thread for receiving data asynchronously """
     __metaclass__ = abc.ABCMeta
 
@@ -94,7 +94,7 @@ class ReceiverThread(threading.Thread):
         return self._stop.isSet()
 
 
-class UdpReceiverThread(ReceiverThread):
+class UdpReceiverThread(ReceiverThread):  # pragma: no cover
     """ Thread that reads from UDP port """
 
     def __init__(self, port, reconnect_timeout):
@@ -116,7 +116,7 @@ class UdpReceiverThread(ReceiverThread):
             pass
 
 
-class SerialReceiverThread(ReceiverThread):
+class SerialReceiverThread(ReceiverThread):  # pragma: no cover
     """ Thread that reads from serial port """
 
     def __init__(self, port, reconnect_timeout):
@@ -163,7 +163,7 @@ class RoomMapping(object):
     def get_room_mapping(self, sensor):
         """ Return the room associated with the sensor """
         return next((prefix for regex, prefix in self._mapping
-                     if regex.search(sensor)))
+                     if regex.search(sensor)))  # pragma: no cover
 
 
 def test_room_mapping():
@@ -200,7 +200,7 @@ def test_room_mapping():
          (re.compile('^.*$'), 'study')])
 
 
-class CommandLineClient(object):
+class CommandLineClient(object):  # pragma: no cover
     """ Command line client """
 
     @classmethod
@@ -332,7 +332,7 @@ class CommandLineClient(object):
             thread.stop()
 
 
-if __name__ == '__main__':
+if __name__ == '__main__':  # pragma: no cover
     CLI = CommandLineClient()
     try:
         CLI.start()
