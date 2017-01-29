@@ -244,6 +244,7 @@ class CommandLineClient(object):  # pragma: no cover
         self._args = self._parse_arguments()
         self._mapping = RoomMapping(self._args.room_mapping)
         self._receive_threads = []
+        self._outdoor_values = None
 
     def _preprocess_metrics(self, line):
         """ Preprocess metrics """
@@ -271,6 +272,37 @@ class CommandLineClient(object):  # pragma: no cover
                             data['temperature'], data['humidity']), 2)
                 except (KeyError, TypeError):
                     pass
+
+                # Calculate wall temperature and humidity for indoor sensors
+                # using saved values of the outdoor sensor.
+                # See: https://forum.fhem.de/index.php?topic=29773.0
+                if sensor_prefix == 'garden':
+                    self._outdoor_values = data
+                elif self._outdoor_values is not None:
+                    try:
+                        k = 0.73
+                        wall_temperature = k * data['temperature'] + \
+                            (1-k) * self._outdoor_values['temperature']
+
+                        wall_humidity = \
+                            (data['humidity'] * 10**(
+                                (7.62 * data['temperature']) /
+                                (234.175 + data['temperature'])) *
+                             (273.15 + wall_temperature)) / \
+                            (10**((7.62 * wall_temperature) /
+                                  (234.175 + wall_temperature)) *
+                             (273.15 + data['temperature']))
+
+                        result[index((sensor_prefix, sensor,
+                                      'wall_temperature'))] = \
+                            round(wall_temperature, 2)
+
+                        result[index((sensor_prefix, sensor,
+                                      'wall_humidity'))] = \
+                            round(wall_humidity, 2)
+                    except (KeyError, TypeError):
+                        pass
+
         except (ValueError, AttributeError):
             print("Error parsing line: %s" % line)
         return result
