@@ -35,7 +35,7 @@
     name: gitlab-properties
     properties:
         - gitlab:
-            connection: https://10.0.1.12
+            connection: https://gitlab.kef-strass.com
         - inject:
             groovy-content: |
                 // overrides "SourceBranch" and "TargetBranch" parameters if
@@ -77,7 +77,7 @@
     name: scm-git
     scm:
         - git:
-            url: ssh://git@10.0.1.12/fetzerch/weather-station.git
+            url: git@gitlab.kef-strass.com:fetzerch/weather-station.git
             basedir: sources
             submodule:
                 recursive: true
@@ -86,7 +86,7 @@
             merge:
                 branch: ${TargetBranch}
             browser: gitlab
-            browser-url: https://10.0.1.12/fetzerch/weather-station
+            browser-url: https://gitlab.kef-strass.com/fetzerch/weather-station
 
 
 # ----- Builder ---------------------------------------------------------------
