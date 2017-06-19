@@ -105,7 +105,7 @@
             rm -rf $WORKSPACE/build-linux64
             mkdir $WORKSPACE/build-linux64 ; cd $WORKSPACE/build-linux64
             cmake -DCMAKE_BUILD_TYPE=Coverage \
-                  -DGMOCK_SOURCE_DIR=$HOME/buildsys/gmock-1.7.0 \
+                  -DGMOCK_SOURCE_DIR=$HOME/buildsys/googletest-release-1.8.0 \
                   -DGMOCK_BINARY_DIR=$WORKSPACE/gmock \
                   $WORKSPACE/sources
 
@@ -133,10 +133,11 @@
             echo -e "\n----- CMake -----\n"
             rm -rf $WORKSPACE/build-scanbuild
             mkdir $WORKSPACE/build-scanbuild ; cd $WORKSPACE/build-scanbuild
-            scan-build cmake -DCMAKE_BUILD_TYPE=Debug \
-                             -DGMOCK_SOURCE_DIR=$HOME/buildsys/gmock-1.7.0 \
-                             -DGMOCK_BINARY_DIR=$WORKSPACE/gmock \
-                             $WORKSPACE/sources
+            scan-build cmake \
+                -DCMAKE_BUILD_TYPE=Debug \
+                -DGMOCK_SOURCE_DIR=$HOME/buildsys/googletest-release-1.8.0 \
+                -DGMOCK_BINARY_DIR=$WORKSPACE/gmock \
+                $WORKSPACE/sources
 
             echo "\n----- Analyze -----\n"
             rm -rf $WORKSPACE/clangScanBuildReports

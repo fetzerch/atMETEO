@@ -25,7 +25,6 @@
 #
 
 include(ExternalProject)
-include(CheckCXXCompilerFlag)
 find_package(Threads REQUIRED)
 
 # Set default directories.
@@ -36,16 +35,6 @@ if(NOT GMOCK_BINARY_DIR)
     set(GMOCK_BINARY_DIR ${CMAKE_BINARY_DIR}/gmock-bin)
 endif()
 
-# Compiler settings have to be passed on to externalproject_add in order to
-# support cross compilation.
-# Disable 'unused-local-typedefs' warnings for GMock < 1.7.0.
-if(GMock_FIND_VERSION AND GMock_FIND_VERSION VERSION_LESS "1.7.0")
-    check_cxx_compiler_flag(
-        -Wno-unused-local-typedefs HAS_NO_UNUSED_LOCAL_TYPEDEFS)
-    if(HAS_NO_UNUSED_LOCAL_TYPEDEFS)
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-unused-local-typedefs")
-    endif()
-endif()
 set(CMAKE_ARGS
     -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
     -DCMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS})
@@ -53,7 +42,7 @@ set(CMAKE_ARGS
 # Determine if GMOCK_SOURCE_DIR contains GMock sources.
 find_file(GMOCK_LOCAL_SOURCE
     NAMES gmock.h
-    PATHS ${GMOCK_SOURCE_DIR}/include/gmock
+    PATHS ${GMOCK_SOURCE_DIR}/googlemock/include/gmock
     NO_DEFAULT_PATH)
 
 # Build GMock from local sources.
@@ -66,37 +55,42 @@ if(GMOCK_LOCAL_SOURCE)
         CMAKE_ARGS ${CMAKE_ARGS}
         SOURCE_DIR ${GMOCK_SOURCE_DIR}
         BINARY_DIR ${GMOCK_BINARY_DIR}
-        INSTALL_COMMAND "")
+        INSTALL_COMMAND ""
+        BUILD_BYPRODUCTS ${GMOCK_BINARY_DIR}/googlemock/libgmock.a
+        BUILD_BYPRODUCTS ${GMOCK_BINARY_DIR}/googlemock/libgmock_main.a
+        BUILD_BYPRODUCTS ${GMOCK_BINARY_DIR}/googlemock/gtest/libgtest.a
+        BUILD_BYPRODUCTS ${GMOCK_BINARY_DIR}/googlemock/gtest/libgtest_main.a)
 
 # Download GMock.
 else()
-
-    # Latest version available on the googlecode.com mirror.
     if(NOT GMock_FIND_VERSION)
-        set(GMock_FIND_VERSION 1.7.0)
+        set(GMock_FIND_VERSION 1.8.0)
     endif()
 
     message(STATUS "Downloading GMock ${GMock_FIND_VERSION}")
-    set(GMOCK_URL "http://googlemock.googlecode.com/files/")
-    set(GMOCK_URL "${GMOCK_URL}/gmock-${GMock_FIND_VERSION}.zip")
 
     externalproject_add(GMock
         PREFIX gmock
-        URL "${GMOCK_URL}"
+        GIT_REPOSITORY git@github.com:google/googletest.git
+        GIT_TAG release-${GMock_FIND_VERSION}
         CMAKE_ARGS ${CMAKE_ARGS}
         SOURCE_DIR ${GMOCK_SOURCE_DIR}
         BINARY_DIR ${GMOCK_BINARY_DIR}
         INSTALL_COMMAND ""
-        UPDATE_COMMAND "")
+        UPDATE_COMMAND ""
+        BUILD_BYPRODUCTS ${GMOCK_BINARY_DIR}/googlemock/libgmock.a
+        BUILD_BYPRODUCTS ${GMOCK_BINARY_DIR}/googlemock/libgmock_main.a
+        BUILD_BYPRODUCTS ${GMOCK_BINARY_DIR}/googlemock/gtest/libgtest.a
+        BUILD_BYPRODUCTS ${GMOCK_BINARY_DIR}/googlemock/gtest/libgtest_main.a)
 endif()
 
 # Set the result variables.
 set(GMOCK_INCLUDE_DIRS
-    ${GMOCK_SOURCE_DIR}/include
-    ${GMOCK_SOURCE_DIR}/gtest/include)
+    ${GMOCK_SOURCE_DIR}/googlemock/include
+    ${GMOCK_SOURCE_DIR}/googletest/include)
 
 set(GTEST_INCLUDE_DIRS
-    ${GMOCK_SOURCE_DIR}/gtest/include)
+    ${GMOCK_SOURCE_DIR}/googletest/include)
 
 # Add dependency to the external target so that CMake is able
 # to resolve the dependencies to GMock libs and builds GMock first.
@@ -108,16 +102,10 @@ macro(add_gmock_library _name _lib)
     add_dependencies(${_name} GMock)
 endmacro()
 
-add_gmock_library(gmock ${GMOCK_BINARY_DIR}/libgmock.a)
-add_gmock_library(gmock_main ${GMOCK_BINARY_DIR}/libgmock_main.a)
-add_gmock_library(gtest ${GMOCK_BINARY_DIR}/gtest/libgtest.a)
-add_gmock_library(gtest_main ${GMOCK_BINARY_DIR}/gtest/libgtest_main.a)
-
-# For GMock < 1.7.0 GTest symbols are not included in the library
-# and have to be added separately.
-if(GMock_FIND_VERSION AND GMock_FIND_VERSION VERSION_LESS "1.7.0")
-    list(APPEND GMOCK_LIBRARY ${GTEST_LIBRARY})
-endif()
+add_gmock_library(gmock ${GMOCK_BINARY_DIR}/googlemock/libgmock.a)
+add_gmock_library(gmock_main ${GMOCK_BINARY_DIR}/googlemock/libgmock_main.a)
+add_gmock_library(gtest ${GMOCK_BINARY_DIR}/googlemock/gtest/libgtest.a)
+add_gmock_library(gtest_main ${GMOCK_BINARY_DIR}/googlemock/gtest/libgtest_main.a)
 
 set(GMOCK_BOTH_LIBRARIES ${GMOCK_MAIN_LIBRARY} ${GMOCK_LIBRARY})
 set(GTEST_BOTH_LIBRARIES ${GTEST_MAIN_LIBRARY} ${GTEST_LIBRARY})

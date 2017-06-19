@@ -1,4 +1,4 @@
-find_package(GMock 1.7.0 REQUIRED)
+find_package(GMock 1.8.0 REQUIRED)
 
 # Code coverage target for all tests
 if(CMAKE_BUILD_TYPE STREQUAL "Coverage")
