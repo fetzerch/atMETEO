@@ -368,7 +368,10 @@
     scm:
         - scm-git
     triggers:
-        - gitlab
+        - gitlab:
+            branch-filter-type: NameBasedFilter
+            exclude-branches:
+               - 'ci-image'
     builders:
         - shell: |
             #!/bin/bash -eu

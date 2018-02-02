@@ -87,6 +87,12 @@ TEST_CASE("BitOperationsSimple", "[utils]")
         CHECK(byte == 0b00000001);
         bitWrite(byte, 0, false);
         CHECK(byte == 0);
+
+        uint16_t data = 0;
+        bitWrite(data, 4, true);
+        CHECK(data == 0b00010000);
+        bitWrite(data, 4, false);
+        CHECK(data == 0);
     }
 }
 

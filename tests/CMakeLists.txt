@@ -11,10 +11,18 @@ if(CMAKE_BUILD_TYPE STREQUAL "Coverage")
             -r ${CMAKE_SOURCE_DIR}
             --object-directory ${CMAKE_BINARY_DIR}
             -e ${CMAKE_SOURCE_DIR}/tests
-            -e ".*gmock.*"
-            -x -o coverage.xml -v -s
+            -x -o coverage.xml -s
         WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
         COMMENT "Converting gcov coverage data to cobertura format with gcovr")
+
+    add_custom_target(gcovr_to_html
+        COMMAND ${GCOVR_EXECUTABLE}
+            -r ${CMAKE_SOURCE_DIR}
+            --object-directory ${CMAKE_BINARY_DIR}
+            -e ${CMAKE_SOURCE_DIR}/tests
+            --html --html-details -o coverage.html -s
+        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+        COMMENT "Converting gcov coverage data to html format with gcovr")
 endif()
 
 set(HEADERS

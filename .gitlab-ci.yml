@@ -1,0 +1,107 @@
+image: $CI_REGISTRY_IMAGE/build:ci-image
+
+variables:
+  GIT_SUBMODULE_STRATEGY: recursive
+  STAG_AVR_DEVICE: /dev/arduino_uno_5543131303835151E052
+  STAG_AVR_MCU: atmega328p
+  STAG_AVR_PROGRAMMER: arduino
+  PROD_AVR_DEVICE: /dev/arduino_uno_7403130313735110C0C0
+  PROD_AVR_MCU: atmega328p
+  PROD_AVR_PROGRAMMER: arduino
+
+linux:
+  script:
+    - rm -rf build ; mkdir build && cd build
+    - cmake -DCMAKE_BUILD_TYPE=Coverage -G Ninja ..
+    - cmake --build .
+    - cmake --build . --target test
+    - valgrind --leak-check=full --track-origins=yes --error-exitcode=1
+               tests/tests
+    - cmake --build . --target gcovr_to_html
+    - cmake --build . --target dox
+  artifacts:
+    paths:
+      - build/html
+      - build/tests/coverage*.html
+  coverage: '/branches: (\d+\.\d\%) /'
+
+scan-build:
+  script:
+    - rm -rf build ; mkdir build && cd build
+    - scan-build-6.0 cmake -DCMAKE_BUILD_TYPE=Debug -G Ninja ..
+    - scan-build-6.0 -v -v -o scan-build-report cmake --build .
+  artifacts:
+    paths:
+      - build/scan-build-report
+
+.build_template: &build_template
+  script:
+    - rm -rf build ; mkdir build && cd build
+    - cmake -DCMAKE_TOOLCHAIN_FILE=../cmake/avr/generic-gcc-avr.cmake
+            -DBUILD_DOCUMENTATION=OFF
+            -DTARGET_CONFIGURATION="$AVR_TARGET_CONFIGURATION"
+            -DAVR_MCU="$AVR_MCU"
+            -G Ninja ..
+    - cmake --build .
+  artifacts:
+    paths:
+      - build/target/sensors-$AVR_MCU.hex
+
+build:arduino:
+  <<: *build_template
+  variables:
+    AVR_TARGET_CONFIGURATION: arduino
+    AVR_MCU: atmega328p
+
+build:atdemo:
+  <<: *build_template
+  variables:
+    AVR_TARGET_CONFIGURATION: atdemo
+    AVR_MCU: atmega32
+
+.deploy_template: &deploy_template
+  stage: deploy
+  dependencies:
+    - build:arduino
+    - build:atdemo
+  script:
+    - /usr/local/bin/usbreset.sh $AVR_DEVICE
+    - avrdude -v -c $AVR_PROGRAMMER -P $AVR_DEVICE -p $AVR_MCU
+              -U flash:w:build/target/sensors-$AVR_MCU.hex
+  tags:
+    - arduino
+  when: manual
+
+deploy:staging:
+  <<: *deploy_template
+  variables:
+    AVR_DEVICE: $STAG_AVR_DEVICE
+    AVR_MCU: $STAG_AVR_MCU
+    AVR_PROGRAMMER: $STAG_AVR_PROGRAMMER
+    GIT_STRATEGY: none
+  environment:
+    name: $CI_PROJECT_NAME - Staging
+
+deploy:production:
+  <<: *deploy_template
+  variables:
+    AVR_DEVICE: $PROD_AVR_DEVICE
+    AVR_MCU: $PROD_AVR_MCU
+    AVR_PROGRAMMER: $PROD_AVR_PROGRAMMER
+    GIT_STRATEGY: none
+  environment:
+    name: $CI_PROJECT_NAME - Production
+
+tools:
+  image: python:3-alpine
+  variables:
+    GIT_SUBMODULE_STRATEGY: none
+  before_script:
+    - pip --cache-dir=tools/.pip install tox
+  script:
+    - cd tools && tox
+  cache:
+    paths:
+      - tools/.pip
+      - tools/.tox
+  coverage: '/\s+(?:\d+\s+){4}(\d+\%)/'
