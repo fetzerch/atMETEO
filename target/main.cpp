@@ -174,7 +174,7 @@ static const Avr::IpAddress ETHERNET_SUBNET(255, 255, 0, 0);
 static const Avr::IpAddress UDP_SERVER(10, 0, 1, 10);
 static const uint16_t UDP_PORT = 8600;
 
-static const uint8_t HIDEKISENSORS = 2;
+static const uint8_t HIDEKISENSORS = 3;
 static Sensors::HidekiDevice<
     Avr::TimerUtils<PRESCALER>::usToTicks<183>(),  // Short min
     Avr::TimerUtils<PRESCALER>::usToTicks<726>(),  // Short max
