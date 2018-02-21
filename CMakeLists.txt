@@ -7,8 +7,8 @@ set(PROJECT_FILES README.md LICENSE)
 add_custom_target(_dummy SOURCES ${PROJECT_FILES})
 
 # Additional CMake modules
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH}
-    ${CMAKE_SOURCE_DIR}/cmake/modules)
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/cmake/modules)
+include(Utils)
 
 # Options and configuration ---------------------------------------------------
 
@@ -80,7 +80,6 @@ if(CMAKE_CROSSCOMPILING AND CMAKE_SYSTEM_PROCESSOR STREQUAL "avr")
 endif()
 
 # Print configuration ---------------------------------------------------------
-include(Utils)
 message(STATUS)
 message(STATUS "${CMAKE_PROJECT_NAME} - Configuration:")
 if(CMAKE_CROSSCOMPILING AND CMAKE_SYSTEM_PROCESSOR STREQUAL "avr")

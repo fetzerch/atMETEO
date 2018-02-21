@@ -145,6 +145,8 @@
 #include <avr/interrupt.h>
 #include <util/delay.h>
 
+#include "git-version.h"
+
 #include "lib/hidekisensor.h"
 #include "lib/dht22.h"
 #include "lib/bmp180.h"
@@ -217,6 +219,7 @@ int main()
     // Transmitting an initial string allows the client to know that the
     // microcontroller is ready.
     auto uart = Avr::Uart<BAUD>::instance();
+    uart.sendLine("VERSION: " GIT_VERSION);
     uart.sendLine("READY");
 
     auto ethernet = Avr::Ethernet<Avr::Wiznet>(ETHERNET_MAC,

@@ -33,3 +33,4 @@ add_subdirectory(lib)
 add_avr_executable(sensors ${HEADERS} ${SOURCES} ${OTHERS})
 target_link_libraries(sensors-${AVR_MCU}.elf libsensors-${AVR_MCU}
     libtarget-${AVR_MCU})
+target_add_git_version_header(sensors-${AVR_MCU}.elf)

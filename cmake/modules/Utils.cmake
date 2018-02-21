@@ -28,3 +28,35 @@ function(status_message _DESC)
 
     message(STATUS ${_MESSAGE})
 endfunction()
+
+# Generate Git version header
+function(target_add_git_version_header _TARGET)
+    find_package(Git REQUIRED)
+    if(NOT TARGET git-version)
+        file(WRITE ${CMAKE_BINARY_DIR}/git-version.h.in
+            "#define GIT_VERSION \"@GIT_VERSION@\"\n"
+        )
+        file(WRITE ${CMAKE_BINARY_DIR}/git-version.cmake
+            "execute_process(
+                 COMMAND ${GIT_EXECUTABLE} describe --always --dirty
+                 OUTPUT_VARIABLE GIT_VERSION
+                 OUTPUT_STRIP_TRAILING_WHITESPACE
+                 WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+             )
+             message(STATUS \"Git Version: \${GIT_VERSION}\")
+             configure_file(
+                 ${CMAKE_BINARY_DIR}/git-version.h.in
+                 ${CMAKE_BINARY_DIR}/git-version.h @ONLY
+             )"
+        )
+        add_custom_target(
+            git-version
+            ${CMAKE_COMMAND} -P ${CMAKE_BINARY_DIR}/git-version.cmake
+            COMMENT "Updating Git version header file (if necessary)"
+            BYPRODUCTS ${CMAKE_BINARY_DIR}/git-version.h
+        )
+    endif()
+    target_include_directories(${_TARGET} PRIVATE ${CMAKE_BINARY_DIR})
+    target_sources(${_TARGET} PRIVATE ${CMAKE_BINARY_DIR}/git-version.h)
+    add_dependencies(${_TARGET} git-version)
+endfunction()
