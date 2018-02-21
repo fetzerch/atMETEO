@@ -7,3 +7,6 @@
 [submodule "tests/catch2"]
 	path = tests/catch2
 	url = https://github.com/catchorg/Catch2
+[submodule "cmake/avr"]
+	path = cmake/avr
+	url = https://github.com/mkleemann/cmake-avr

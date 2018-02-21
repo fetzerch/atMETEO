@@ -83,8 +83,7 @@ mainly for testing purposes.
 
 ### Cross compilation & flashing
 A different configuration is needed to setup cross compilation and flashing for
-ATmega based targets. For this purpose [cmake-avr] has to be available on
-the build machine.
+ATmega based targets.
 
 In order to use [cmake-avr] the `CMAKE_TOOLCHAIN_FILE` variable has to be set
 as well as a few other configuration variables.
@@ -92,7 +91,7 @@ as well as a few other configuration variables.
 Exemplary usage for an Arduino Uno:
 
     $ cd <build dir>
-    $ cmake -DCMAKE_TOOLCHAIN_FILE=<cmake-avr dir>/generic-gcc-avr.cmake \
+    $ cmake -DCMAKE_TOOLCHAIN_FILE=<source dir>/cmake/avr/generic-gcc-avr.cmake \
             -DTARGET_CONFIGURATION=arduino -DAVR_MCU=atmega328p \
             -DAVR_PROGRAMMER=arduino -DAVR_UPLOADTOOL_PORT=/dev/ttyACM0 \
             <source dir>
