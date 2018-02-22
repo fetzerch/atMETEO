@@ -24,12 +24,14 @@
  * \brief Unit tests for \ref libsensors_bitdecoder.
  */
 
-#include <gmock/gmock.h>
+#include <vector>
+
+#include <catch.hpp>
 
 #include "lib/utils.h"
 #include "lib/bitdecoder.h"
 
-using ::testing::ElementsAreArray;
+using ::Catch::Matchers::Equals;
 using ::Sensors::BitDecoder;
 using ::Sensors::BitDecoderStatus;
 using ::Sensors::NoParity;
@@ -79,16 +81,16 @@ struct BitDecoderTestHelper
         for (size_t i = 0; i < 2 * sizeof(T) * CHAR_BIT + 2; ++i) {
             if (i == sizeof(T) * CHAR_BIT) {
                 status = decoder.addBit(!ParityHelper<TParity>::parity);
-                EXPECT_EQ(BitDecoderStatus::Complete, status);
-                EXPECT_EQ(static_cast<T>(
-                          BitNumberingHelper<TBitNumbering>::value),
-                          decoder.getData());
+                CHECK(status == BitDecoderStatus::Complete);
+                CHECK(decoder.getData() ==
+                      static_cast<T>(
+                          BitNumberingHelper<TBitNumbering>::value));
             } else if (i == 2 * sizeof(T) * CHAR_BIT + 1) {
                 status = decoder.addBit(ParityHelper<TParity>::parity);
-                EXPECT_EQ(BitDecoderStatus::ParityError, status);
+                CHECK(status == BitDecoderStatus::ParityError);
             } else {
                 status = decoder.addBit(i % 2 == 0);
-                EXPECT_EQ(BitDecoderStatus::Incomplete, status);
+                CHECK(status == BitDecoderStatus::Incomplete);
             }
         }
     }
@@ -105,13 +107,13 @@ struct BitDecoderTestHelper<T, Sensors::NoParity, TBitNumbering>
             if (i == sizeof(T) * CHAR_BIT - 1 ||
                     i == 2 * sizeof(T) * CHAR_BIT - 1) {
                 status = decoder.addBit(0);
-                EXPECT_EQ(BitDecoderStatus::Complete, status);
-                EXPECT_EQ(static_cast<T>(
-                          BitNumberingHelper<TBitNumbering>::value),
-                          decoder.getData());
+                CHECK(status == BitDecoderStatus::Complete);
+                CHECK(decoder.getData() ==
+                      static_cast<T>(
+                          BitNumberingHelper<TBitNumbering>::value));
             } else {
                 status = decoder.addBit(i % 2 == 0);
-                EXPECT_EQ(BitDecoderStatus::Incomplete, status);
+                CHECK(BitDecoderStatus::Incomplete == status);
             }
         }
     }
@@ -121,7 +123,7 @@ struct BitDecoderTestHelper<T, Sensors::NoParity, TBitNumbering>
  * \brief Tests Sensors::BitDecoder with uint8_t, Sensors::NoParity
  *        and Sensors::MsbBitNumbering configuration.
  */
-TEST(BitDecoderTest, ByteNoParityMsb)
+TEST_CASE("DecodingBitsWithByteNoParityMsb", "[bitdecoder]")
 {
     BitDecoderTestHelper<uint8_t, NoParity, MsbBitNumbering>::test();
 }
@@ -130,7 +132,7 @@ TEST(BitDecoderTest, ByteNoParityMsb)
  * \brief Tests Sensors::BitDecoder with uint8_t, Sensors::NoParity
  *        and Sensors::LsbBitNumbering configuration.
  */
-TEST(BitDecoderTest, ByteNoParityLsb)
+TEST_CASE("DecodingBitsWithByteNoParityLsb", "[bitdecoder]")
 {
     BitDecoderTestHelper<uint8_t, NoParity, LsbBitNumbering>::test();
 }
@@ -139,7 +141,7 @@ TEST(BitDecoderTest, ByteNoParityLsb)
  * \brief Tests Sensors::BitDecoder with uint8_t, Sensors::EvenParity
  *        and Sensors::MsbBitNumbering configuration.
  */
-TEST(BitDecoderTest, ByteEvenParityMsb)
+TEST_CASE("DecodingBitsWithByteEvenParityMsb", "[bitdecoder]")
 {
     BitDecoderTestHelper<uint8_t, EvenParity, MsbBitNumbering>::test();
 }
@@ -148,7 +150,7 @@ TEST(BitDecoderTest, ByteEvenParityMsb)
  * \brief Tests Sensors::BitDecoder with uint8_t, Sensors::EvenParity
  *        and Sensors::LsbBitNumbering configuration.
  */
-TEST(BitDecoderTest, ByteEvenParityLsb)
+TEST_CASE("DecodingBitsWithByteEvenParityLsb", "[bitdecoder]")
 {
     BitDecoderTestHelper<uint8_t, EvenParity, LsbBitNumbering>::test();
 }
@@ -157,7 +159,7 @@ TEST(BitDecoderTest, ByteEvenParityLsb)
  * \brief Tests Sensors::BitDecoder with uint8_t, Sensors::OddParity
  *        and Sensors::MsbBitNumbering configuration.
  */
-TEST(BitDecoderTest, ByteOddParityMsb)
+TEST_CASE("DecodingBitsWithByteOddParityMsb", "[bitdecoder]")
 {
     BitDecoderTestHelper<uint8_t, OddParity, MsbBitNumbering>::test();
 }
@@ -166,7 +168,7 @@ TEST(BitDecoderTest, ByteOddParityMsb)
  * \brief Tests Sensors::BitDecoder with uint8_t, Sensors::OddParity
  *        and Sensors::LsbBitNumbering configuration.
  */
-TEST(BitDecoderTest, ByteOddParityLsb)
+TEST_CASE("DecodingBitsWithByteOddParityLsb", "[bitdecoder]")
 {
     BitDecoderTestHelper<uint8_t, OddParity, LsbBitNumbering>::test();
 }
@@ -175,7 +177,7 @@ TEST(BitDecoderTest, ByteOddParityLsb)
  * \brief Tests Sensors::BitDecoder with uint32_t, Sensors::NoParity
  *        and Sensors::MsbBitNumbering configuration.
  */
-TEST(BitDecoderTest, IntNoParityMsb)
+TEST_CASE("DecodingBitsWithIntNoParityMsb", "[bitdecoder]")
 {
     BitDecoderTestHelper<uint32_t, NoParity, MsbBitNumbering>::test();
 }
@@ -184,7 +186,7 @@ TEST(BitDecoderTest, IntNoParityMsb)
  * \brief Tests Sensors::BitDecoder with uint32_t, Sensors::NoParity
  *        and Sensors::LsbBitNumbering configuration.
  */
-TEST(BitDecoderTest, IntNoParityLsb)
+TEST_CASE("DecodingBitsWithIntNoParityLsb", "[bitdecoder]")
 {
     BitDecoderTestHelper<uint32_t, NoParity, LsbBitNumbering>::test();
 }
@@ -193,7 +195,7 @@ TEST(BitDecoderTest, IntNoParityLsb)
  * \brief Tests Sensors::BitDecoder with uint32_t, Sensors::EvenParity
  *        and Sensors::MsbBitNumbering configuration.
  */
-TEST(BitDecoderTest, IntEvenParityMsb)
+TEST_CASE("DecodingBitsWithIntEvenParityMsb", "[bitdecoder]")
 {
     BitDecoderTestHelper<uint32_t, EvenParity, MsbBitNumbering>::test();
 }
@@ -202,7 +204,7 @@ TEST(BitDecoderTest, IntEvenParityMsb)
  * \brief Tests Sensors::BitDecoder with uint32_t, Sensors::EvenParity
  *        and Sensors::LsbBitNumbering configuration.
  */
-TEST(BitDecoderTest, IntEvenParityLsb)
+TEST_CASE("DecodingBitsWithIntEvenParityLsb", "[bitdecoder]")
 {
     BitDecoderTestHelper<uint32_t, EvenParity, LsbBitNumbering>::test();
 }
@@ -211,7 +213,7 @@ TEST(BitDecoderTest, IntEvenParityLsb)
  * \brief Tests Sensors::BitDecoder with uint32_t, Sensors::OddParity
  *        and Sensors::MsbBitNumbering configuration.
  */
-TEST(BitDecoderTest, IntOddParityMsb)
+TEST_CASE("DecodingBitsWithIntOddParityMsb", "[bitdecoder]")
 {
     BitDecoderTestHelper<uint32_t, OddParity, MsbBitNumbering>::test();
 }
@@ -220,7 +222,7 @@ TEST(BitDecoderTest, IntOddParityMsb)
  * \brief Tests Sensors::BitDecoder with uint32_t, Sensors::OddParity
  *        and Sensors::LsbBitNumbering configuration.
  */
-TEST(BitDecoderTest, IntOddParityLsb)
+TEST_CASE("DecodingBitsWithIntOddParityLsb", "[bitdecoder]")
 {
     BitDecoderTestHelper<uint32_t, OddParity, LsbBitNumbering>::test();
 }
@@ -230,7 +232,7 @@ TEST(BitDecoderTest, IntOddParityLsb)
  *        uint32_t, Sensors::EvenParity and Sensors::LsbBitNumbering
  *        configuration).
  */
-TEST(BitDecoderTest, RFMessage)
+TEST_CASE("DecodingBitsFromRecordedRFMessage", "[bitdecoder]")
 {
     uint8_t message[] = {1, 1, 1, 1, 1, 0, 0, 1, 0,
                          0, 0, 1, 1, 0, 1, 0, 0, 1,
@@ -263,7 +265,7 @@ TEST(BitDecoderTest, RFMessage)
                          1, 1, 0, 1, 1, 0, 1, 0, 1,
                          0, 0, 0, 1, 0, 0, 0, 1};
 
-    uint8_t result[] = {0x9F, 0x2C, 0xCE, 0x5E, 0x48,
+    std::vector<uint8_t> result = {0x9F, 0x2C, 0xCE, 0x5E, 0x48,
                         0xC2, 0x16, 0xFB, 0xDB, 0xFC,
                         0x9F, 0x2C, 0xCE, 0x9E, 0x48,
                         0xC2, 0x16, 0xFB, 0x1B, 0xB2,
@@ -284,5 +286,5 @@ TEST(BitDecoderTest, RFMessage)
         }
     }
 
-    EXPECT_THAT(bytes, ElementsAreArray(result));
+    CHECK_THAT(bytes, Equals(result));
 }

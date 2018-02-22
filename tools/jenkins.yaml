@@ -97,7 +97,6 @@
         - shell: |
             #!/bin/bash -eux
             export TERM=xterm
-            export GTEST_COLOR=yes
             cmake() { unbuffer /usr/bin/cmake "$@"; }
             make() { /usr/bin/make -j$(nproc) VERBOSE=1 "$@"; }
 
@@ -105,15 +104,15 @@
             rm -rf $WORKSPACE/build-linux64
             mkdir $WORKSPACE/build-linux64 ; cd $WORKSPACE/build-linux64
             cmake -DCMAKE_BUILD_TYPE=Coverage \
-                  -DGMOCK_SOURCE_DIR=$HOME/buildsys/googletest-release-1.8.0 \
-                  -DGMOCK_BINARY_DIR=$WORKSPACE/gmock \
                   $WORKSPACE/sources
 
             echo -e "\n----- Compile -----\n"
             make 2> >(tee gcc_stderr.log >&2)
 
             echo -e "\n----- Execute unit tests with valgrind -----\n"
-            ctest -j$(nproc) -D ExperimentalMemCheck -VV || true
+            valgrind --leak-check=full --track-origins=yes \
+                     --xml=yes --xml-file=tests/valgrind.xml \
+                     tests/tests -s -r junit -o tests/junit.xml || true
 
             echo -e "\n----- Build code coverage information -----\n"
             make gcovr_to_cobertura
@@ -135,8 +134,6 @@
             mkdir $WORKSPACE/build-scanbuild ; cd $WORKSPACE/build-scanbuild
             scan-build cmake \
                 -DCMAKE_BUILD_TYPE=Debug \
-                -DGMOCK_SOURCE_DIR=$HOME/buildsys/googletest-release-1.8.0 \
-                -DGMOCK_BINARY_DIR=$WORKSPACE/gmock \
                 $WORKSPACE/sources
 
             echo "\n----- Analyze -----\n"
@@ -151,7 +148,6 @@
         - shell: |
             #!/bin/bash -eu
             export TERM=xterm
-            export GTEST_COLOR=yes
             cmake() {{ unbuffer /usr/bin/cmake "$@"; }}
             make() {{ /usr/bin/make -j$(nproc) VERBOSE=1 "$@"; }}
 
@@ -310,7 +306,7 @@
             artifacts: 'build-*/tests/*.xml'
             fingerprint: true
         - junit:
-            results: build-*/tests/test_*.xml
+            results: build-*/tests/junit.xml
             test-stability: true
         - cobertura:
             report-file: build-*/tests/coverage.xml
@@ -323,7 +319,7 @@
                 - conditional:
                     failing: 10000000
         - valgrind:
-            pattern: build-*/tests/valgrind_*.xml
+            pattern: build-*/tests/valgrind.xml
             thresholds:
                 unstable:
                     total: 0

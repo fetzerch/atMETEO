@@ -24,297 +24,303 @@
  * \brief Unit tests for Sensors::HidekiSensor.
  */
 
-#include <gmock/gmock.h>
-
 #include <vector>
+
+#include <catch.hpp>
 
 #include "lib/hidekisensor.h"
 
-using ::std::vector;
 using ::Sensors::SensorStatus;
 using ::Sensors::HidekiSensor;
 
 /*!
  * \brief Tests Sensors::HidekiSensor with a correct message.
  */
-TEST(HidekiSensorTest, MessageOk)
+TEST_CASE("HidekiSensorCorrectMessage", "[hidekisensor]")
 {
-    uint8_t bytes[] = {0x9F, 0x2C, 0xCE, 0x5E, 0x48,
-                       0xC2, 0x16, 0xFB, 0xDB, 0xFC};
+    std::vector<uint8_t> bytes = {0x9F, 0x2C, 0xCE, 0x5E, 0x48,
+                                  0xC2, 0x16, 0xFB, 0xDB, 0xFC};
 
     auto sensor = HidekiSensor();
-    auto status = sensor.setData(bytes, sizeof(bytes));
+    auto status = sensor.setData(bytes.data(), bytes.size());
 
-    EXPECT_EQ(SensorStatus::Complete, status);
-    EXPECT_TRUE(sensor.isValid());
-    EXPECT_EQ(1, sensor.channel());
-    EXPECT_EQ(0x0C, sensor.sensorId());
-    EXPECT_EQ(1, sensor.message());
-    EXPECT_TRUE(sensor.isThermoHygro());
-    EXPECT_EQ(24, sensor.temperature());
-    EXPECT_FLOAT_EQ(24.8, sensor.temperatureF());
-    EXPECT_EQ(16, sensor.humidity());
+    CHECK(status == SensorStatus::Complete);
+    CHECK(sensor.isValid());
+    CHECK(sensor.channel() == 1);
+    CHECK(sensor.sensorId() == 0x0C);
+    CHECK(sensor.message() == 1);
+    CHECK(sensor.isThermoHygro());
+    CHECK(sensor.temperature() == 24);
+    CHECK(sensor.temperatureF() == Approx(24.8));
+    CHECK(sensor.humidity() == 16);
 }
 
 /*!
  * \brief Tests Sensors::HidekiSensor with a negative temperature.
  */
-TEST(HidekiSensorTest, NegativeTemperature)
+TEST_CASE("HidekiSensorNegativeTemperature", "[hidekisensor]")
 {
-    uint8_t bytes[] = {0x9F, 0x2C, 0xCE, 0x5E, 0x48,
-                       0x42, 0x16, 0xFB, 0x5B, 0x74};
+    std::vector<uint8_t> bytes = {0x9F, 0x2C, 0xCE, 0x5E, 0x48,
+                                  0x42, 0x16, 0xFB, 0x5B, 0x74};
 
     auto sensor = HidekiSensor();
-    auto status = sensor.setData(bytes, sizeof(bytes));
+    auto status = sensor.setData(bytes.data(), bytes.size());
 
-    EXPECT_EQ(SensorStatus::Complete, status);
-    EXPECT_TRUE(sensor.isValid());
-    EXPECT_FLOAT_EQ(-24.8, sensor.temperatureF());
+    CHECK(status == SensorStatus::Complete);
+    CHECK(sensor.isValid());
+    CHECK(sensor.temperatureF() == Approx(-24.8));
 }
 
 /*!
  * \brief Tests Sensors::HidekiSensor with continuous data.
  */
-TEST(HidekiSensorTest, ContinuousData)
+TEST_CASE("HidekiSensorContinuousData", "[hidekisensor]")
 {
-    uint8_t bytes[] = {0x9F, 0x2C, 0xCE, 0x5E, 0x48,
-                       0xC2, 0x16, 0xFB, 0xDB, 0xFC};
+    std::vector<uint8_t> bytes = {0x9F, 0x2C, 0xCE, 0x5E, 0x48,
+                                  0xC2, 0x16, 0xFB, 0xDB, 0xFC};
 
     auto sensor = HidekiSensor();
 
-    EXPECT_TRUE(sensor.isPossiblyValid());
+    CHECK(sensor.isPossiblyValid());
 
-    for (uint8_t i = 0; i < sizeof(bytes) - 1; ++i) {
+    for (uint8_t i = 0; i < bytes.size() - 1; ++i) {
         auto status = sensor.addByte(bytes[i]);
-        EXPECT_EQ(SensorStatus::Incomplete, status);
+        CHECK(status == SensorStatus::Incomplete);
     }
 
-    auto status = sensor.addByte(bytes[sizeof(bytes)-1]);
-    EXPECT_EQ(SensorStatus::Complete, status);
-    EXPECT_TRUE(sensor.isValid());
-    EXPECT_EQ(1, sensor.channel());
-    EXPECT_EQ(0x0C, sensor.sensorId());
-    EXPECT_EQ(1, sensor.message());
-    EXPECT_TRUE(sensor.isThermoHygro());
-    EXPECT_EQ(24, sensor.temperature());
-    EXPECT_FLOAT_EQ(24.8, sensor.temperatureF());
-    EXPECT_EQ(16, sensor.humidity());
+    auto status = sensor.addByte(bytes[bytes.size()-1]);
+    CHECK(status == SensorStatus::Complete);
+    CHECK(sensor.isValid());
+    CHECK(sensor.channel() == 1);
+    CHECK(sensor.sensorId() == 0x0C);
+    CHECK(sensor.message() == 1);
+    CHECK(sensor.isThermoHygro());
+    CHECK(sensor.temperature() == 24);
+    CHECK(sensor.temperatureF() == Approx(24.8));
+    CHECK(sensor.humidity() == 16);
 
     status = sensor.addByte(0xFF);
-    EXPECT_EQ(SensorStatus::TooMuchData, status);
-    EXPECT_TRUE(sensor.isValid());
+    CHECK(status == SensorStatus::TooMuchData);
+    CHECK(sensor.isValid());
 
     sensor.reset();
     status = sensor.addByte(0x8F);
-    EXPECT_EQ(SensorStatus::InvalidData, status);
-    EXPECT_FALSE(sensor.isPossiblyValid());
+    CHECK(status == SensorStatus::InvalidData);
+    CHECK(sensor.isPossiblyValid() == false);
 }
 
 /*!
  * \brief Tests Sensors::HidekiSensor with an invalid message size.
  */
-TEST(HidekiSensorTest, InvalidSize)
+TEST_CASE("HidekiSensorInvalidSize", "[hidekisensor]")
 {
-    uint8_t bytes1[] = {0x9F, 0x2C, 0xCE, 0x5E, 0x48,
-                        0xC2, 0x16, 0xFB, 0xDB};
-
-    uint8_t bytes2[] = {0x9F, 0x2C, 0xCE, 0x5E, 0x48,
-                        0xC2, 0x16, 0xFB, 0xDB, 0xFC, 0xFF};
-
     auto sensor = HidekiSensor();
-    auto status = sensor.setData(bytes1, sizeof(bytes1));
 
-    EXPECT_EQ(SensorStatus::Incomplete, status);
-    EXPECT_FALSE(sensor.isValid());
+    SECTION("Incomplete Message") {
+        std::vector<uint8_t> bytes = {0x9F, 0x2C, 0xCE, 0x5E, 0x48,
+                                      0xC2, 0x16, 0xFB, 0xDB};
 
-    status = sensor.setData(bytes2, sizeof(bytes2));
+        auto status = sensor.setData(bytes.data(), bytes.size());
+        CHECK(status == SensorStatus::Incomplete);
+        CHECK(sensor.isValid() == false);
+    }
 
-    EXPECT_EQ(SensorStatus::TooMuchData, status);
-    EXPECT_FALSE(sensor.isValid());
+    SECTION("Too Much Data in Message") {
+        std::vector<uint8_t> bytes = {0x9F, 0x2C, 0xCE, 0x5E, 0x48,
+                                      0xC2, 0x16, 0xFB, 0xDB, 0xFC, 0xFF};
+
+        auto status = sensor.setData(bytes.data(), bytes.size());
+        CHECK(status == SensorStatus::TooMuchData);
+        CHECK(sensor.isValid() == false);
+    }
 }
 
 /*!
  * \brief Tests Sensors::HidekiSensor with an incorrect header.
  */
-TEST(HidekiSensorTest, WrongHeader)
+TEST_CASE("HidekiSensorIncorrectHeader", "[hidekisensor]")
 {
-    uint8_t bytes[] = {0x00, 0x2C, 0xCE, 0x5E, 0x48,
-                       0xC2, 0x16, 0xFB, 0xDB, 0xFC};
+    std::vector<uint8_t> bytes = {0x00, 0x2C, 0xCE, 0x5E, 0x48,
+                                  0xC2, 0x16, 0xFB, 0xDB, 0xFC};
 
     auto sensor = HidekiSensor();
-    auto status = sensor.setData(bytes, sizeof(bytes));
+    auto status = sensor.setData(bytes.data(), bytes.size());
 
-    EXPECT_EQ(SensorStatus::InvalidData, status);
-    EXPECT_FALSE(sensor.isValid());
+    CHECK(status == SensorStatus::InvalidData);
+    CHECK(sensor.isValid() == false);
 }
 
 /*!
  * \brief Tests Sensors::HidekiSensor with an incorrect channel.
  */
-TEST(HidekiSensorTest, IncorrectChannel)
+TEST_CASE("HidekiSensorIncorrectChannel", "[hidekisensor]")
 {
-    uint8_t bytes[] = {0x9F, 0xE3, 0xCE, 0x5E, 0x48,
-                       0xC2, 0x16, 0xFB, 0xDB, 0xFC};
+    std::vector<uint8_t> bytes = {0x9F, 0xE3, 0xCE, 0x5E, 0x48,
+                                  0xC2, 0x16, 0xFB, 0xDB, 0xFC};
 
     auto sensor = HidekiSensor();
-    auto status = sensor.setData(bytes, sizeof(bytes));
+    auto status = sensor.setData(bytes.data(), bytes.size());
 
-    EXPECT_EQ(SensorStatus::InvalidData, status);
-    EXPECT_FALSE(sensor.isValid());
+    CHECK(status == SensorStatus::InvalidData);
+    CHECK(sensor.isValid() == false);
 }
 
 /*!
  * \brief Tests Sensors::HidekiSensor with an incorrect CRC1.
  */
-TEST(HidekiSensorTest, WrongCRC1)
+TEST_CASE("HidekiSensorIncorrectCRC1", "[hidekisensor]")
 {
-    uint8_t bytes[] = {0x9F, 0x2C, 0xCE, 0x5E, 0x48,
-                       0xC2, 0x16, 0xFB, 0x00, 0xFC};
+    std::vector<uint8_t> bytes = {0x9F, 0x2C, 0xCE, 0x5E, 0x48,
+                                  0xC2, 0x16, 0xFB, 0x00, 0xFC};
 
     auto sensor = HidekiSensor();
-    auto status = sensor.setData(bytes, sizeof(bytes));
+    auto status = sensor.setData(bytes.data(), bytes.size());
 
-    EXPECT_EQ(SensorStatus::InvalidData, status);
-    EXPECT_FALSE(sensor.isValid());
+    CHECK(status == SensorStatus::InvalidData);
+    CHECK(sensor.isValid() == false);
 }
 
 /*!
  * \brief Tests Sensors::HidekiSensor with an incorrect CRC2.
  */
-TEST(HidekiSensorTest, WrongCRC2)
+TEST_CASE("HidekiSensorIncorrectCRC2", "[hidekisensor]")
 {
-    uint8_t bytes[] = {0x9F, 0x2C, 0xCE, 0x5E, 0x48,
-                       0xC2, 0x16, 0xFB, 0xDB, 0x00};
+    std::vector<uint8_t> bytes = {0x9F, 0x2C, 0xCE, 0x5E, 0x48,
+                                  0xC2, 0x16, 0xFB, 0xDB, 0x00};
 
     auto sensor = HidekiSensor();
-    auto status = sensor.setData(bytes, sizeof(bytes));
+    auto status = sensor.setData(bytes.data(), bytes.size());
 
-    EXPECT_EQ(SensorStatus::InvalidData, status);
-    EXPECT_FALSE(sensor.isValid());
+    CHECK(status == SensorStatus::InvalidData);
+    CHECK(sensor.isValid() == false);
 }
 
 /*!
  * \brief Tests Sensors::HidekiSensor channels.
  */
-TEST(HidekiSensorTest, Channels)
+TEST_CASE("HidekiSensorChannels", "[hidekisensor]")
 {
-    uint8_t bytes1[] = {0x9F, 0x24, 0xCE, 0x5E, 0x48,
-                        0xC2, 0x16, 0xFB, 0xD3, 0x1E};
-
     auto sensor = HidekiSensor();
-    auto status = sensor.setData(bytes1, sizeof(bytes1));
 
-    EXPECT_EQ(SensorStatus::Complete, status);
-    EXPECT_TRUE(sensor.isValid());
-    EXPECT_EQ(1, sensor.channel());
+    SECTION("Channel 1") {
+        std::vector<uint8_t> bytes = {0x9F, 0x24, 0xCE, 0x5E, 0x48,
+                                      0xC2, 0x16, 0xFB, 0xD3, 0x1E};
 
-    uint8_t bytes2[] = {0x9F, 0x43, 0xCE, 0x5E, 0x48,
-                        0xC2, 0x16, 0xFB, 0xB4, 0xC5};
+        auto status = sensor.setData(bytes.data(), bytes.size());
+        CHECK(status == SensorStatus::Complete);
+        CHECK(sensor.isValid());
+        CHECK(sensor.channel() == 1);
+    }
 
-    sensor = HidekiSensor();
-    status = sensor.setData(bytes2, sizeof(bytes2));
+    SECTION("Channel 2") {
+        std::vector<uint8_t> bytes = {0x9F, 0x43, 0xCE, 0x5E, 0x48,
+                                      0xC2, 0x16, 0xFB, 0xB4, 0xC5};
 
-    EXPECT_EQ(SensorStatus::Complete, status);
-    EXPECT_TRUE(sensor.isValid());
-    EXPECT_EQ(2, sensor.channel());
+        auto status = sensor.setData(bytes.data(), bytes.size());
+        CHECK(status == SensorStatus::Complete);
+        CHECK(sensor.isValid());
+        CHECK(sensor.channel() == 2);
+    }
 
-    uint8_t bytes3[] = {0x9F, 0x67, 0xCE, 0x5E, 0x48,
-                        0xC2, 0x16, 0xFB, 0x90, 0xBE};
+    SECTION("Channel 3") {
+        std::vector<uint8_t> bytes = {0x9F, 0x67, 0xCE, 0x5E, 0x48,
+                                      0xC2, 0x16, 0xFB, 0x90, 0xBE};
 
-    sensor = HidekiSensor();
-    status = sensor.setData(bytes3, sizeof(bytes3));
+        auto status = sensor.setData(bytes.data(), bytes.size());
+        CHECK(status == SensorStatus::Complete);
+        CHECK(sensor.isValid());
+        CHECK(sensor.channel() == 3);
+    }
 
-    EXPECT_EQ(SensorStatus::Complete, status);
-    EXPECT_TRUE(sensor.isValid());
-    EXPECT_EQ(3, sensor.channel());
+    SECTION("Channel 4") {
+        std::vector<uint8_t> bytes = {0x9F, 0xAE, 0xCE, 0x5E, 0x48,
+                                      0xC2, 0x16, 0xFB, 0x59, 0x0C};
 
-    uint8_t bytes4[] = {0x9F, 0xAE, 0xCE, 0x5E, 0x48,
-                        0xC2, 0x16, 0xFB, 0x59, 0x0C};
+        auto status = sensor.setData(bytes.data(), bytes.size());
+        CHECK(status == SensorStatus::Complete);
+        CHECK(sensor.isValid());
+        CHECK(sensor.channel() == 4);
+    }
 
-    sensor = HidekiSensor();
-    status = sensor.setData(bytes4, sizeof(bytes4));
+    SECTION("Channel 5") {
+        std::vector<uint8_t> bytes = {0x9F, 0xC8, 0xCE, 0x5E, 0x48,
+                                      0xC2, 0x16, 0xFB, 0x3F, 0xBB};
 
-    EXPECT_EQ(SensorStatus::Complete, status);
-    EXPECT_TRUE(sensor.isValid());
-    EXPECT_EQ(4, sensor.channel());
+        auto status = sensor.setData(bytes.data(), bytes.size());
+        CHECK(status == SensorStatus::Complete);
+        CHECK(sensor.isValid());
+        CHECK(sensor.channel() == 5);
+    }
 
-    uint8_t bytes5[] = {0x9F, 0xC8, 0xCE, 0x5E, 0x48,
-                        0xC2, 0x16, 0xFB, 0x3F, 0xBB};
+    SECTION("Channel 6") {
+        std::vector<uint8_t> bytes = {0x9F, 0x9F, 0xCE, 0x5E, 0x48,
+                                      0xC2, 0x16, 0xFB, 0x68, 0x6F};
 
-    sensor = HidekiSensor();
-    status = sensor.setData(bytes5, sizeof(bytes5));
-
-    EXPECT_EQ(SensorStatus::Complete, status);
-    EXPECT_TRUE(sensor.isValid());
-    EXPECT_EQ(5, sensor.channel());
-
-    uint8_t bytes6[] = {0x9F, 0x9F, 0xCE, 0x5E, 0x48,
-                        0xC2, 0x16, 0xFB, 0x68, 0x6F};
-
-    sensor = HidekiSensor();
-    status = sensor.setData(bytes6, sizeof(bytes6));
-
-    EXPECT_EQ(SensorStatus::Complete, status);
-    EXPECT_TRUE(sensor.isValid());
-    EXPECT_EQ(6, sensor.channel());
+        auto status = sensor.setData(bytes.data(), bytes.size());
+        CHECK(status == SensorStatus::Complete);
+        CHECK(sensor.isValid());
+        CHECK(sensor.channel() == 6);
+    }
 }
 
 /*!
  * \brief Tests Sensors::HidekiSensor battery status.
  */
-TEST(HidekiSensorTest, BatteryStatus)
+TEST_CASE("HidekiSensorBatteryStatus", "[hidekisensor]")
 {
-    uint8_t bytes1[] = {0x9F, 0x2C, 0xCE, 0x5E, 0x48,
-                        0xC2, 0x16, 0xFB, 0xDB, 0xFC};
-
     auto sensor = HidekiSensor();
-    auto status = sensor.setData(bytes1, sizeof(bytes1));
 
-    EXPECT_EQ(SensorStatus::Complete, status);
-    EXPECT_TRUE(sensor.isValid());
-    EXPECT_TRUE(sensor.batteryOk());
+    SECTION("Battery OK") {
+        std::vector<uint8_t> bytes = {0x9F, 0x2C, 0xCE, 0x5E, 0x48,
+                                      0xC2, 0x16, 0xFB, 0xDB, 0xFC};
 
-    uint8_t bytes2[] = {0x9F, 0x2C, 0x0E, 0x5E, 0x48,
-                       0xC2, 0x16, 0xFB, 0x1B, 0x0A};
+        auto status = sensor.setData(bytes.data(), bytes.size());
+        CHECK(status == SensorStatus::Complete);
+        CHECK(sensor.isValid());
+        CHECK(sensor.batteryOk() == true);
+    }
 
-    sensor = HidekiSensor();
-    status = sensor.setData(bytes2, sizeof(bytes2));
+    SECTION("Battery Not OK") {
+        std::vector<uint8_t> bytes = {0x9F, 0x2C, 0x0E, 0x5E, 0x48,
+                                      0xC2, 0x16, 0xFB, 0x1B, 0x0A};
 
-    EXPECT_EQ(SensorStatus::Complete, status);
-    EXPECT_TRUE(sensor.isValid());
-    EXPECT_FALSE(sensor.batteryOk());
+        auto status = sensor.setData(bytes.data(), bytes.size());
+        CHECK(status == SensorStatus::Complete);
+        CHECK(sensor.isValid());
+        CHECK(sensor.batteryOk() == false);
+    }
 }
 
 /*!
  * \brief Tests Sensors::HidekiSensor with a non thermo/hygro message.
  */
-TEST(HidekiSensorTest, NonThermoHygroSensor)
+TEST_CASE("HidekiSensorNonThermo/HygroSensor", "[hidekisensor]")
 {
-    // Non Thermo/Hygro sensor type
-    uint8_t bytes1[] = {0x9F, 0x2C, 0xCE, 0x5C, 0x48,
-                        0xC2, 0x16, 0xFB, 0xD9, 0x71};
-
     auto sensor = HidekiSensor();
-    auto status = sensor.setData(bytes1, sizeof(bytes1));
 
-    EXPECT_EQ(SensorStatus::Complete, status);
-    EXPECT_TRUE(sensor.isValid());
-    EXPECT_FALSE(sensor.isThermoHygro());
-    EXPECT_EQ(0, sensor.temperature());
-    EXPECT_FLOAT_EQ(0, sensor.temperatureF());
-    EXPECT_EQ(0, sensor.humidity());
+    SECTION("Non Thermo/Hygro Sensor Type") {
+        std::vector<uint8_t> bytes = {0x9F, 0x2C, 0xCE, 0x5C, 0x48,
+                                      0xC2, 0x16, 0xFB, 0xD9, 0x71};
 
-    // Thermo/Hygro sensor type, but too small package
-    uint8_t bytes2[] = {0x9F, 0x2C, 0xCC, 0x5E, 0x48,
-                        0xC2, 0x16, 0x22, 0x36};
+        auto status = sensor.setData(bytes.data(), bytes.size());
+        CHECK(status == SensorStatus::Complete);
+        CHECK(sensor.isValid());
+        CHECK(sensor.isThermoHygro() == false);
+        CHECK(sensor.temperature() == 0);
+        CHECK(sensor.temperatureF() == Approx(0));
+        CHECK(sensor.humidity() == 0);
+    }
 
-    sensor = HidekiSensor();
-    status = sensor.setData(bytes2, sizeof(bytes2));
+    SECTION("Thermo/Hygro Sensor With Too Small Package") {
+        std::vector<uint8_t> bytes = {0x9F, 0x2C, 0xCC, 0x5E, 0x48,
+                                      0xC2, 0x16, 0x22, 0x36};
 
-    EXPECT_EQ(SensorStatus::Complete, status);
-    EXPECT_TRUE(sensor.isValid());
-    EXPECT_FALSE(sensor.isThermoHygro());
-    EXPECT_EQ(0, sensor.temperature());
-    EXPECT_FLOAT_EQ(0, sensor.temperatureF());
-    EXPECT_EQ(0, sensor.humidity());
+        auto status = sensor.setData(bytes.data(), bytes.size());
+        CHECK(status == SensorStatus::Complete);
+        CHECK(sensor.isValid());
+        CHECK(sensor.isThermoHygro() == false);
+        CHECK(sensor.temperature() == 0);
+        CHECK(sensor.temperatureF() == Approx(0));
+        CHECK(sensor.humidity() == 0);
+    }
 }

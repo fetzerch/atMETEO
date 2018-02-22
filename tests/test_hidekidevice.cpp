@@ -24,23 +24,21 @@
  * \brief Unit tests for Sensors::HidekiDevice.
  */
 
-#include <gmock/gmock.h>
+#include <vector>
+
+#include <catch.hpp>
 
 #include "utils.h"
 
 #include "lib/hidekisensor.h"
 
 using ::std::extent;
-using ::testing::AnyOf;
-using ::testing::Eq;
-using ::testing::TestWithParam;
-using ::testing::Values;
 using ::Sensors::HidekiSensor;
 using ::Sensors::HidekiDevice;
 using ::Sensors::RfDeviceStatus;
 
 // Noise
-static const uint16_t noise[] = {
+static const std::vector<uint16_t> noise = {
     50123, 10534, 56, 342, 123, 756, 42123, 4332, // Noise before the message
     51234, 900, 900, 900, 900, 900, 900, 900, 900, 900, // Parity Error
     21345,
@@ -49,7 +47,7 @@ static const uint16_t noise[] = {
 };
 
 // Message 1: Close to the receiver (1 m)
-static const uint16_t message1[] = {
+static const std::vector<uint16_t> message1 = {
     900, 924, 868, 932, 864, 498, 403, 493, 401, 946, 406, 494, 848, 950, 400,
     499, 854, 498, 395, 950, 402, 500, 395, 511, 392, 508, 385, 510, 845, 955,
     838, 518, 376, 522, 381, 965, 830, 976, 380, 512, 833, 970, 829, 988, 358,
@@ -85,7 +83,7 @@ static const uint16_t message1[] = {
 };
 
 // 4 Meter distance, same room
-static const uint16_t message2[] = {
+static const std::vector<uint16_t> message2 = {
     893, 939, 863, 937, 860, 491, 403, 501, 401, 957, 393, 492, 853, 951, 401,
     501, 848, 500, 397, 956, 395, 504, 395, 503, 394, 502, 393, 506, 842, 959,
     841, 508, 389, 511, 388, 961, 838, 965, 384, 522, 827, 970, 830, 962, 385,
@@ -121,7 +119,7 @@ static const uint16_t message2[] = {
 };
 
 // 5 meter distance, outside, Window in between
-static const uint16_t message3[] = {
+static const std::vector<uint16_t> message3 = {
     866, 968, 827, 973, 824, 536, 356, 539, 356, 998, 362, 538, 812, 984, 361,
     536, 805, 548, 360, 986, 358, 542, 354, 548, 354, 535, 367, 541, 804, 991,
     804, 553, 351, 543, 357, 1002, 792, 1001, 350, 550, 802, 999, 796, 999, 356,
@@ -157,7 +155,7 @@ static const uint16_t message3[] = {
 };
 
 // 5 meter distance, outside, Windows in between
-static const uint16_t message4[] = {
+static const std::vector<uint16_t> message4 = {
     819, 1036, 761, 1010, 788, 565, 323, 577, 331, 1026, 319, 587, 762, 1037,
     310, 588, 762, 576, 324, 1037, 306, 597, 301, 591, 309, 593, 311, 628, 720,
     1047, 746, 588, 312, 600, 304, 1062, 736, 1092, 254, 610, 739, 1068, 735,
@@ -193,66 +191,59 @@ static const uint16_t message4[] = {
 
 struct MessageParameter
 {
-    MessageParameter(const uint16_t *message, size_t size,
+    MessageParameter(const std::vector<uint16_t> &message,
                      float temperature = 0.0f, uint8_t humidity = 0) :
-        message(message), size(size),
-        temperature(temperature), humidity(humidity)
+        message(message), temperature(temperature), humidity(humidity)
     {
     }
 
-    const uint16_t *message;
-    const size_t size;
+    const std::vector<uint16_t> message;
     const float temperature;
     const uint8_t humidity;
 };
 
-class Receiver : public TestWithParam<MessageParameter>
-{
-};
-
-/*!
- * \brief Parameterized test for Sensors::HidekiDevice.
- */
-TEST_P(Receiver, TestMessages)
+static void verifyHidekiDevice(const MessageParameter &param)
 {
     HidekiDevice<200, 675, 675, 1150> hidekiDevice;
 
-    MessageParameter param = GetParam();
-
-    for (uint16_t i = 0; i < extent<decltype(noise)>::value; ++i) {
-
-        EXPECT_THAT(hidekiDevice.addPulseWidth(noise[i]), AnyOf(
-                        Eq(RfDeviceStatus::Incomplete),
-                        Eq(RfDeviceStatus::InvalidData)));
+    for (const auto &pulseWidth : noise) {
+        auto status = hidekiDevice.addPulseWidth(pulseWidth);
+        CHECK((status == RfDeviceStatus::Incomplete
+                 || status == RfDeviceStatus::InvalidData));
     }
 
     int messageCount = 0;
-    for (uint16_t i = 0; i < param.size; ++i) {
-        if (hidekiDevice.addPulseWidth(param.message[i]) ==
+    for (const auto &pulseWidth : param.message) {
+        if (hidekiDevice.addPulseWidth(pulseWidth) ==
                 RfDeviceStatus::Complete) {
             ++messageCount;
 
-            EXPECT_EQ(messageCount, hidekiDevice.message());
-            EXPECT_FLOAT_EQ(param.temperature, hidekiDevice.temperatureF());
-            EXPECT_EQ(param.humidity, hidekiDevice.humidity());
+            CHECK(hidekiDevice.message() == messageCount);
+            CHECK(hidekiDevice.temperatureF() == Approx(param.temperature));
+            CHECK(hidekiDevice.humidity() == param.humidity);
         }
     }
-    EXPECT_EQ(3, messageCount);
+    CHECK(messageCount == 3);
 }
 
-static const MessageParameter messageParameter1(
-        message1, extent<decltype(message1)>::value, 24.8, 12);
-static const MessageParameter messageParameter2(
-        message2, extent<decltype(message2)>::value, 24.2, 14);
-static const MessageParameter messageParameter3(
-        message3, extent<decltype(message3)>::value, 24.2, 12);
-static const MessageParameter messageParameter4(
-        message4, extent<decltype(message4)>::value, 22.5, 10);
-
 /*!
- * \brief Parameterized test instantiation for
- *        \ref TEST_P(Receiver, TestMessages).
+ * \brief Test Sensors::HidekiDevice.
  */
-INSTANTIATE_TEST_CASE_P(TestMessages, Receiver, Values(
-    messageParameter1, messageParameter2, messageParameter3, messageParameter4
-));
+TEST_CASE("HidekiDeviceReceivingMessages", "[hidekidevice]")
+{
+    SECTION("Message 1") {
+        verifyHidekiDevice({message1, 24.8f, 12});
+    }
+
+    SECTION("Message 2") {
+        verifyHidekiDevice({message2, 24.2f, 14});
+    }
+
+    SECTION("Message 3") {
+        verifyHidekiDevice({message3, 24.2f, 12});
+    }
+
+    SECTION("Message 4") {
+        verifyHidekiDevice({message4, 22.5f, 10});
+    }
+}

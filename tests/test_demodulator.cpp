@@ -24,12 +24,11 @@
  * \brief Unit tests for \ref libsensors_demodulator.
  */
 
-#include <gmock/gmock.h>
+#include <catch.hpp>
 
 #include "lib/utils.h"
 #include "lib/demodulator.h"
 
-using ::testing::ElementsAre;
 using ::Sensors::Demodulator;
 using ::Sensors::DemodulatorStatus;
 using ::Sensors::BiphaseMark;
@@ -37,25 +36,19 @@ using ::Sensors::BiphaseMark;
 /*!
  * \brief Tests Sensors::Demodulator with Sensors::BiphaseMark configuration.
  */
-TEST(DemodulatorTest, BMCDecoder)
+TEST_CASE("DemodulatingWithBiphaseMarkConfiguration", "[demodulator]")
 {
-    Demodulator<BiphaseMark<200, 675, 675, 1150>> bmcDecoder;
+    Demodulator<BiphaseMark<200, 675, 675, 1150>> bmc;
     DemodulatorStatus status;
 
-    status = bmcDecoder.addPulseWidth(199);
-    EXPECT_EQ(DemodulatorStatus::OutOfRangeError, status);
+    SECTION("InRange Values") {
+        CHECK(bmc.addPulseWidth(900) == DemodulatorStatus::Complete);
+        CHECK(bmc.addPulseWidth(450) == DemodulatorStatus::Incomplete);
+        CHECK(bmc.addPulseWidth(450) == DemodulatorStatus::Complete);
+    }
 
-    status = bmcDecoder.addPulseWidth(1151);
-    EXPECT_EQ(DemodulatorStatus::OutOfRangeError, status);
-
-    bmcDecoder.reset();
-
-    status = bmcDecoder.addPulseWidth(900);
-    EXPECT_EQ(DemodulatorStatus::Complete, status);
-
-    status = bmcDecoder.addPulseWidth(450);
-    EXPECT_EQ(DemodulatorStatus::Incomplete, status);
-
-    status = bmcDecoder.addPulseWidth(450);
-    EXPECT_EQ(DemodulatorStatus::Complete, status);
+    SECTION("OutOfRange Values") {
+        CHECK(bmc.addPulseWidth(199) == DemodulatorStatus::OutOfRangeError);
+        CHECK(bmc.addPulseWidth(1151) == DemodulatorStatus::OutOfRangeError);
+    }
 }

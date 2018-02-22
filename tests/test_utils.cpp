@@ -24,7 +24,7 @@
  * \brief Unit tests for \ref libsensors_utils.
  */
 
-#include <gtest/gtest.h>
+#include <catch.hpp>
 
 #include "lib/utils.h"
 
@@ -50,131 +50,133 @@ using ::Sensors::max;
  * \sa Sensors::bitRead
  * \sa Sensors::bitWrite
  */
-TEST(UtilsTest, BitOperations)
+TEST_CASE("BitOperationsSimple", "[utils]")
 {
     uint8_t byte = 0;
 
-    bitSet(byte, 0);
-    EXPECT_EQ(0b00000001, byte);
+    SECTION("Setting Bits") {
+        bitSet(byte, 0);
+        CHECK(byte == 0b00000001);
+        bitSet(byte, 7);
+        CHECK(byte == 0b10000001);
+    }
 
-    bitSet(byte, 7);
-    EXPECT_EQ(0b10000001, byte);
+    SECTION("Clearing Bits") {
+        byte = 0b00010000;
+        bitClear(byte, 4);
+        CHECK(byte == 0);
+    }
 
-    byte = 0b00010000;
-    bitClear(byte, 4);
-    EXPECT_EQ(0, byte);
+    SECTION("Flipping Bits") {
+        byte = 0;
+        bitFlip(byte, 7);
+        CHECK(byte == 0b10000000);
+        bitFlip(byte, 7);
+        CHECK(byte == 0);
+    }
 
-    byte = 0;
-    bitFlip(byte, 7);
-    EXPECT_EQ(0b10000000, byte);
-    bitFlip(byte, 7);
-    EXPECT_EQ(0, byte);
+    SECTION("Reading Bits") {
+        byte = 0b11110111;
+        CHECK(bitRead(byte, 4) == true);
+        CHECK(bitRead(byte, 3) == false);
+    }
 
-    byte = 0b11110111;
-    EXPECT_TRUE(bitRead(byte, 4));
-    EXPECT_FALSE(bitRead(byte, 3));
-
-    byte = 0;
-    bitWrite(byte, 0, true);
-    EXPECT_EQ(0b00000001, byte);
-    bitWrite(byte, 0, false);
-    EXPECT_EQ(0, byte);
+    SECTION("Writing Bits") {
+        byte = 0;
+        bitWrite(byte, 0, true);
+        CHECK(byte == 0b00000001);
+        bitWrite(byte, 0, false);
+        CHECK(byte == 0);
+    }
 }
 
 /*!
  * \brief Tests Sensors::byteReverse.
  */
-TEST(UtilsTest, ByteReverse)
+TEST_CASE("BitOperationsReversingBytes", "[utils]")
 {
-    EXPECT_EQ(0,    byteReverse(0));
-    EXPECT_EQ(0xFF, byteReverse(0xFF));
-    EXPECT_EQ(0x0F, byteReverse(0xF0));
-    EXPECT_EQ(0xF0, byteReverse(0x0F));
-    EXPECT_EQ(0b01010101, byteReverse(0b10101010));
-    EXPECT_EQ(0b00000001, byteReverse(0b10000000));
+    CHECK(byteReverse(0)          == 0);
+    CHECK(byteReverse(0xFF)       == 0xFF);
+    CHECK(byteReverse(0xF0)       == 0x0F);
+    CHECK(byteReverse(0x0F)       == 0xF0);
+    CHECK(byteReverse(0b10101010) == 0b01010101);
+    CHECK(byteReverse(0b10000000) == 0b00000001);
 }
 
 /*!
  * \brief Tests Sensors::nibbleReverse.
  */
-TEST(UtilsTest, NibbleReverse)
+TEST_CASE("BitOperationsReversingNibbles", "[utils]")
 {
-    EXPECT_EQ(0,    nibbleReverse(0));
-    EXPECT_EQ(0xFF, nibbleReverse(0xFF));
-    EXPECT_EQ(0xF0, nibbleReverse(0xF0));
-    EXPECT_EQ(0x0F, nibbleReverse(0x0F));
-    EXPECT_EQ(0b00110000, nibbleReverse(0b11000000));
-    EXPECT_EQ(0b00110011, nibbleReverse(0b11001100));
-    EXPECT_EQ(0b00001110, nibbleReverse(0b00000111));
+    CHECK(nibbleReverse(0)          == 0);
+    CHECK(nibbleReverse(0xFF)       == 0xFF);
+    CHECK(nibbleReverse(0xF0)       == 0xF0);
+    CHECK(nibbleReverse(0x0F)       == 0x0F);
+    CHECK(nibbleReverse(0b11000000) == 0b00110000);
+    CHECK(nibbleReverse(0b11001100) == 0b00110011);
+    CHECK(nibbleReverse(0b00000111) == 0b00001110);
 }
 
 /*!
  * \brief Tests Sensors::lowNibble and Sensors::highNibble.
  */
-TEST(UtilsTest, Nibbles)
+TEST_CASE("BitOperationsLow&HighNibble", "[utils]")
 {
-    EXPECT_EQ(0,    lowNibble(0));
-    EXPECT_EQ(0x0F, lowNibble(0xFF));
-    EXPECT_EQ(0,    lowNibble(0xF0));
-    EXPECT_EQ(0x0F, lowNibble(0x0F));
-    EXPECT_EQ(0b00000011, lowNibble(0b11000011));
+    SECTION("Extracting Low Nibble") {
+        CHECK(lowNibble(0)          == 0);
+        CHECK(lowNibble(0xFF)       == 0x0F);
+        CHECK(lowNibble(0xF0)       == 0);
+        CHECK(lowNibble(0x0F)       == 0x0F);
+        CHECK(lowNibble(0b11000011) == 0b00000011);
+    }
 
-    EXPECT_EQ(0,    highNibble(0));
-    EXPECT_EQ(0x0F, highNibble(0xFF));
-    EXPECT_EQ(0x0F, highNibble(0xF0));
-    EXPECT_EQ(0,    highNibble(0x0F));
-    EXPECT_EQ(0b00001100, highNibble(0b11000011));
+    SECTION("Extracting High Nibble") {
+        CHECK(highNibble(1)          == 0);
+        CHECK(highNibble(0xFF)       == 0x0F);
+        CHECK(highNibble(0xF0)       == 0x0F);
+        CHECK(highNibble(0x0F)       == 0);
+        CHECK(highNibble(0b11000011) == 0b00001100);
+    }
 }
 
 /*!
  * \brief Tests Sensors::word.
  */
-TEST(UtilsTest, Word)
+TEST_CASE("BitOperationsCombiningBytesToWord", "[utils]")
 {
-    EXPECT_EQ(0,      word(0, 0));
-    EXPECT_EQ(0xFFFF, word(0xFF, 0xFF));
-    EXPECT_EQ(0xABCD, word(0xAB, 0xCD));
+    CHECK(word(0, 0)       == 0);
+    CHECK(word(0xFF, 0xFF) == 0xFFFF);
+    CHECK(word(0xAB, 0xCD) == 0xABCD);
 }
 
 /*!
  * \brief Tests Sensors::parity.
  */
-TEST(UtilsTest, Parity)
+TEST_CASE("BitOperationsParity", "[utils]")
 {
-    uint8_t byte;
-
-    byte = 0;
-    EXPECT_FALSE(parity(byte));
-
-    byte = 0xFF;
-    EXPECT_FALSE(parity(byte));
-
-    byte = 0xF0;
-    EXPECT_FALSE(parity(byte));
-
-    byte = 0x0F;
-    EXPECT_FALSE(parity(byte));
-
-    byte = 0b00000001;
-    EXPECT_TRUE(parity(byte));
-
-    byte = 0b11111110;
-    EXPECT_TRUE(parity(byte));
-
-    byte = 0b11100000;
-    EXPECT_TRUE(parity(byte));
+    CHECK(parity(0)          == false);
+    CHECK(parity(0xFF)       == false);
+    CHECK(parity(0xF0)       == false);
+    CHECK(parity(0x0F)       == false);
+    CHECK(parity(0b00000001) == true);
+    CHECK(parity(0b11111110) == true);
+    CHECK(parity(0b11100000) == true);
 }
 
 /*!
  * \brief Tests Sensors::min and Sensors::max.
  */
-TEST(UtilsTest, MinMax)
+TEST_CASE("BitOperationsMinimum&Maximum", "[utils]")
 {
-    EXPECT_EQ(0, min(0, 0));
-    EXPECT_EQ(1, min(1, 2));
-    EXPECT_EQ(1, min(2, 1));
+    SECTION("Detecting Minimum") {
+        CHECK(min(0, 0) == 0);
+        CHECK(min(1, 2) == 1);
+        CHECK(min(2, 1) == 1);
+    }
 
-    EXPECT_EQ(0, max(0, 0));
-    EXPECT_EQ(2, max(1, 2));
-    EXPECT_EQ(2, max(2, 1));
+    SECTION("Detecting Maximum") {
+        CHECK(max(0, 0) == 0);
+        CHECK(max(1, 2) == 2);
+        CHECK(max(2, 1) == 2);
+    }
 }

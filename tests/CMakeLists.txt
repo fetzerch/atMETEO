@@ -1,4 +1,5 @@
-find_package(GMock 1.8.0 REQUIRED)
+add_subdirectory(catch2)
+include(catch2/contrib/Catch.cmake)
 
 # Code coverage target for all tests
 if(CMAKE_BUILD_TYPE STREQUAL "Coverage")
@@ -20,22 +21,26 @@ set(HEADERS
     utils.h
 )
 
+set(SOURCES
+    test_utils.cpp
+    test_demodulator.cpp
+    test_bitdecoder.cpp
+    test_hidekisensor.cpp
+    test_hidekidevice.cpp
+    test_tgs2600.cpp
+)
+
 set(OTHERS
     test.dox
 )
 
-function(add_test_gmock _NAME)
-    add_executable(${_NAME} ${ARGN} ${HEADERS} ${OTHERS})
-    target_link_libraries(${_NAME} PRIVATE libsensors ${GMOCK_BOTH_LIBRARIES})
-    target_include_directories(${_NAME} PRIVATE ${GMOCK_INCLUDE_DIRS})
-    add_test(
-        NAME ${_NAME}
-        COMMAND ${_NAME} --gtest_output=xml:${_NAME}.xml)
-endfunction()
+set(CATCH_MAIN_FILE ${CMAKE_BINARY_DIR}/catch-main-test.cpp)
+file(WRITE ${CATCH_MAIN_FILE} "#include \"catch.hpp\"\n")
+set_source_files_properties(${CATCH_MAIN_FILE} PROPERTIES
+    COMPILE_DEFINITIONS CATCH_CONFIG_MAIN
+    GENERATED TRUE
+)
 
-add_test_gmock(test_utils test_utils.cpp)
-add_test_gmock(test_demodulator test_demodulator.cpp)
-add_test_gmock(test_bitdecoder test_bitdecoder.cpp)
-add_test_gmock(test_hidekisensor test_hidekisensor.cpp)
-add_test_gmock(test_hidekidevice test_hidekidevice.cpp)
-add_test_gmock(test_tgs2600 test_tgs2600.cpp)
+add_executable(tests ${HEADERS} ${SOURCES} ${OTHERS} ${CATCH_MAIN_FILE})
+target_link_libraries(tests PRIVATE libsensors Catch2::Catch)
+catch_discover_tests(tests)
