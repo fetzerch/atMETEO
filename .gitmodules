@@ -4,3 +4,6 @@
 [submodule "target/external/wiznet"]
 	path = target/external/wiznet
 	url = https://github.com/Wiznet/ioLibrary_Driver
+[submodule "tests/catch2"]
+	path = tests/catch2
+	url = https://github.com/catchorg/Catch2
