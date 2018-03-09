@@ -62,7 +62,7 @@ class ReceiverThread(threading.Thread):  # pragma: no cover
     def handle_received(self, data):
         """ Handle received data """
         line = data.rstrip('\n')
-        if len(line) > 0:
+        if line:
             for handler in self._handler:
                 handler(line)
 
