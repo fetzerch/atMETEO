@@ -1,0 +1,6 @@
+<map id="target/lib/pin.h" name="target/lib/pin.h">
+<area shape="rect" id="node2" href="$dht22_8h.html" title="Avr::Dht22 decodes data from DHT22 / AM2302 Temperature and Humidity sensors. " alt="" coords="5,155,124,181"/>
+<area shape="rect" id="node3" href="$main_8cpp.html" title="The main weather station application utilizing Sensors library and AVR C++ utilities library..." alt="" coords="106,229,218,256"/>
+<area shape="rect" id="node4" href="$spi_8h.html" title="Wrapper for accessing built&#45;in SPI communication interface. " alt="" coords="199,80,303,107"/>
+<area shape="rect" id="node5" href="$wiznet_8h_source.html" title="target/lib/wiznet.h" alt="" coords="199,155,325,181"/>
+</map>

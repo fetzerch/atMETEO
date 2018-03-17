@@ -1,5 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
 <area shape="rect" id="node1" href="$group__libtarget__pin.html" title="Avr::InputConfigurationDisabled\l\&lt; TCsDigitalIo, pinNumber \&gt;" alt="" coords="5,5,212,47"/>
-<area shape="rect" id="node2" href="$group__libtarget__pin.html" title="Avr::OutputPinInverted\l\&lt; TCsDigitalIo, csPinNumber \&gt;" alt="" coords="260,41,467,83"/>
-<area shape="rect" id="node3" href="$group__libtarget__pin.html" title="Avr::OutputConfiguration\lInverted\&lt; TCsDigitalIo,\l pinNumber \&gt;" alt="" coords="25,70,192,126"/>
+<area shape="rect" id="node2" href="$group__libtarget__pin.html" title="Avr::OutputPinInverted\l\&lt; TCsDigitalIo, csPinNumber \&gt;" alt="" coords="260,43,467,84"/>
+<area shape="rect" id="node3" href="$group__libtarget__pin.html" title="Avr::OutputConfiguration\lInverted\&lt; TCsDigitalIo,\l pinNumber \&gt;" alt="" coords="25,71,192,127"/>
 </map>

@@ -8,8 +8,8 @@
  viewBox="0.00 0.00 153.00 50.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 46)">
 <title>Graphical Class Hierarchy</title>
-<!-- Node1 -->
-<g id="node1" class="node"><title>Node1</title>
+<!-- Node0 -->
+<g id="node1" class="node"><title>Node0</title>
 <g id="a_node1"><a xlink:href="group__libsensors__rfdevice.html#classSensors_1_1RfDevice" target="_top" xlink:title="Connects Demodulator, Bit Decoder and Sensor for decoding sensor data from RF receivers. ">
 <polygon fill="none" stroke="black" points="0,-0.5 0,-41.5 145,-41.5 145,-0.5 0,-0.5"/>
 <text text-anchor="start" x="8" y="-29.5" font-family="Helvetica,sans-Serif" font-size="10.00">Sensors::RfDevice&lt;</text>

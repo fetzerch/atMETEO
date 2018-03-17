@@ -1,0 +1,4 @@
+<map id="lib/tgs2600.h" name="lib/tgs2600.h">
+<area shape="rect" id="node2" href="$main_8cpp.html" title="The main weather station application utilizing Sensors library and AVR C++ utilities library..." alt="" coords="5,80,117,107"/>
+<area shape="rect" id="node3" href="$test__tgs2600_8cpp.html" title="Unit tests for Sensors::Tgs2600. " alt="" coords="141,80,296,107"/>
+</map>

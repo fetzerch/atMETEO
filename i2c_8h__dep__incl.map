@@ -1,0 +1,5 @@
+<map id="target/lib/i2c.h" name="target/lib/i2c.h">
+<area shape="rect" id="node2" href="$bmp180_8h.html" title="Avr::Bmp180 decodes data from Bosch BMP180 Digital pressure sensors. " alt="" coords="5,80,139,107"/>
+<area shape="rect" id="node4" href="$mlx90614_8h.html" title="Avr::Mlx90614 decodes data from Melexis MLX90614 Infrared thermometer sensors. " alt="" coords="163,80,306,107"/>
+<area shape="rect" id="node3" href="$main_8cpp.html" title="The main weather station application utilizing Sensors library and AVR C++ utilities library..." alt="" coords="97,155,209,181"/>
+</map>

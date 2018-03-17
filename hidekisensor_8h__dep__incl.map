@@ -1,0 +1,5 @@
+<map id="lib/hidekisensor.h" name="lib/hidekisensor.h">
+<area shape="rect" id="node2" href="$main_8cpp.html" title="The main weather station application utilizing Sensors library and AVR C++ utilities library..." alt="" coords="5,80,117,107"/>
+<area shape="rect" id="node3" href="$test__hidekidevice_8cpp.html" title="Unit tests for Sensors::HidekiDevice. " alt="" coords="141,80,323,107"/>
+<area shape="rect" id="node4" href="$test__hidekisensor_8cpp.html" title="Unit tests for Sensors::HidekiSensor. " alt="" coords="347,80,530,107"/>
+</map>

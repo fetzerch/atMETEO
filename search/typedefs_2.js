@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['hidekidevice',['HidekiDevice',['../group__libsensors__hideki.html#gaf0c732607e140975f348f866a0132df7',1,'Sensors']]]
+  ['hidekidevice',['HidekiDevice',['../group__libsensors__hideki.html#gaae98f879dd7d0c042e00df39830c6f50',1,'Sensors']]]
 ];

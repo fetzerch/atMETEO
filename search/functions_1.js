@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['batteryok',['batteryOk',['../group__libsensors__hideki.html#a4f0c56ab70dd28c823a0d4c02e04c7f6',1,'Sensors::HidekiSensor::batteryOk()'],['../group__libsensors__hideki.html#a2803ef6b637c33eb013da9f8f4484753',1,'Sensors::HidekiData::batteryOk()']]],
+  ['batteryok',['batteryOk',['../group__libsensors__hideki.html#a9dec6564c66619be1e1bed1ab5d094ad',1,'Sensors::HidekiSensor::batteryOk()'],['../group__libsensors__hideki.html#aa0316810223b3fd350083c4ac4a061ab',1,'Sensors::HidekiData::batteryOk()']]],
   ['begintransmission',['beginTransmission',['../group__libtarget__i2c.html#a6684979d023d7c87134851a29725ed26',1,'Avr::I2c']]],
   ['bitclear',['bitClear',['../group__libsensors__utils.html#gab33e89afb51ec93b4e6bea8a7d9f087b',1,'Sensors']]],
   ['bitflip',['bitFlip',['../group__libsensors__utils.html#ga9746410cbd1d54384d8ac96b60603c17',1,'Sensors']]],
