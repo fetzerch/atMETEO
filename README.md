@@ -1,5 +1,9 @@
 atMETEO - An ATmega based weather station
 =========================================
+<!-- @cond Hide from Doxygen-->
+[![Build Status](https://travis-ci.org/fetzerch/atMETEO.svg?branch=master)](https://travis-ci.org/fetzerch/atMETEO)
+[![Coverage Status](https://coveralls.io/repos/github/fetzerch/atMETEO/badge.svg)](https://coveralls.io/github/fetzerch/atMETEO)
+<!-- @endcond -->
 
 As its name implies *atMETEO* is a project for collecting and measuring weather
 related data from different sensors. The data is being collected by an ATmega
