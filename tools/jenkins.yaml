@@ -372,6 +372,8 @@
             branch-filter-type: NameBasedFilter
             exclude-branches:
                - 'ci-image'
+               - 'ci-setup'
+               - 'gh-pages'
     builders:
         - shell: |
             #!/bin/bash -eu
