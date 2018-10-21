@@ -255,15 +255,11 @@
             mkdir $WORKSPACE/build-python
             cd $WORKSPACE/sources/tools
 
-            for py in py2 py3; do
-                tox -e $py-flake8 | tee $WORKSPACE/build-python/$py-flake8.log
-                tox -e $py-pylint | tee $WORKSPACE/build-python/$py-pylint.log
-                tox -e $py-coverage -- \
-                    --with-xunit \
-                    --xunit-file=$WORKSPACE/build-python/$py-nosetest.xml \
-                    --cover-xml \
-                    --cover-xml-file=$WORKSPACE/build-python/$py-coverage.xml \
-                    | tee $WORKSPACE/build-python/$py-coverage.log
+            for py in py27 py35 py36; do
+                tox -e $py -- --cache-clear \
+                    --junitxml=$WORKSPACE/build-python/$py-junit.xml \
+                    --cov-report=xml:$WORKSPACE/build-python/$py-coverage.xml \
+                    | tee $WORKSPACE/build-python/$py.log
             done
 
 
@@ -333,7 +329,7 @@
             artifacts: 'build-python/*.xml'
             fingerprint: true
         - junit:
-            results: build-python/*-nosetest.xml
+            results: build-python/*-junit.xml
             test-stability: true
         - cobertura:
             report-file: build-python/*-coverage.xml

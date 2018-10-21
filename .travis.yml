@@ -41,4 +41,4 @@ jobs:
     - language: python
       python: 3.6
       install: pip install tox
-      script: cd tools && tox
+      script: cd tools && tox -e py36

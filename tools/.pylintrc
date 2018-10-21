@@ -1,5 +1,2 @@
 [REPORTS]
 msg-template="{abspath}:{line}: [{msg_id}({symbol}), {obj}] {msg}"
-
-[MESSAGE CONTROL]
-disable=locally-disabled

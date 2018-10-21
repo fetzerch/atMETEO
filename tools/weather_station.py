@@ -30,8 +30,6 @@ import socket
 import time
 import threading
 
-from nose.tools import eq_
-
 import pywws.conversions
 import serial
 
@@ -138,6 +136,7 @@ class SerialReceiverThread(ReceiverThread):  # pragma: no cover
 
 
 class RoomMapping(object):
+    # pylint: disable=bad-option-value,useless-object-inheritance
     """ Maps a sensor to a room based on a mapping string
 
         e.g. 'study:*, garden:rf433_1' """
@@ -169,38 +168,39 @@ class RoomMapping(object):
 def test_room_mapping():
     """ Tests mapping prefixes """
     mapping = RoomMapping('')
-    eq_(mapping.get_mapping_table(), [(re.compile('^.*$'), '')])
-    eq_(mapping.get_room_mapping('anysensor'), '')
+    assert mapping.get_mapping_table() == [(re.compile('^.*$'), '')]
+    assert mapping.get_room_mapping('anysensor') == ''
 
     mapping = RoomMapping('study')
-    eq_(mapping.get_mapping_table(), [(re.compile('^.*$'), 'study')])
-    eq_(mapping.get_room_mapping('anysensor'), 'study')
+    assert mapping.get_mapping_table() == [(re.compile('^.*$'), 'study')]
+    assert mapping.get_room_mapping('anysensor') == 'study'
 
     mapping = RoomMapping('study:*')
-    eq_(mapping.get_mapping_table(), [(re.compile('^.*$'), 'study')])
-    eq_(mapping.get_room_mapping('anysensor'), 'study')
+    assert mapping.get_mapping_table() == [(re.compile('^.*$'), 'study')]
+    assert mapping.get_room_mapping('anysensor') == 'study'
 
     mapping = RoomMapping('study:*, garden:rf433*')
-    eq_(mapping.get_mapping_table(),
+    assert mapping.get_mapping_table() == \
         [(re.compile('^rf433.*$'), 'garden'),
-         (re.compile('^.*$'), 'study')])
-    eq_(mapping.get_room_mapping('anysensor'), 'study')
-    eq_(mapping.get_room_mapping('rf433'), 'garden')
+         (re.compile('^.*$'), 'study')]
+    assert mapping.get_room_mapping('anysensor') == 'study'
+    assert mapping.get_room_mapping('rf433') == 'garden'
 
     mapping = RoomMapping('garden:rf433*, study:*')
-    eq_(mapping.get_mapping_table(),
+    assert mapping.get_mapping_table() == \
         [(re.compile('^.*$'), 'study'),
-         (re.compile('^rf433.*$'), 'garden')])
-    eq_(mapping.get_room_mapping('anysensor'), 'study')
-    eq_(mapping.get_room_mapping('rf433'), 'study')
+         (re.compile('^rf433.*$'), 'garden')]
+    assert mapping.get_room_mapping('anysensor') == 'study'
+    assert mapping.get_room_mapping('rf433') == 'study'
 
     mapping = RoomMapping('study:*, garden:rf433*:incorrect')
-    eq_(mapping.get_mapping_table(),
+    assert mapping.get_mapping_table() == \
         [(re.compile('^rf433.*:incorrect$'), 'garden'),
-         (re.compile('^.*$'), 'study')])
+         (re.compile('^.*$'), 'study')]
 
 
 class CommandLineClient(object):  # pragma: no cover
+    # pylint: disable=bad-option-value,useless-object-inheritance
     """ Command line client """
 
     @classmethod
