@@ -50,12 +50,10 @@ class ReceiverThread(threading.Thread):  # pragma: no cover
     @abc.abstractmethod
     def initialize(self):
         """ Initialize connection """
-        pass
 
     @abc.abstractmethod
     def receive(self):
         """ Receiver loop """
-        pass
 
     def handle_received(self, data):
         """ Handle received data """
