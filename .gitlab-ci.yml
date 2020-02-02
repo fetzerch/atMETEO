@@ -99,7 +99,7 @@ tools:
   before_script:
     - pip --cache-dir=tools/.pip install tox
   script:
-    - cd tools && tox
+    - cd tools && tox -e py36
   cache:
     paths:
       - tools/.pip
