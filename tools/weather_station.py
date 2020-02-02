@@ -315,7 +315,8 @@ class CommandLineClient(object):  # pragma: no cover
         metrics = self._preprocess_metrics(line)
         print("Sending data to graphite: %s" % metrics)
         try:
-            import graphitesend
+            import graphitesend \
+                # pylint: disable=bad-option-value,import-outside-toplevel
             graphite = graphitesend.init(
                 graphite_server=self._args.graphite_server,
                 prefix=self._args.graphite_name,
