@@ -55,12 +55,12 @@ class ReceiverThread(threading.Thread):  # pragma: no cover
     def receive(self):
         """ Receiver loop """
 
-    def handle_received(self, data):
+    def handle_received(self, source, data):
         """ Handle received data """
         line = data.rstrip('\n')
         if line:
             for handler in self._handler:
-                handler(line)
+                handler(source, line)
 
     def run(self):
         """ Execute thread """
@@ -107,7 +107,8 @@ class UdpReceiverThread(ReceiverThread):  # pragma: no cover
 
     def receive(self):
         try:
-            self.handle_received(self._connection.recv(1024))
+            data, source = self._connection.recvfrom(1024)
+            self.handle_received(source[0], data)
         except socket.timeout:
             pass
 
@@ -126,7 +127,7 @@ class SerialReceiverThread(ReceiverThread):  # pragma: no cover
 
     def receive(self):
         try:
-            self.handle_received(self._connection.readline())
+            self.handle_received(self._port, self._connection.readline())
         except serial.serialutil.SerialException as err:
             self._connection.close()
             self._connection = None
@@ -306,11 +307,11 @@ class CommandLineClient(object):  # pragma: no cover
         return result
 
     @classmethod
-    def _console_handler(cls, line):
+    def _console_handler(cls, source, line):
         """ Console output """
-        print("%s: %s" % (datetime.datetime.now(), line))
+        print("%s: %s: %s" % (datetime.datetime.now(), source, line))
 
-    def _graphite_handler(self, line):
+    def _graphite_handler(self, _, line):
         """ Send metrics to graphite server """
         metrics = self._preprocess_metrics(line)
         print("Sending data to graphite: %s" % metrics)
