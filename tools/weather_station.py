@@ -25,6 +25,7 @@ import abc
 import argparse
 import datetime
 import json
+import math
 import re
 import socket
 import time
@@ -269,6 +270,25 @@ class CommandLineClient(object):  # pragma: no cover
                     result[index((sensor_prefix, sensor, 'dewpoint'))] = \
                         round(pywws.conversions.dew_point(
                             data['temperature'], data['humidity']), 2)
+                except (KeyError, TypeError):
+                    pass
+
+                # Calculate absolute humidity
+                # See: https://www.kompf.de/weather/vent.html
+                # See: https://www.wetterochs.de/wetter/feuchte.html
+                try:
+                    def _humidity_abs(temperature, humidity):
+                        # Compute saturated water vapor pressure in hPa
+                        svp = 6.112 * math.exp((17.67 * temperature) /
+                                               (243.5 + temperature))
+                        # Compute actual water vapor pressure in hPa
+                        avp = humidity / 100.0 * svp
+                        # Compute the absolute humidity in g/m3
+                        aah = 10**5 * 18.016/8314.3 * avp / \
+                            (temperature + 273.15)
+                        return round(aah, 2)
+                    result[index((sensor_prefix, sensor, 'humidity_abs'))] = \
+                        _humidity_abs(data['temperature'], data['humidity'])
                 except (KeyError, TypeError):
                     pass
 
