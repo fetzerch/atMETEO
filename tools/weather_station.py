@@ -228,7 +228,7 @@ class CommandLineClient():  # pragma: no cover
                                 help="Graphite prefix and system_name")
 
         # Generic
-        parser_gra.add_argument('--room-mapping', type=str, default=None,
+        parser_gra.add_argument('--room-mapping', type=str, default='',
                                 help="Room mapping"
                                      "(e.g. 'study:*, garden:rf433_1')")
 
