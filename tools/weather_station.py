@@ -233,6 +233,10 @@ class CommandLineClient():  # pragma: no cover
                                      "(e.g. 'study:*, garden:rf433_1')")
 
         args = parser.parse_args()
+
+        if not args.serial and not args.udp:
+            parser.error("Either --serial or --udp has to be specified")
+
         return args
 
     def __init__(self):
