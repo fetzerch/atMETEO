@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 # atMETEO - An ATmega based weather station
 # Copyright (C) 2014-2015 Christian Fetzer
@@ -18,8 +18,6 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 """ Command line client """
-
-from __future__ import print_function
 
 import abc
 import argparse
@@ -46,7 +44,7 @@ class ReceiverThread(threading.Thread):  # pragma: no cover
         self._port = port
         self._reconnect_timeout = reconnect_timeout
         self._handler = []
-        self._stop = threading.Event()
+        self._stop_event = threading.Event()
 
     @abc.abstractmethod
     def initialize(self):
@@ -58,7 +56,7 @@ class ReceiverThread(threading.Thread):  # pragma: no cover
 
     def handle_received(self, source, data):
         """ Handle received data """
-        line = data.rstrip('\n')
+        line = data.decode().rstrip('\n')
         if line:
             for handler in self._handler:
                 handler(source, line)
@@ -84,11 +82,11 @@ class ReceiverThread(threading.Thread):  # pragma: no cover
 
     def stop(self):
         """ Stop thread """
-        self._stop.set()
+        self._stop_event.set()
 
     def stopped(self):
         """ Check if thread is stopped or is being stopped """
-        return self._stop.isSet()
+        return self._stop_event.isSet()
 
 
 class UdpReceiverThread(ReceiverThread):  # pragma: no cover
@@ -135,8 +133,7 @@ class SerialReceiverThread(ReceiverThread):  # pragma: no cover
             raise IOError(err)
 
 
-class RoomMapping(object):
-    # pylint: disable=bad-option-value,useless-object-inheritance
+class RoomMapping():
     """ Maps a sensor to a room based on a mapping string
 
         e.g. 'study:*, garden:rf433_1' """
@@ -199,8 +196,7 @@ def test_room_mapping():
          (re.compile('^.*$'), 'study')]
 
 
-class CommandLineClient(object):  # pragma: no cover
-    # pylint: disable=bad-option-value,useless-object-inheritance
+class CommandLineClient():  # pragma: no cover
     """ Command line client """
 
     @classmethod
@@ -336,8 +332,7 @@ class CommandLineClient(object):  # pragma: no cover
         metrics = self._preprocess_metrics(line)
         print("Sending data to graphite: %s" % metrics)
         try:
-            import graphitesend \
-                # pylint: disable=bad-option-value,import-outside-toplevel
+            import graphitesend  # pylint: disable=import-outside-toplevel
             graphite = graphitesend.init(
                 graphite_server=self._args.graphite_server,
                 prefix=self._args.graphite_name,
