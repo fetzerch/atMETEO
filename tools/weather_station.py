@@ -102,7 +102,7 @@ class UdpReceiverThread(ReceiverThread):  # pragma: no cover
             self._connection.settimeout(3)
         except socket.error as err:
             self._connection = None
-            raise IOError(err)
+            raise IOError from err
 
     def receive(self):
         try:
@@ -122,7 +122,7 @@ class SerialReceiverThread(ReceiverThread):  # pragma: no cover
         try:
             self._connection = serial.Serial(self._port, 9600, timeout=3)
         except serial.serialutil.SerialException as err:
-            raise IOError(err)
+            raise IOError from err
 
     def receive(self):
         try:
@@ -130,7 +130,7 @@ class SerialReceiverThread(ReceiverThread):  # pragma: no cover
         except serial.serialutil.SerialException as err:
             self._connection.close()
             self._connection = None
-            raise IOError(err)
+            raise IOError from err
 
 
 class RoomMapping():
